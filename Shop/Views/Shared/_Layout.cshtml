@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -27,6 +29,21 @@
                     </ul>
                 </div>
             </div>
+
+            @if (User.Identity.IsAuthenticated)
+            {
+                <div>
+                    <a>@User.Identity.Name</a>
+                </div>
+                <a asp-action="LogOut" asp-controller="Account">Wyloguj</a>
+            }
+            else
+            {
+                <div>
+                    <a asp-action="Login" asp-controller="Account">Logowanie</a>
+                </div>
+            }
+
         </nav>
     </header>
     <div class="container">
