@@ -1,4 +1,4 @@
-﻿namespace Entities.Enums
+﻿namespace Shop.Enums
 {
     public enum Color
     {

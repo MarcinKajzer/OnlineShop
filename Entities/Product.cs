@@ -8,7 +8,7 @@ using System.Text;
 
 namespace Entities
 {
-    public class Item
+    public class Product
     {
         public int Id { get; set; }
 
@@ -32,5 +32,8 @@ namespace Entities
         public Size Size { get; set; }
         [Required]
         public Category Category { get; set; }
+
+        public bool isArchived { get; set; }
+
     }
 }

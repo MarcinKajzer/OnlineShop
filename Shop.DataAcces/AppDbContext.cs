@@ -15,7 +15,7 @@ namespace Shop.DataAcces
             base.OnModelCreating(modelBuilder);
         }
 
-        public DbSet<Item> Items { get; set; }
+        public DbSet<Product> Items { get; set; }
 
     }
 }

@@ -1,6 +1,6 @@
-﻿namespace Entities.Enums
+﻿namespace Shop.Enums
 {
-    public enum  Category
+    public enum WomanCategory
     {
         Blouse,
         Sweater,
@@ -12,7 +12,6 @@
         Marine,
         Cap,
         Accesories,
-
         Dress,
         Skirt,
         Body

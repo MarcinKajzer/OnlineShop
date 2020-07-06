@@ -12,6 +12,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Shop.DataAcces;
+using Shop.DataAcces.Interfaces;
 
 namespace Shop
 {
@@ -42,6 +43,8 @@ namespace Shop
                 options.Password.RequiredLength = 4;
                 options.Password.RequiredUniqueChars = 0;
             });
+
+            services.AddScoped<IProductRepository, ProductRepository>();
         }
 
         

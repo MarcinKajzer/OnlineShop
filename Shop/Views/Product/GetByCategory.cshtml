@@ -1,0 +1,19 @@
+﻿@model List<Shop.ViewModels.ProductDetailsViewModel>
+@{
+    ViewData["Title"] = "GetByCategory";
+}
+
+<h1>GetByCategory</h1>
+
+@foreach (var item in Model)
+{
+    <div>
+        <h2>@item.Name</h2>
+        <p>@item.Price</p>
+        <p>@item.Size</p>
+        <p>@item.Gender</p>
+        <p>@item.Description</p>
+        <p>@item.Color</p>
+        <p>@item.Category</p>
+    </div>
+}
