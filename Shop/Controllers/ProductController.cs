@@ -1,7 +1,10 @@
 ﻿using Entities;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Shop.DataAcces.Interfaces;
+using Shop.Enums;
 using Shop.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -58,6 +61,7 @@ namespace Shop.Controllers
         {
             List<Product> products = _repository.FindByCategory(gender, category).ToList();
 
+            //automapper
             List<ProductDetailsViewModel> prods = new List<ProductDetailsViewModel>();
 
             foreach(var item in products)
@@ -105,6 +109,29 @@ namespace Shop.Controllers
             return NotFound();
         }
 
-       
+
+        public JsonResult GetCategories(int gender)
+        {
+            List<SelectListItem> list;
+
+            if (gender == 1)
+            {
+                list = Enum.GetValues(typeof(MansCategory)).Cast<MansCategory>().Select(v => new SelectListItem
+                {
+                    Text = v.ToString(),
+                    Value = ((int)v).ToString()
+                }).ToList();
+            }
+            else
+            {
+                list = Enum.GetValues(typeof(WomanCategory)).Cast<WomanCategory>().Select(v => new SelectListItem
+                {
+                    Text = v.ToString(),
+                    Value = ((int)v).ToString()
+                }).ToList();
+            }
+            return Json(list);
+        }
+
     }
 }

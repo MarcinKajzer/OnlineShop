@@ -28,7 +28,36 @@
                         </li>
                     </ul>
                 </div>
+
+                Męskie
+                <ul>
+                    @foreach (var item in Enum.GetValues(typeof(Shop.Enums.MansCategory)))
+                    {
+                        int zmienna = (int)item;
+                        <a asp-action="GetByCategory" asp-controller="Product" asp-route-gender="1" asp-route-category="@zmienna">@item</a>
+                    }
+
+                </ul>
+                Damskie
+                <ul>
+                    @foreach (var item in Enum.GetValues(typeof(Shop.Enums.WomanCategory)))
+                    {
+                        int zmienna = (int)item;
+                        <a asp-action="GetByCategory" asp-controller="Product" asp-route-gender="0" asp-route-category="@zmienna">@item</a>
+                    }
+
+                </ul>
+
+
+
+
             </div>
+
+            
+
+
+
+
 
             @if (User.Identity.IsAuthenticated)
             {
