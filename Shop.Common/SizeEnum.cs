@@ -1,6 +1,6 @@
-﻿namespace Entities.Enums
+﻿namespace Shop.Common
 {
-    public enum Size
+    public enum SizeEnum
     {
         XS = 0,
         S = 1,

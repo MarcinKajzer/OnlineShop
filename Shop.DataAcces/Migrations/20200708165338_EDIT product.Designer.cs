@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Shop.DataAcces;
 
 namespace Shop.DataAcces.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200708165338_EDIT product")]
+    partial class EDITproduct
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -46,9 +48,6 @@ namespace Shop.DataAcces.Migrations
 
                     b.Property<double>("Price")
                         .HasColumnType("float");
-
-                    b.Property<int>("Quantity")
-                        .HasColumnType("int");
 
                     b.Property<bool>("isArchived")
                         .HasColumnType("bit");
@@ -287,7 +286,7 @@ namespace Shop.DataAcces.Migrations
 
             modelBuilder.Entity("Entities.Size", b =>
                 {
-                    b.HasOne("Entities.Product", "Product")
+                    b.HasOne("Entities.Product", null)
                         .WithMany("Sizes")
                         .HasForeignKey("ProductId");
                 });

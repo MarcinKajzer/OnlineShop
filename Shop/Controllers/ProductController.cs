@@ -1,8 +1,11 @@
 ﻿using Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Extensions.Logging;
+using Shop.Common;
 using Shop.DataAcces.Interfaces;
 using Shop.Enums;
+using Shop.Models;
 using Shop.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -14,16 +17,27 @@ namespace Shop.Controllers
     public class ProductController : Controller
     {
         private readonly IProductRepository _repository;
+        private readonly ILogger<ProductController> _logger;
 
-        public ProductController(IProductRepository repository)
+        public ProductController(IProductRepository repository, ILogger<ProductController> logger)
         {
             _repository = repository;
+            _logger = logger;
         }
 
         [HttpGet]
         public IActionResult Add()
         {
-            return View();
+            CreateProductViewModel model = new CreateProductViewModel();
+            List<SizeModel> sizes = new List<SizeModel>();
+
+            foreach (SizeEnum size in Enum.GetValues(typeof(SizeEnum)))
+            {
+                sizes.Add(new SizeModel() { Name = size, Quantity = 0 });
+            }
+            model.Sizes = sizes;
+
+            return View(model);
         }
 
         [HttpPost]
@@ -31,6 +45,23 @@ namespace Shop.Controllers
         {
             if (ModelState.IsValid)
             {
+                List<Size> sizes = new List<Size>();
+
+                int quantity = 0;
+
+                foreach(var size in model.Sizes)
+                {
+                    if (size.Quantity > 0)
+                    {
+                        quantity += size.Quantity;
+
+                        sizes.Add(new Size
+                        {
+                            Name = size.Name,
+                            Quantity = size.Quantity
+                        });
+                    }
+                }
                 Product product = new Product
                 {
                     Category = model.Category,
@@ -39,7 +70,8 @@ namespace Shop.Controllers
                     Gender = model.Gender,
                     Name = model.Name,
                     Price = model.Price,
-                    Size = model.Size
+                    Sizes = sizes,
+                    Quantity = quantity
                 };
 
                 var result = await _repository.Create(product);
@@ -61,10 +93,22 @@ namespace Shop.Controllers
         {
             List<Product> products = _repository.FindByCategory(gender, category).ToList();
 
-            //automapper
             List<ProductDetailsViewModel> prods = new List<ProductDetailsViewModel>();
+            List<SizeModel> sizes = new List<SizeModel>();
 
-            foreach(var item in products)
+            foreach (var prod in products)
+            {
+                foreach(var size in prod.Sizes)
+                {
+                    sizes.Add(new SizeModel
+                    {
+                        Name = size.Name,
+                        Quantity = size.Quantity
+                    });
+                }
+            }
+
+            foreach (var item in products)
             {
                 prods.Add(new ProductDetailsViewModel
                 {
@@ -75,7 +119,8 @@ namespace Shop.Controllers
                     Id = item.Id,
                     Name = item.Name,
                     Price = item.Price,
-                    Size = item.Size
+                    Sizes = sizes,
+                    Quantity = item.Quantity
                 });
             }
 
@@ -91,6 +136,17 @@ namespace Shop.Controllers
 
             if(prod != null)
             {
+                List<SizeModel> sizes = new List<SizeModel>();
+
+                foreach (var size in prod.Sizes)
+                {
+                    sizes.Add(new SizeModel
+                    {
+                        Name = size.Name,
+                        Quantity = size.Quantity
+                    });
+                }
+              
                 ProductDetailsViewModel product = new ProductDetailsViewModel
                 {
                     Id = prod.Id,
@@ -100,7 +156,8 @@ namespace Shop.Controllers
                     Gender = prod.Gender,
                     Name = prod.Name,
                     Price = prod.Price,
-                    Size = prod.Size
+                    Sizes = sizes,
+                    Quantity = prod.Quantity
                 };
 
                 return View(product);

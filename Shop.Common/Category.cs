@@ -1,6 +1,6 @@
-﻿namespace Entities.Enums
+﻿namespace Shop.Common
 {
-    public enum  Category
+    public enum Category
     {
         Blouse = 0,
         Sweater = 1,

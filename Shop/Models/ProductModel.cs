@@ -1,11 +1,14 @@
 ﻿using Shop.Common;
-using Shop.Models;
+using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
-namespace Shop.ViewModels
+namespace Shop.Models
 {
-    public class ProductDetailsViewModel
+    public class ProductModel
     {
+        // maybe to many properties
         public int Id { get; set; }
         public string Name { get; set; }
         public double Price { get; set; }
@@ -14,6 +17,5 @@ namespace Shop.ViewModels
         public Gender Gender { get; set; }
         public List<SizeModel> Sizes { get; set; }
         public Category Category { get; set; }
-        public int Quantity { get; set; }
     }
 }

@@ -3,11 +3,51 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>@Model.Name</h1>
-<p>@Model.Price</p>ZŁ
-<p>@Model.Size</p>
-<p>@Model.Gender</p>
-<p>@Model.Description</p>
-<p>@Model.Color</p>
-<p>@Model.Category</p>
+<h1>@Model.Name </h1>
+<p>@Model.Price Zł</p>
+<p>Rodzaj: @Model.Gender</p>
+<p>Opis: @Model.Description</p>
+<p>Kolor: @Model.Color</p>
+<p>Kategoria: @Model.Category</p>
+<p>Dostępne rozmiary:</p>
 
+@foreach(var size in Model.Sizes)
+{
+    <span>@size.Name:</span><span>@size.Quantity</span>
+}
+
+<form asp-action="AddProduct" asp-controller="Cart" method="post">
+
+    @if (Model.Quantity >= 1)
+    {
+        <input type="hidden" name="productId" value="@Model.Id" />
+
+        @for (int i = 0; i < Model.Sizes.Count(); i++)
+        {
+            if (Model.Sizes[i].Quantity >= 1)
+            {
+                int sizeValue = (int)Model.Sizes[i].Name;
+
+                <label>@Model.Sizes[i].Name</label>
+
+                if (i == 0)
+                {
+                    <input type="radio" name="size" value="@sizeValue" checked />
+                }
+                else
+                {
+                    <input type="radio" name="size" value="@sizeValue" />
+                }
+            }
+        }
+
+        <input name="quantity" type="number" value="1" />
+
+        <button type="submit">Dodaj do koszyka</button>
+    }
+    else
+    {
+        <p>Produkt obecnie niedostępny</p>
+    }
+
+</form>

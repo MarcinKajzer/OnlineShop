@@ -1,10 +1,7 @@
-﻿using Entities.Enums;
-using System;
+﻿using Shop.Common;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Text;
 
 namespace Entities
 {
@@ -29,11 +26,12 @@ namespace Entities
         [Required]
         public Gender Gender { get; set; }
         [Required]
-        public Size Size { get; set; }
+        public virtual List<Size> Sizes { get; set; }
         [Required]
         public Category Category { get; set; }
-
         public bool isArchived { get; set; }
+        
+        public int Quantity { get; set; }
 
     }
 }

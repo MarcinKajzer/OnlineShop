@@ -7,13 +7,38 @@
 
 @foreach (var item in Model)
 {
-    <div>
-        <h2>@item.Name</h2>
-        <p>@item.Price</p>
-        <p>@item.Size</p>
-        <p>@item.Gender</p>
-        <p>@item.Description</p>
-        <p>@item.Color</p>
-        <p>@item.Category</p>
-    </div>
+    <a asp-action="Details" asp-controller="Product" asp-route-productId="@item.Id">
+        <div>
+            <h2>@item.Name</h2>
+            <p>@item.Price</p>
+            <p>@item.Gender</p>
+            <p>@item.Description</p>
+            <p>@item.Color</p>w
+            <p>@item.Category</p>
+
+            @foreach (var size in item.Sizes)
+            {
+                <span>@size.Name:</span><span>@size.Quantity</span>
+            }
+        </div>
+    </a>
+     
+    <form asp-action="AddProduct" asp-controller="Cart" method="post">
+
+        <input type="hidden" name="productId" value="@item.Id" />
+
+        <select name="size">
+            @foreach (var size in item.Sizes)
+            {
+                int sizeValue = (int)size.Name;
+
+                <option value="@sizeValue">@size.Name</option>
+            }
+        </select>
+
+        <input name="quantity" type="number" value="1" />
+        <button type="submit">Dodaj do koszyka</button>
+
+    </form>
+    
 }

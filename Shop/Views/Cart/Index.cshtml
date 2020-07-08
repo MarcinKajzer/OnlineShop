@@ -1,0 +1,33 @@
+﻿@model List<CartItem>
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Shoping Cart</h1>
+
+@foreach (var item in Model)
+{
+    <a asp-action="Details" asp-controller="Product" asp-route-productId="@item.Product.Id">
+        <div>
+            <h2>@item.Product.Name</h2>
+            <p>@item.Product.Price</p>
+           
+            @foreach(var size in item.Product.Sizes)
+            {
+                <span>@size.Name:</span><span>@size.Quantity</span>
+            }
+
+            <p>Quantity: @item.Quantity</p>
+            <a asp-action="RemoveProduct" asp-controller="Cart" asp-route-productId="@item.Product.Id">Usuń</a>
+
+            @{ 
+                double totalAmount = item.Quantity * item.Product.Price;
+            } 
+
+            <p>Total amount: @totalAmount </p>
+        </div>
+    </a>
+}
+
+
+

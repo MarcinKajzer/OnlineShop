@@ -45,6 +45,8 @@ namespace Shop
             });
 
             services.AddScoped<IProductRepository, ProductRepository>();
+
+            services.AddSession();
         }
 
         
@@ -64,6 +66,8 @@ namespace Shop
             app.UseStaticFiles();
 
             app.UseRouting();
+
+            app.UseSession();
 
             app.UseAuthorization();
             app.UseAuthentication();

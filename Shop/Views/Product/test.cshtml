@@ -1,0 +1,11 @@
+﻿@model Shop.ViewModels.CreateProductViewModel
+@{
+    ViewData["Title"] = "test";
+}
+
+<h1>test</h1>
+
+@foreach(var item in Model.Sizes)
+{
+    <p>@item.Name</p>
+}

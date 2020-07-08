@@ -1,8 +1,6 @@
 ﻿using Entities;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Migrations.Operations;
-using System;
 
 namespace Shop.DataAcces
 {
@@ -14,7 +12,10 @@ namespace Shop.DataAcces
         {
             base.OnModelCreating(modelBuilder);
         }
-
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseLazyLoadingProxies();
+        }
         public DbSet<Product> Items { get; set; }
 
     }

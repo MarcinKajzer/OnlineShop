@@ -1,4 +1,6 @@
-﻿using Entities.Enums;
+﻿using Shop.Common;
+using Shop.Models;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Shop.ViewModels
@@ -20,7 +22,8 @@ namespace Shop.ViewModels
         [Required]
         public Gender Gender { get; set; }
         [Required]
-        public Size Size { get; set; }
+        public List<SizeModel> Sizes { get; set; }
+
         [Required]
         public Category Category { get; set; }
 
