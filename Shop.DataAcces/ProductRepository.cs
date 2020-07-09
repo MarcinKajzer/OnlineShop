@@ -1,7 +1,5 @@
 ﻿using Entities;
-using Microsoft.Extensions.Caching.Memory;
 using Shop.DataAcces.Interfaces;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -47,7 +45,7 @@ namespace Shop.DataAcces
             Product prod = await _dbContext.Items.FindAsync(productId);
             if(prod != null)
             {
-                prod.isArchived = true;
+                prod.IsArchived = true;
             }
             await _dbContext.SaveChangesAsync();
             // return something to handle errors
@@ -55,8 +53,7 @@ namespace Shop.DataAcces
 
         public async Task<Product> Update(Product product)
         {
-            Product prod = _dbContext.Items.Find(product.Id);
-            if (prod != null)
+            if (await _dbContext.Items.FindAsync(product.Id) != null)
             {
                 _dbContext.Update(product);
                 await _dbContext.SaveChangesAsync();

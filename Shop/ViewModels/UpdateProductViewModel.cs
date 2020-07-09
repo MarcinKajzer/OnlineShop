@@ -1,24 +1,22 @@
 ﻿using Shop.Common;
+using Shop.Models;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Entities
+namespace Shop.ViewModels
 {
-    public class Product
+    public class UpdateProductViewModel
     {
         public int Id { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Name is required.")]
         [MaxLength(100)]
-        [Column(TypeName = "varchar(100)")]
         public string Name { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Prace is required.")]
         public double Price { get; set; }
 
-        [MaxLength(1000)]
-        [Column(TypeName = "varchar(1000)")]
+        [MaxLength(1000, ErrorMessage = "Maximum length is 1000 characters")]
         public string Description { get; set; }
 
         [Required]
@@ -26,12 +24,14 @@ namespace Entities
         [Required]
         public Gender Gender { get; set; }
         [Required]
-        public virtual List<Size> Sizes { get; set; }
+        public List<SizeModel> Sizes { get; set; }
+
         [Required]
         public Category Category { get; set; }
         public bool IsArchived { get; set; }
         public bool IsOverpriced { get; set; }
-        public double BeforePrice { get; set; }
-        public int Quantity { get; set; }
+        public double NewPrice { get; set; }
+
+
     }
 }

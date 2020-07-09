@@ -7,6 +7,8 @@
 
 @foreach (var item in Model)
 {
+    <a asp-action="Update" asp-controller="Product" asp-route-productId="@item.Id">Edytuj</a>
+
     <a asp-action="Details" asp-controller="Product" asp-route-productId="@item.Id">
         <div>
             <h2>@item.Name</h2>
@@ -15,30 +17,54 @@
             <p>@item.Description</p>
             <p>@item.Color</p>w
             <p>@item.Category</p>
+            <p>Ilość: @item.Quantity</p>
 
             @foreach (var size in item.Sizes)
             {
-                <span>@size.Name:</span><span>@size.Quantity</span>
+                if (size.Quantity > 0)
+                {
+                    <span>@size.Name:</span><span>@size.Quantity</span>
+                }
             }
         </div>
     </a>
-     
+
+    @*create partial view*@
+
     <form asp-action="AddProduct" asp-controller="Cart" method="post">
 
-        <input type="hidden" name="productId" value="@item.Id" />
+        @if (item.Quantity >= 1)
+        {
+            <input type="hidden" name="productId" value="@item.Id" />
 
-        <select name="size">
-            @foreach (var size in item.Sizes)
+            @for (int i = 0; i < item.Sizes.Count(); i++)
             {
-                int sizeValue = (int)size.Name;
+                if (item.Sizes[i].Quantity >= 1)
+                {
+                    int sizeValue = (int)item.Sizes[i].Name;
 
-                <option value="@sizeValue">@size.Name</option>
+                    <label>@item.Sizes[i].Name</label>
+
+                    if (i == 0)
+                    {
+                        <input type="radio" name="size" value="@sizeValue" checked />
+                    }
+                    else
+                    {
+                        <input type="radio" name="size" value="@sizeValue" />
+                    }
+                }
             }
-        </select>
 
-        <input name="quantity" type="number" value="1" />
-        <button type="submit">Dodaj do koszyka</button>
+            <input name="quantity" type="number" value="1" />
+
+            <button type="submit">Dodaj do koszyka</button>
+        }
+        else
+        {
+            <p>Produkt obecnie niedostępny</p>
+        }
 
     </form>
-    
+
 }

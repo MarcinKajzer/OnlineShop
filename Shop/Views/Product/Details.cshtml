@@ -3,6 +3,8 @@
     ViewData["Title"] = "Details";
 }
 
+<a asp-action="Update" asp-controller="Product" asp-route-productId="@Model.Id">Edytuj</a>
+
 <h1>@Model.Name </h1>
 <p>@Model.Price Zł</p>
 <p>Rodzaj: @Model.Gender</p>
@@ -10,10 +12,15 @@
 <p>Kolor: @Model.Color</p>
 <p>Kategoria: @Model.Category</p>
 <p>Dostępne rozmiary:</p>
+<p>Ilość: @Model.Quantity</p>
 
-@foreach(var size in Model.Sizes)
+@foreach (var size in Model.Sizes)
 {
-    <span>@size.Name:</span><span>@size.Quantity</span>
+    if (size.Quantity > 0)
+    {
+        <span>@size.Name:</span><span>@size.Quantity</span>
+    }
+
 }
 
 <form asp-action="AddProduct" asp-controller="Cart" method="post">

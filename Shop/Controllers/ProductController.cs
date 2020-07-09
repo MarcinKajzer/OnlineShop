@@ -5,6 +5,7 @@ using Microsoft.Extensions.Logging;
 using Shop.Common;
 using Shop.DataAcces.Interfaces;
 using Shop.Enums;
+using Shop.Helpers;
 using Shop.Models;
 using Shop.ViewModels;
 using System;
@@ -45,36 +46,7 @@ namespace Shop.Controllers
         {
             if (ModelState.IsValid)
             {
-                List<Size> sizes = new List<Size>();
-
-                int quantity = 0;
-
-                foreach(var size in model.Sizes)
-                {
-                    if (size.Quantity > 0)
-                    {
-                        quantity += size.Quantity;
-
-                        sizes.Add(new Size
-                        {
-                            Name = size.Name,
-                            Quantity = size.Quantity
-                        });
-                    }
-                }
-                Product product = new Product
-                {
-                    Category = model.Category,
-                    Color = model.Color,
-                    Description = model.Description,
-                    Gender = model.Gender,
-                    Name = model.Name,
-                    Price = model.Price,
-                    Sizes = sizes,
-                    Quantity = quantity
-                };
-
-                var result = await _repository.Create(product);
+                var result = await _repository.Create(new ProductMapper().MapValues(model));
 
                 if (result != null)
                 {
@@ -83,10 +55,46 @@ namespace Shop.Controllers
 
                 ModelState.AddModelError(string.Empty, "Unable to add product. Try again.");
                 return View(model);
-
             }
            
             return View(model);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Update(int productId)
+        {
+            Product prod = await _repository.FindOne(productId);
+
+            return View(new ProductMapper().MapValues(prod));
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Update(UpdateProductViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            Product product = await _repository.FindOne(model.Id);
+
+            if (product != null)
+            {
+                product = new ProductMapper().MapValues(model, product);
+            }
+            else
+            {
+                return NotFound();
+            }
+
+            var result = await _repository.Update(product);
+
+            if (result == null)
+            {
+                return NotFound();
+            }
+
+            return RedirectToAction(nameof(Details), new { productId = result.Id });
         }
 
         public async Task<IActionResult> GetByCategory(int gender, int category)
@@ -94,11 +102,12 @@ namespace Shop.Controllers
             List<Product> products = _repository.FindByCategory(gender, category).ToList();
 
             List<ProductDetailsViewModel> prods = new List<ProductDetailsViewModel>();
-            List<SizeModel> sizes = new List<SizeModel>();
-
-            foreach (var prod in products)
+           
+            foreach (var item in products)
             {
-                foreach(var size in prod.Sizes)
+                List<SizeModel> sizes = new List<SizeModel>();
+
+                foreach (var size in item.Sizes)
                 {
                     sizes.Add(new SizeModel
                     {
@@ -106,10 +115,7 @@ namespace Shop.Controllers
                         Quantity = size.Quantity
                     });
                 }
-            }
 
-            foreach (var item in products)
-            {
                 prods.Add(new ProductDetailsViewModel
                 {
                     Category = item.Category,

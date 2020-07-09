@@ -1,11 +1,13 @@
-﻿@model Shop.ViewModels.CreateProductViewModel
+﻿@model Shop.ViewModels.UpdateProductViewModel
 @{
-    ViewData["Title"] = "Add";
+    ViewData["Title"] = "Update";
 }
 
-<h1>Add Product</h1>
+<h1>Update</h1>
 
-<form asp-action="Add" asp-controller="Product" method="post">
+<form asp-action="Update" asp-controller="Product" method="post">
+
+    <input asp-for="Id " type="hidden" />
 
     <div class="form-group">
         <label asp-for="Name">Name:</label>
@@ -25,10 +27,12 @@
         <span asp-validation-for="Price"></span>
     </div>
 
-    @for(int i = 0; i < Model.Sizes.Count(); i++ )
+    @for (int i = 0; i < Model.Sizes.Count(); i++)
     {
         <div>
             <input type="hidden" asp-for="@Model.Sizes[i].Name" />
+            <input asp-for="@Model.Sizes[i].Id" />
+            <input asp-for="@Model.Sizes[i].ExistsInDB" />
 
             <label asp-for="@Model.Sizes[i].Quantity">@Model.Sizes[i].Name</label>
             <input asp-for="@Model.Sizes[i].Quantity" />
@@ -54,7 +58,7 @@
         <span asp-validation-for="Category"></span>
     </div>
 
-    <button type="submit">Add product</button>
+    <button type="submit">Edit product</button>
 
 </form>
 
@@ -75,7 +79,7 @@
                     success: function (categories) {
                         $.each(categories, function (i, cat) {
                             $("#Category").append('<option value="' + cat.value + '">' + cat.text + '</option>');
-                       
+
                         });
                     },
                     error: function (ex) {

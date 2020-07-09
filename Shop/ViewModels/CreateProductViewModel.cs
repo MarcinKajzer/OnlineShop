@@ -26,6 +26,5 @@ namespace Shop.ViewModels
 
         [Required]
         public Category Category { get; set; }
-
     }
 }
