@@ -4,6 +4,7 @@ using Shop.Common;
 using Shop.DataAcces.Interfaces;
 using Shop.Helpers;
 using Shop.Models;
+using Shop.ViewModels;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -26,99 +27,47 @@ namespace Shop.Controllers
             return View(cart != null ? cart : new List<CartItem>());
         }
 
-        [HttpPost]
-        public async Task<IActionResult> AddProduct(int productId, int quantity, SizeEnum size)
+        public async Task<IActionResult> AddProduct(AddToCartViewModel model)
         {
             List<CartItem> currentCart = SessionHelper.Get<List<CartItem>>(HttpContext.Session, "cart");
 
             if (currentCart == null)
             {
-                Product prod = await _productRepository.FindOne(productId);
-
-                ProductModel prodModel = new ProductModel
-                {
-                    Category = prod.Category,
-                    Color = prod.Color,
-                    Description = prod.Description,
-                    Gender = prod.Gender,
-                    Id = prod.Id,
-                    Name = prod.Name,
-                    Price = prod.Price,
-                    Sizes = new List<SizeModel>
-                    {
-                        new SizeModel
-                        {
-                            Name = size,
-                            Quantity = quantity
-                        }
-                    }
-                };
+                Product prod = await _productRepository.FindOne(model.Id);
 
                 List<CartItem> newCart = new List<CartItem>
                 {
                     new CartItem
                     {
-                        Product = prodModel,
-                        Quantity = quantity
+                        Quantity = model.Quantity,
+                        Id = prod.Id,
+                        Name = prod.Name,
+                        Price = prod.Price,
+                        Size = model.SelectedSize
                     }
                 };
                 SessionHelper.Set(HttpContext.Session, "cart", newCart);
             }
             else
             {
-                CartItem findProduct = currentCart.SingleOrDefault(i => i.Product.Id == productId);
+                CartItem findProduct = currentCart.SingleOrDefault(i => i.Id == model.Id && i.Size == model.SelectedSize);
 
                 if (findProduct != null)
                 {
-                    findProduct.Quantity += quantity;
-
-                    if(findProduct.Product.Sizes.Where(s => s.Name == size).Count() == 0)
-                    {
-                        findProduct.Product.Sizes.Add(new SizeModel
-                        {
-                            Name = size,
-                            Quantity = quantity
-                        });
-                    }
-                    else
-                    {
-                        for (int i = 0; i < findProduct.Product.Sizes.Count(); i++)
-                        {
-                            if (findProduct.Product.Sizes[i].Name == size)
-                            {
-                                findProduct.Product.Sizes[i].Quantity += quantity;
-                            }
-                        }
-                    }
+                    findProduct.Quantity += model.Quantity;
                 }
                 else
                 {
-                    Product prod = await _productRepository.FindOne(productId);
-
-                    ProductModel prodModel = new ProductModel
-                    {
-                        Category = prod.Category,
-                        Color = prod.Color,
-                        Description = prod.Description,
-                        Gender = prod.Gender,
-                        Id = prod.Id,
-                        Name = prod.Name,
-                        Price = prod.Price,
-                        Sizes = new List<SizeModel>
-                        {
-                            new SizeModel
-                            {
-                                Name = size,
-                                Quantity = quantity
-                            }
-                        }
-                    };
+                    Product prod = await _productRepository.FindOne(model.Id);
 
                     currentCart.Add(new CartItem
                     {
-                        Product = prodModel,
-                        Quantity = quantity
-                    });
+                        Quantity = model.Quantity,
+                        Id = prod.Id,
+                        Name = prod.Name,
+                        Price = prod.Price,
+                        Size = model.SelectedSize
+                    }); ;
                 }
                 SessionHelper.Set(HttpContext.Session, "cart", currentCart);
             }
@@ -126,11 +75,11 @@ namespace Shop.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        public IActionResult RemoveProduct(int productId)
+        public IActionResult RemoveProduct(int productId, Size productSize)
         {
             List<CartItem> cart = SessionHelper.Get<List<CartItem>>(HttpContext.Session, "cart");
 
-            CartItem findProduct = cart.SingleOrDefault(i => i.Product.Id == productId);
+            CartItem findProduct = cart.SingleOrDefault(i => i.Id == productId && i.Size == productSize);
 
             if (findProduct != null)
             {
@@ -145,7 +94,7 @@ namespace Shop.Controllers
         {
             List<CartItem> cart = SessionHelper.Get<List<CartItem>>(HttpContext.Session, "cart");
 
-            CartItem findProduct = cart.SingleOrDefault(i => i.Product.Id == productId);
+            CartItem findProduct = cart.SingleOrDefault(i => i.Id == productId);
 
             if (findProduct != null)
             {

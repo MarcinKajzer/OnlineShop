@@ -12,7 +12,7 @@ namespace Shop.Helpers
 {
     public class ProductMapper
     {
-        public Product MapValues(CreateProductViewModel from)
+        public Product MapToProductModel(CreateProductViewModel from)
         {
             Product product = new Product
             {
@@ -22,27 +22,24 @@ namespace Shop.Helpers
                 Gender = from.Gender,
                 Name = from.Name,
                 Price = from.Price,
-                Sizes = new List<Size>()
+                Sizes = new List<SizeInfo>()
             };
 
-            foreach (var size in from.Sizes)
+            foreach (var size in from.Sizes.Where(s => s.Quantity > 0))
             {
-                if (size.Quantity > 0)
-                {
-                    product.Quantity += size.Quantity;
+                product.Quantity += size.Quantity;
 
-                    product.Sizes.Add(new Size
-                    {
-                        Name = size.Name,
-                        Quantity = size.Quantity
-                    });
-                }
+                product.Sizes.Add(new SizeInfo
+                {
+                    Size = size.Size,
+                    Quantity = size.Quantity
+                });
             }
 
             return product;
         }
 
-        public Product MapValues(UpdateProductViewModel from, Product to)
+        public Product UpdateExistingProduct(UpdateProductViewModel from, Product to)
         {
             to.Category = from.Category;
             to.Color = from.Color;
@@ -52,10 +49,9 @@ namespace Shop.Helpers
             to.Price = from.Price;
             to.Quantity = 0;
 
-            foreach (var size in from.Sizes)
+            foreach (var size in from.Sizes.Where(s => s.Quantity > 0))
             {
-                if (size.Quantity > 0)
-                    to.Quantity += size.Quantity;
+                to.Quantity += size.Quantity;
             }
 
             for (int i = 0; i < from.Sizes.Count(); i++)
@@ -65,7 +61,7 @@ namespace Shop.Helpers
                 
                 else if (from.Sizes[i].Quantity > 0)
                 {
-                    Size s = new Size { Quantity = from.Sizes[i].Quantity, Name = from.Sizes[i].Name };
+                    SizeInfo s = new SizeInfo { Quantity = from.Sizes[i].Quantity, Size = from.Sizes[i].Size };
                     to.Sizes.Add(s);
                 }
             }
@@ -73,7 +69,7 @@ namespace Shop.Helpers
             return to;
         }
 
-        public UpdateProductViewModel MapValues(Product from)
+        public UpdateProductViewModel MapToUpdateProductViewModel(Product from)
         {
             UpdateProductViewModel viewModel = new UpdateProductViewModel
             {
@@ -84,31 +80,53 @@ namespace Shop.Helpers
                 Id = from.Id,
                 Name = from.Name,
                 Price = from.Price,
-                Sizes = new List<SizeModel>()
+                Sizes = new List<SizeInfoDTO>()
             };
 
-            foreach (SizeEnum size in Enum.GetValues(typeof(SizeEnum)))
+            foreach (Size sizeName in Enum.GetValues(typeof(Size)))
             {
-                SizeModel sizeModel = new SizeModel { Name = size };
+                SizeInfoDTO sizeModel = new SizeInfoDTO { Size = sizeName, Quantity = 0 };
 
-                foreach (var item in from.Sizes)
+                var size = from.Sizes.FirstOrDefault(s => s.Size == sizeName);
+
+                if (size != null)
                 {
-                    if (item.Name == size)
-                    {
-                        sizeModel.Quantity = item.Quantity;
-                        sizeModel.Id = item.Id;
-                        sizeModel.ExistsInDB = true;
-                        break;
-                    }
-                    else
-                        sizeModel.Quantity = 0;
-                    
+                    sizeModel.Quantity = size.Quantity;
+                    sizeModel.Id = size.Id;
+                    sizeModel.ExistsInDB = true;
                 }
 
                 viewModel.Sizes.Add(sizeModel);
             }
 
             return viewModel;
+        }
+
+        public ProductDetailsViewModel MapToProductDetailsViewModel(Product from)
+        {
+            ProductDetailsViewModel product = new ProductDetailsViewModel
+            {
+                Id = from.Id,
+                Category = from.Category,
+                Color = from.Color,
+                Description = from.Description,
+                Gender = from.Gender,
+                Name = from.Name,
+                Price = from.Price,
+                Sizes = new List<SizeInfoDTO>(),
+                Quantity = from.Quantity
+            };
+
+            foreach (var size in from.Sizes.OrderBy(x => x.Size))
+            {
+                product.Sizes.Add(new SizeInfoDTO
+                {
+                    Size = size.Size,
+                    Quantity = size.Quantity
+                });
+            }
+
+            return product;
         }
     }
 }

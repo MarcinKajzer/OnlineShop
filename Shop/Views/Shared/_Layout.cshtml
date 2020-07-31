@@ -34,7 +34,13 @@
                     @foreach (var item in Enum.GetValues(typeof(Shop.Enums.MansCategory)))
                     {
                         int zmienna = (int)item;
-                        <a asp-action="GetByCategory" asp-controller="Product" asp-route-gender="1" asp-route-category="@zmienna">@item</a>
+
+                        <form asp-action="GetByCategory" asp-controller="Product" method="get">
+
+                            <input type="hidden" name="gender" value="1" />
+                            <input type="hidden" name="category" ="@zmienna "/>
+                            <input type="submit" value="@item"/>
+                        </form>
                     }
 
                 </ul>
@@ -43,21 +49,18 @@
                     @foreach (var item in Enum.GetValues(typeof(Shop.Enums.WomanCategory)))
                     {
                         int zmienna = (int)item;
-                        <a asp-action="GetByCategory" asp-controller="Product" asp-route-gender="0" asp-route-category="@zmienna">@item</a>
+                        
+                        <form asp-action="GetByCategory" asp-controller="Product" method="post">
+
+                            <input type="hidden" name="gender" value="0" />
+                            <input type="hidden" name="category" ="@zmienna " />
+                            <input type="submit" value="@item" />
+                        </form>
                     }
 
                 </ul>
 
-
-
-
             </div>
-
-
-
-
-
-
 
             @if (User.Identity.IsAuthenticated)
             {

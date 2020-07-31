@@ -30,11 +30,11 @@ namespace Shop.Controllers
         public IActionResult Add()
         {
             CreateProductViewModel model = new CreateProductViewModel();
-            List<SizeModel> sizes = new List<SizeModel>();
+            List<SizeInfoDTO> sizes = new List<SizeInfoDTO>();
 
-            foreach (SizeEnum size in Enum.GetValues(typeof(SizeEnum)))
+            foreach (Size size in Enum.GetValues(typeof(Size)))
             {
-                sizes.Add(new SizeModel() { Name = size, Quantity = 0 });
+                sizes.Add(new SizeInfoDTO() { Size = size, Quantity = 0 });
             }
             model.Sizes = sizes;
 
@@ -46,7 +46,7 @@ namespace Shop.Controllers
         {
             if (ModelState.IsValid)
             {
-                var result = await _repository.Create(new ProductMapper().MapValues(model));
+                var result = await _repository.Create(new ProductMapper().MapToProductModel(model));
 
                 if (result != null)
                 {
@@ -54,9 +54,8 @@ namespace Shop.Controllers
                 }
 
                 ModelState.AddModelError(string.Empty, "Unable to add product. Try again.");
-                return View(model);
             }
-           
+
             return View(model);
         }
 
@@ -65,7 +64,7 @@ namespace Shop.Controllers
         {
             Product prod = await _repository.FindOne(productId);
 
-            return View(new ProductMapper().MapValues(prod));
+            return View(new ProductMapper().MapToUpdateProductViewModel(prod));
         }
 
         [HttpPost]
@@ -80,7 +79,7 @@ namespace Shop.Controllers
 
             if (product != null)
             {
-                product = new ProductMapper().MapValues(model, product);
+                product = new ProductMapper().UpdateExistingProduct(model, product);
             }
             else
             {
@@ -97,43 +96,60 @@ namespace Shop.Controllers
             return RedirectToAction(nameof(Details), new { productId = result.Id });
         }
 
-        public async Task<IActionResult> GetByCategory(int gender, int category)
+        [HttpGet]
+        public async Task<IActionResult> GetByCategory(FilterResultsViewModel filter)
         {
-            List<Product> products = _repository.FindByCategory(gender, category).ToList();
-
-            List<ProductDetailsViewModel> prods = new List<ProductDetailsViewModel>();
-           
-            foreach (var item in products)
+            if (filter.SizeCheckboxes == null || filter.ColorCheckboxes == null)
             {
-                List<SizeModel> sizes = new List<SizeModel>();
+                filter.ColorCheckboxes = new List<ColorCheckboxModel>();
+                filter.SizeCheckboxes = new List<SizeCheckboxModel>();
 
-                foreach (var size in item.Sizes)
+                foreach (Color color in Enum.GetValues(typeof(Color))) // map enum to list generic f()
                 {
-                    sizes.Add(new SizeModel
-                    {
-                        Name = size.Name,
-                        Quantity = size.Quantity
-                    });
+                    filter.ColorCheckboxes.Add(new ColorCheckboxModel { Color = color, IsSelected = false });
                 }
 
-                prods.Add(new ProductDetailsViewModel
+                foreach (Size size in Enum.GetValues(typeof(Size)))
                 {
-                    Category = item.Category,
-                    Color = item.Color,
-                    Description = item.Description,
-                    Gender = item.Gender,
-                    Id = item.Id,
-                    Name = item.Name,
-                    Price = item.Price,
-                    Sizes = sizes,
-                    Quantity = item.Quantity
-                });
+                    filter.SizeCheckboxes.Add(new SizeCheckboxModel { Size = size });
+                }
             }
 
-            // validation, filtation, sorting
+            List<Product> products = _repository.FindByCategory((int)filter.Gender, (int)filter.Category).ToList();
 
+            products = products.
+                Where(x => x.Price >= filter.MinPrice && x.Price <= filter.MaxPrice).
+                Where(x => x.IsOverpriced == filter.IsOverpriced).ToList();
+
+
+            if (filter.ColorCheckboxes.Any(c => c.IsSelected))
+            {
+                products = products.Where(p => filter.ColorCheckboxes.Where(c => c.IsSelected).Select(c => c.Color).Contains(p.Color)).ToList();
+            }
+
+            Size sizesToCheck = 0;
+
+            foreach(var size in filter.SizeCheckboxes.Where(c => c.IsSelected))
+            {
+                sizesToCheck = sizesToCheck | size.Size;
+            }
+
+            if (filter.SizeCheckboxes.Any(c => c.IsSelected))
+            {
+                products = products.Where(p => p.Sizes.Any(s => (s.Size & sizesToCheck) != 0)).ToList();
+            }
+
+            List<ProductDetailsViewModel> prods = new List<ProductDetailsViewModel>();
+
+            foreach (var item in products)
+            {
+                prods.Add(new ProductMapper().MapToProductDetailsViewModel(item));
+            }
+
+            ViewBag.Filter = filter;
             return View(prods);
         }
+
 
         [HttpGet]
         public async Task<IActionResult> Details(int productId)
@@ -141,38 +157,13 @@ namespace Shop.Controllers
             Product prod = await _repository.FindOne(productId);
 
             if(prod != null)
-            {
-                List<SizeModel> sizes = new List<SizeModel>();
-
-                foreach (var size in prod.Sizes)
-                {
-                    sizes.Add(new SizeModel
-                    {
-                        Name = size.Name,
-                        Quantity = size.Quantity
-                    });
-                }
-              
-                ProductDetailsViewModel product = new ProductDetailsViewModel
-                {
-                    Id = prod.Id,
-                    Category = prod.Category,
-                    Color = prod.Color,
-                    Description = prod.Description,
-                    Gender = prod.Gender,
-                    Name = prod.Name,
-                    Price = prod.Price,
-                    Sizes = sizes,
-                    Quantity = prod.Quantity
-                };
-
-                return View(product);
-            }
+                return View(new ProductMapper().MapToProductDetailsViewModel(prod));
 
             return NotFound();
         }
 
 
+        [HttpGet]
         public JsonResult GetCategories(int gender)
         {
             List<SelectListItem> list;

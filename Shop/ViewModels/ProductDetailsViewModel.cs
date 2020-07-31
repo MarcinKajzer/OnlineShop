@@ -12,8 +12,9 @@ namespace Shop.ViewModels
         public string Description { get; set; }
         public Color Color { get; set; }
         public Gender Gender { get; set; }
-        public List<SizeModel> Sizes { get; set; }
+        public List<SizeInfoDTO> Sizes { get; set; }
         public Category Category { get; set; }
         public int Quantity { get; set; }
+        public FilterResultsViewModel Filter { get; set; }
     }
 }

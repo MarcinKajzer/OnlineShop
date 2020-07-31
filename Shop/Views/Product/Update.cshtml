@@ -30,11 +30,11 @@
     @for (int i = 0; i < Model.Sizes.Count(); i++)
     {
         <div>
-            <input type="hidden" asp-for="@Model.Sizes[i].Name" />
+            <input type="hidden" asp-for="@Model.Sizes[i].Size" />
             <input asp-for="@Model.Sizes[i].Id" />
             <input asp-for="@Model.Sizes[i].ExistsInDB" />
 
-            <label asp-for="@Model.Sizes[i].Quantity">@Model.Sizes[i].Name</label>
+            <label asp-for="@Model.Sizes[i].Quantity">@Model.Sizes[i].Size</label>
             <input asp-for="@Model.Sizes[i].Quantity" />
             <span asp-validation-for="@Model.Sizes[i].Quantity"></span>
         </div>

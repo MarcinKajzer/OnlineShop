@@ -7,21 +7,21 @@
 
 @foreach (var item in Model)
 {
-    <a asp-action="Details" asp-controller="Product" asp-route-productId="@item.Product.Id">
+    <a asp-action="Details" asp-controller="Product" asp-route-productId="@item.Id">
         <div>
-            <h2>@item.Product.Name</h2>
-            <p>@item.Product.Price</p>
+            <h2>@item.Name</h2>
+            <p>@item.Price</p>
            
-            @foreach(var size in item.Product.Sizes)
-            {
-                <span>@size.Name:</span><span>@size.Quantity</span>
-            }
+            
+            <span>Rozmiar: @item.Size:</span>
+            <span>Ilość: @item.Quantity</span>
+            
 
             <p>Quantity: @item.Quantity</p>
-            <a asp-action="RemoveProduct" asp-controller="Cart" asp-route-productId="@item.Product.Id">Usuń</a>
+            <a asp-action="RemoveProduct" asp-controller="Cart" asp-route-productId="@item.Id" asp-route-productSize="@item.Size">Usuń</a>
 
             @{ 
-                double totalAmount = item.Quantity * item.Product.Price;
+                double totalAmount = item.Quantity * item.Price;
             } 
 
             <p>Total amount: @totalAmount </p>

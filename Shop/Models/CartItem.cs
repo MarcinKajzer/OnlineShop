@@ -1,10 +1,14 @@
-﻿using Entities;
+﻿using Shop.Common;
+using System.Collections.Generic;
 
 namespace Shop.Models
 {
     public class CartItem
     {
-        public ProductModel Product { get; set; }
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public double Price { get; set; }
+        public Size Size{ get; set; }
         public int Quantity { get; set; }
     }
 }

@@ -23,15 +23,19 @@ namespace Entities
 
         [Required]
         public Color Color { get; set; }
+
         [Required]
         public Gender Gender { get; set; }
-        [Required]
-        public virtual List<Size> Sizes { get; set; }
+
         [Required]
         public Category Category { get; set; }
+
         public bool IsArchived { get; set; }
         public bool IsOverpriced { get; set; }
         public double BeforePrice { get; set; }
         public int Quantity { get; set; }
+
+        [Required]
+        public virtual List<SizeInfo> Sizes { get; set; }
     }
 }

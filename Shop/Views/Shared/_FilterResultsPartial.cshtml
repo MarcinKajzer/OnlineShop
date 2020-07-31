@@ -1,0 +1,40 @@
+﻿@model FilterResultsViewModel
+
+
+<form asp-action="GetByCategory" asp-controller="Product" method="get">
+
+    <input type="hidden" asp-for="Gender" />
+    <input type="hidden" asp-for="Category" />
+
+
+    <div>
+        <label asp-for="MinPrice">Cena minimalna</label>
+        <input asp-for="MinPrice" />
+    </div>
+    <div>
+        <label asp-for="MaxPrice">Cena maksymalna</label>
+        <input asp-for="MaxPrice" />
+    </div>
+
+    @for (int i = 0; i < Model.SizeCheckboxes.Count(); i++)
+    {
+        <input asp-for="@Model.SizeCheckboxes[i].Size" type="hidden" />
+
+        <label asp-for="@Model.SizeCheckboxes[i].IsSelected">@Model.SizeCheckboxes[i].Size</label>
+        <input asp-for="@Model.SizeCheckboxes[i].IsSelected" />
+    }
+
+    <br />
+
+    @for (int i = 0; i < Model.ColorCheckboxes.Count(); i++)
+    {
+        <input asp-for="@Model.ColorCheckboxes[i].Color" type="hidden" />
+
+        <label asp-for="@Model.ColorCheckboxes[i].IsSelected">@Model.ColorCheckboxes[i].Color</label>
+        <input asp-for="@Model.ColorCheckboxes[i].IsSelected" />
+    }
+
+    <button type="submit">Filtruj</button>
+
+</form>
+<hr />

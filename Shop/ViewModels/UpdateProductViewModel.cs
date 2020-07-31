@@ -24,7 +24,7 @@ namespace Shop.ViewModels
         [Required]
         public Gender Gender { get; set; }
         [Required]
-        public List<SizeModel> Sizes { get; set; }
+        public List<SizeInfoDTO> Sizes { get; set; }
 
         [Required]
         public Category Category { get; set; }
