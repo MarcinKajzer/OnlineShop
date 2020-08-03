@@ -97,47 +97,9 @@ namespace Shop.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetByCategory(FilterResultsViewModel filter)
+        public async Task<IActionResult> GetAll(Filters filter)
         {
-            if (filter.SizeCheckboxes == null || filter.ColorCheckboxes == null)
-            {
-                filter.ColorCheckboxes = new List<ColorCheckboxModel>();
-                filter.SizeCheckboxes = new List<SizeCheckboxModel>();
-
-                foreach (Color color in Enum.GetValues(typeof(Color))) // map enum to list generic f()
-                {
-                    filter.ColorCheckboxes.Add(new ColorCheckboxModel { Color = color, IsSelected = false });
-                }
-
-                foreach (Size size in Enum.GetValues(typeof(Size)))
-                {
-                    filter.SizeCheckboxes.Add(new SizeCheckboxModel { Size = size });
-                }
-            }
-
-            List<Product> products = _repository.FindByCategory((int)filter.Gender, (int)filter.Category).ToList();
-
-            products = products.
-                Where(x => x.Price >= filter.MinPrice && x.Price <= filter.MaxPrice).
-                Where(x => x.IsOverpriced == filter.IsOverpriced).ToList();
-
-
-            if (filter.ColorCheckboxes.Any(c => c.IsSelected))
-            {
-                products = products.Where(p => filter.ColorCheckboxes.Where(c => c.IsSelected).Select(c => c.Color).Contains(p.Color)).ToList();
-            }
-
-            Size sizesToCheck = 0;
-
-            foreach(var size in filter.SizeCheckboxes.Where(c => c.IsSelected))
-            {
-                sizesToCheck = sizesToCheck | size.Size;
-            }
-
-            if (filter.SizeCheckboxes.Any(c => c.IsSelected))
-            {
-                products = products.Where(p => p.Sizes.Any(s => (s.Size & sizesToCheck) != 0)).ToList();
-            }
+            List<Product> products = _repository.FindAll(filter).ToList();
 
             List<ProductDetailsViewModel> prods = new List<ProductDetailsViewModel>();
 
@@ -186,6 +148,5 @@ namespace Shop.Controllers
             }
             return Json(list);
         }
-
     }
 }

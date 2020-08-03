@@ -1,11 +1,12 @@
 ﻿@model List<Shop.ViewModels.ProductDetailsViewModel>
+
 @{
     ViewData["Title"] = "GetByCategory";
 }
 
 <h1>GetByCategory</h1>
 
-@await Html.PartialAsync("_FilterResultsPartial", (FilterResultsViewModel)ViewBag.Filter)
+@await Html.PartialAsync("_FilterResultsPartial", (Shop.Common.Filters)ViewBag.Filter)
 
 
 @foreach (var item in Model)
@@ -34,4 +35,7 @@
 
     @await Html.PartialAsync("_AddToCartPartial", new Shop.ViewModels.AddToCartViewModel() { Id = item.Id, Sizes = item.Sizes, Quantity = item.Quantity })
 
+
+
 }
+

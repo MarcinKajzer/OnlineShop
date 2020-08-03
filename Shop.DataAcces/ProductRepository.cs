@@ -1,4 +1,6 @@
 ﻿using Entities;
+using Shop.Common;
+using Shop.Common.Enums;
 using Shop.DataAcces.Interfaces;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,21 +17,42 @@ namespace Shop.DataAcces
             _dbContext = dbContext;
         }
 
-        public IEnumerable<Product> FindByCategory(int gender, int category)
+        public List<Product> FindAll(Filters filter)
         {
-            //remove asEnumerable
-            return _dbContext.Items.AsEnumerable().Where(x => (int)x.Category == category && (int)x.Gender == gender);
+            IQueryable<Product> products = _dbContext.Items.
+                Where(x => x.Category == filter.Category && x.Gender == filter.Gender).
+                Where(x => x.IsOverpriced == filter.IsOverpriced).
+                Where(x => x.Price >= filter.MinPrice && x.Price <= filter.MaxPrice);
+
+            var selectedColors = filter.SelectedColors;
+            
+            if (selectedColors.Count() > 0)
+                products = products.Where(p => selectedColors.Contains(p.Color));
+
+            var selectedSizes = filter.SelectedSizes;
+
+            Size sizesToSearch = 0;
+            selectedSizes.ForEach(x => sizesToSearch = sizesToSearch | x);
+
+            if (selectedSizes.Count() > 0)
+                products = products.Where(p => p.Sizes.Any(s => (s.Size & sizesToSearch) != 0));
+
+            switch (filter.SortBy)
+            {
+                case SortBy.PriceAscending:
+                    products = products.OrderBy(p => p.Price);
+                    break;
+                case SortBy.PriceDescending:
+                    products = products.OrderByDescending(p => p.Price);
+                    break;
+            }
+
+            return products.ToList();
         }
 
         public async Task<Product> FindOne(int productId)
         {
-            Product prod = await _dbContext.Items.FindAsync(productId);
-            if(prod != null)
-            {
-                return prod;
-            }
-
-            return null;
+            return await _dbContext.Items.FindAsync(productId);
         }
 
         public async Task<Product> Create(Product product)
@@ -46,8 +69,9 @@ namespace Shop.DataAcces
             if(prod != null)
             {
                 prod.IsArchived = true;
+                await _dbContext.SaveChangesAsync();
             }
-            await _dbContext.SaveChangesAsync();
+            
             // return something to handle errors
         }
 
@@ -57,10 +81,9 @@ namespace Shop.DataAcces
             {
                 _dbContext.Update(product);
                 await _dbContext.SaveChangesAsync();
-                return product;
             }
 
-            return null;
+            return product;
         }
     }
 }

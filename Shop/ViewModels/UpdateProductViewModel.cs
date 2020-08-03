@@ -31,7 +31,5 @@ namespace Shop.ViewModels
         public bool IsArchived { get; set; }
         public bool IsOverpriced { get; set; }
         public double NewPrice { get; set; }
-
-
     }
 }

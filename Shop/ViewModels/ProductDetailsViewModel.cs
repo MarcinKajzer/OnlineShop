@@ -15,6 +15,5 @@ namespace Shop.ViewModels
         public List<SizeInfoDTO> Sizes { get; set; }
         public Category Category { get; set; }
         public int Quantity { get; set; }
-        public FilterResultsViewModel Filter { get; set; }
     }
 }

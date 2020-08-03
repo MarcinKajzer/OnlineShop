@@ -48,17 +48,16 @@ namespace Shop.Helpers
             to.Name = from.Name;
             to.Price = from.Price;
             to.Quantity = 0;
-
-            foreach (var size in from.Sizes.Where(s => s.Quantity > 0))
-            {
-                to.Quantity += size.Quantity;
-            }
+            to.IsOverpriced = from.IsOverpriced;
 
             for (int i = 0; i < from.Sizes.Count(); i++)
             {
                 if (from.Sizes[i].ExistsInDB)
+                {
                     to.Sizes.FirstOrDefault(s => s.Id == from.Sizes[i].Id).Quantity = from.Sizes[i].Quantity;
-                
+                    to.Quantity += from.Sizes[i].Quantity;
+                }
+                    
                 else if (from.Sizes[i].Quantity > 0)
                 {
                     SizeInfo s = new SizeInfo { Quantity = from.Sizes[i].Quantity, Size = from.Sizes[i].Size };

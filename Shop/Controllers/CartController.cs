@@ -31,10 +31,10 @@ namespace Shop.Controllers
         {
             List<CartItem> currentCart = SessionHelper.Get<List<CartItem>>(HttpContext.Session, "cart");
 
+            Product prod = await _productRepository.FindOne(model.Id);
+
             if (currentCart == null)
             {
-                Product prod = await _productRepository.FindOne(model.Id);
-
                 List<CartItem> newCart = new List<CartItem>
                 {
                     new CartItem
@@ -58,8 +58,6 @@ namespace Shop.Controllers
                 }
                 else
                 {
-                    Product prod = await _productRepository.FindOne(model.Id);
-
                     currentCart.Add(new CartItem
                     {
                         Quantity = model.Quantity,
@@ -90,7 +88,7 @@ namespace Shop.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        public IActionResult SetQuantity(int productId, int quantity)
+        public IActionResult SetQuantity(int productId, Size productSize, int quantity)
         {
             List<CartItem> cart = SessionHelper.Get<List<CartItem>>(HttpContext.Session, "cart");
 
@@ -104,6 +102,5 @@ namespace Shop.Controllers
 
             return RedirectToAction(nameof(Index));
         }
-
     }
 }
