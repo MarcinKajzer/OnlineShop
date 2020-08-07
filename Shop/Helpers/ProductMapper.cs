@@ -5,8 +5,6 @@ using Shop.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography;
-using System.Threading.Tasks;
 
 namespace Shop.Helpers
 {
@@ -22,6 +20,7 @@ namespace Shop.Helpers
                 Gender = from.Gender,
                 Name = from.Name,
                 Price = from.Price,
+                Image = from.Image.FileName,
                 Sizes = new List<SizeInfo>()
             };
 
@@ -113,7 +112,11 @@ namespace Shop.Helpers
                 Name = from.Name,
                 Price = from.Price,
                 Sizes = new List<SizeInfoDTO>(),
-                Quantity = from.Quantity
+                Quantity = from.Quantity,
+                Image = from.Image,
+                BeforePrice = from.BeforePrice,
+                IsOverpriced = from.IsOverpriced
+                
             };
 
             foreach (var size in from.Sizes.OrderBy(x => x.Size))

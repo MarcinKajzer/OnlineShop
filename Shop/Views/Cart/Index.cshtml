@@ -3,31 +3,31 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Shoping Cart</h1>
+    <main>
 
-@foreach (var item in Model)
-{
-    <a asp-action="Details" asp-controller="Product" asp-route-productId="@item.Id">
-        <div>
-            <h2>@item.Name</h2>
-            <p>@item.Price</p>
-           
-            
-            <span>Rozmiar: @item.Size:</span>
-            <span>Ilość: @item.Quantity</span>
-            
+        @foreach (var item in Model)
+        {
+            <a asp-action="Details" asp-controller="Product" asp-route-productId="@item.Id">
+                <div>
+                    <h2>@item.Name</h2>
+                    <p>@item.Price</p>
 
-            <p>Quantity: @item.Quantity</p>
-            <a asp-action="RemoveProduct" asp-controller="Cart" asp-route-productId="@item.Id" asp-route-productSize="@item.Size">Usuń</a>
 
-            @{ 
-                double totalAmount = item.Quantity * item.Price;
-            } 
+                    <span>Rozmiar: @item.Size:</span>
+                    <span>Ilość: @item.Quantity</span>
 
-            <p>Total amount: @totalAmount </p>
-        </div>
-    </a>
-}
 
+                    <p>Quantity: @item.Quantity</p>
+                    <a asp-action="RemoveProduct" asp-controller="Cart" asp-route-productId="@item.Id" asp-route-productSize="@item.Size">Usuń</a>
+
+                    @{
+                        double totalAmount = item.Quantity * item.Price;
+                    }
+
+                    <p>Total amount: @totalAmount </p>
+                </div>
+            </a>
+        }
+    </main>
 
 

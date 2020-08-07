@@ -1,45 +1,65 @@
 ﻿@model Shop.Common.Filters
 
+<section class="filters">
+
+    <div class="close-button"></div>
 
     <form asp-action="GetAll" asp-controller="Product" method="get">
 
         <input type="hidden" asp-for="Gender" />
         <input type="hidden" asp-for="Category" />
 
-        <div class="form-group">
-            <label asp-for="SortBy">Category:</label>
+        <div class="close-menu-button"></div>
+
+        <div>
+            <p>Sortowanie</p>
             <select asp-for="SortBy" asp-items="Html.GetEnumSelectList<Shop.Common.Enums.SortBy>()" id="SortBy"></select>
             <span asp-validation-for="SortBy"></span>
         </div>
+        <div class="price">
+            <p>Cena</p>
 
-        <div>
-            <label asp-for="MinPrice">Cena minimalna</label>
-            <input asp-for="MinPrice" />
+            <div>
+                <label asp-for="MinPrice">Min</label>
+                <input asp-for="MinPrice" />
+            </div>
+            <div>
+                <label asp-for="MaxPrice">Max</label>
+                <input asp-for="MaxPrice" />
+            </div>
         </div>
         <div>
-            <label asp-for="MaxPrice">Cena maksymalna</label>
-            <input asp-for="MaxPrice" />
+            <p>Rozmiar</p>
+            @for (int i = 0; i < Model.SizeCheckboxes.Count(); i++)
+            {
+                <div class="form-group">
+                    <input asp-for="@Model.SizeCheckboxes[i].Size" type="hidden" />
+                    <input asp-for="@Model.SizeCheckboxes[i].IsSelected" />
+                    <label asp-for="@Model.SizeCheckboxes[i].IsSelected">@Model.SizeCheckboxes[i].Size</label>
+                </div>
+            }
         </div>
-
-        @for (int i = 0; i < Model.SizeCheckboxes.Count(); i++)
-        {
-            <input asp-for="@Model.SizeCheckboxes[i].Size" type="hidden" />
-
-            <label asp-for="@Model.SizeCheckboxes[i].IsSelected">@Model.SizeCheckboxes[i].Size</label>
-            <input asp-for="@Model.SizeCheckboxes[i].IsSelected" />
-        }
-
-        <br />
-
-        @for (int i = 0; i < Model.ColorCheckboxes.Count(); i++)
-        {
-            <input asp-for="@Model.ColorCheckboxes[i].Color" type="hidden" />
-
-            <label asp-for="@Model.ColorCheckboxes[i].IsSelected">@Model.ColorCheckboxes[i].Color</label>
-            <input asp-for="@Model.ColorCheckboxes[i].IsSelected" />
-        }
+        <div>
+            <p>Kolor</p>
+            @for (int i = 0; i < Model.ColorCheckboxes.Count(); i++)
+            {
+                <div class="form-group">
+                    <input asp-for="@Model.ColorCheckboxes[i].Color" type="hidden" />
+                    <input asp-for="@Model.ColorCheckboxes[i].IsSelected" />
+                    <label asp-for="@Model.ColorCheckboxes[i].IsSelected">@Model.ColorCheckboxes[i].Color</label>
+                </div>
+            }
+        </div>
+        <div>
+            <p>Inne</p>
+            <div class="form-group">
+                <input type="checkbox"> <label>Przeceniony</label>
+            </div>
+        </div>
 
         <button type="submit">Filtruj</button>
 
     </form>
-<hr />
+
+</section>
+

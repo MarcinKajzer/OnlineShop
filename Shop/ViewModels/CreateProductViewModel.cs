@@ -1,4 +1,5 @@
-﻿using Shop.Common;
+﻿using Microsoft.AspNetCore.Http;
+using Shop.Common;
 using Shop.Models;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -26,5 +27,7 @@ namespace Shop.ViewModels
 
         [Required]
         public Category Category { get; set; }
+        public IFormFile Image { get; set; }
+
     }
 }

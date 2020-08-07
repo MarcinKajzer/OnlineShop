@@ -10,8 +10,8 @@ using Shop.DataAcces;
 namespace Shop.DataAcces.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20200706204329_ADD isArchived")]
-    partial class ADDisArchived
+    [Migration("20200803173620_ADD image")]
+    partial class ADDimage
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -28,6 +28,9 @@ namespace Shop.DataAcces.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<double>("BeforePrice")
+                        .HasColumnType("float");
+
                     b.Property<int>("Category")
                         .HasColumnType("int");
 
@@ -41,6 +44,15 @@ namespace Shop.DataAcces.Migrations
                     b.Property<int>("Gender")
                         .HasColumnType("int");
 
+                    b.Property<string>("Image")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsArchived")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsOverpriced")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("varchar(100)")
@@ -49,15 +61,35 @@ namespace Shop.DataAcces.Migrations
                     b.Property<double>("Price")
                         .HasColumnType("float");
 
-                    b.Property<int>("Size")
+                    b.Property<int>("Quantity")
                         .HasColumnType("int");
-
-                    b.Property<bool>("isArchived")
-                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 
                     b.ToTable("Items");
+                });
+
+            modelBuilder.Entity("Entities.SizeInfo", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int?>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Size")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("SizeInfo");
                 });
 
             modelBuilder.Entity("Entities.User", b =>
@@ -262,6 +294,13 @@ namespace Shop.DataAcces.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
+                });
+
+            modelBuilder.Entity("Entities.SizeInfo", b =>
+                {
+                    b.HasOne("Entities.Product", "Product")
+                        .WithMany("Sizes")
+                        .HasForeignKey("ProductId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

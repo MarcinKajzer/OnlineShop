@@ -2,21 +2,20 @@
 
 namespace Shop.DataAcces.Migrations
 {
-    public partial class ADDisArchived : Migration
+    public partial class ADDimage : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<bool>(
-                name: "isArchived",
+            migrationBuilder.AddColumn<string>(
+                name: "Image",
                 table: "Items",
-                nullable: false,
-                defaultValue: false);
+                nullable: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "isArchived",
+                name: "Image",
                 table: "Items");
         }
     }

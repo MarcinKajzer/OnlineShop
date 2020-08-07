@@ -1,0 +1,33 @@
+﻿<div class="top-bar">
+    <div class="options">
+        <ul>
+            <li class="favourites-icon"></li>
+            <li class="cart-icon"></li>
+            <li class="account-icon"></li>
+        </ul>
+    </div>
+    <div class="logo">
+        <h1><a asp-action="Index" asp-controller="Home">Online Shop</a> </h1>
+    </div>
+    <div class="search-box">
+        <input placeholder="Szukaj">
+        <button></button>
+    </div>
+
+    @*@if (User.Identity.IsAuthenticated)
+        {
+            <div>
+                <a>@User.Identity.Name</a>
+            </div>
+            <a asp-action="LogOut" asp-controller="Account">Wyloguj</a>
+        }
+        else
+        {
+            <div>
+                <a asp-action="Login" asp-controller="Account">Logowanie</a>
+            </div>
+        }
+        <div>
+            <a asp-action="Index" asp-controller="Cart">Cart</a>
+        </div>*@
+</div>

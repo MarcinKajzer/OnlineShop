@@ -34,6 +34,7 @@ namespace Entities
         public bool IsOverpriced { get; set; }
         public double BeforePrice { get; set; }
         public int Quantity { get; set; }
+        public string Image { get; set; }
 
         [Required]
         public virtual List<SizeInfo> Sizes { get; set; }

@@ -4,38 +4,53 @@
     ViewData["Title"] = "GetByCategory";
 }
 
-<h1>GetByCategory</h1>
+<p class="show-filters-button">Filtruj</p>
+
 
 @await Html.PartialAsync("_FilterResultsPartial", (Shop.Common.Filters)ViewBag.Filter)
 
+<main class="products-list">
+    @if (Model.Count == 0)
+    {
+        <p>Nie mamy obecnie żadnego produktu w wybranej kategorii</p>
+    }
+    else
+    {
+        foreach (var item in Model)
+        {
+            <div class="single-product">
+                <a class="add-to-favourites"></a>
+                <a asp-action="Details" asp-controller="Product" asp-route-productId="@item.Id">
 
-@foreach (var item in Model)
-{
-    <a asp-action="Update" asp-controller="Product" asp-route-productId="@item.Id">Edytuj</a>
+                    <img src="~/assets/product.png" />
+                    <div class="price-container">
+                        <div>
+                            <span class="current-price">@item.Price zł</span>
+                            @if (item.IsOverpriced)
+                            {
+                                <span class="before-price">70,99 zł</span>
+                            }
+                        </div>
+                        @if (item.IsOverpriced)
+                        {
+                            <span class="discount">100 - @item.BeforePrice/@item.Price} %</span>
+                        }
 
-    <a asp-action="Details" asp-controller="Product" asp-route-productId="@item.Id">
-        <div>
-            <h2>@item.Name</h2>
-            <p>@item.Price</p>
-            <p>@item.Gender</p>
-            <p>@item.Description</p>
-            <p>@item.Color</p>w
-            <p>@item.Category</p>
-            <p>Ilość: @item.Quantity</p>
+                    </div>
+                    <span>@item.Name</span>
 
-            @foreach (var size in item.Sizes)
-            {
-                if (size.Quantity > 0)
-                {
-                    <span>@size.Size:</span><span>@size.Quantity</span>
-                }
-            }
-        </div>
-    </a>
+                    @await Html.PartialAsync("_AddToCartPartial", new Shop.ViewModels.AddToCartViewModel() { Id = item.Id, Sizes = item.Sizes, Quantity = item.Quantity })
 
-    @await Html.PartialAsync("_AddToCartPartial", new Shop.ViewModels.AddToCartViewModel() { Id = item.Id, Sizes = item.Sizes, Quantity = item.Quantity })
+                </a>
+            </div>
 
+        }
+    }
 
 
-}
+</main>
 
+<script>
+   
+
+</script>

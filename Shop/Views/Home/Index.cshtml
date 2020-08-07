@@ -1,8 +1,122 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    Layout = null;
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Strona główna</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+<body>
+
+    @await Html.PartialAsync("_TopBarPartial")
+
+    <nav class="main-page-nav">
+        <div class="man-fashion">
+            <div class="description">
+                <div>
+                    <p>The point of using Lorem Ipsum is that</p>
+                    <h2>Moda męska</h2>
+                    <p>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that</p>
+                </div>
+            </div>
+            <div class="menu-container">
+                <button>Sprawdź</button>
+                <div class="menu">
+                    <div class="close-button"></div>
+                    <ul>
+                        @foreach (var item in Enum.GetValues(typeof(Shop.Enums.MansCategory)))
+                        {
+                            int x = (int)item;
+                            <li>
+                                <a asp-action="GetAll" asp-controller="Product" asp-route-gender="@Shop.Common.Gender.Mens" asp-route-category="@x">@item</a>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="woman-fashion">
+            <div class="description">
+                <div>
+                    <p>The point of using Lorem Ipsum is that</p>
+                    <h2>Moda damska</h2>
+                    <p>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that</p>
+                </div>
+            </div>
+            <div class="menu-container">
+                <button>Sprawdź</button>
+                <div class="menu">
+                    <div class="close-button"></div>
+                    <ul>
+                        @foreach (var item in Enum.GetValues(typeof(Shop.Enums.WomanCategory)))
+                        {
+                            int x = (int)item;
+                            <li>
+                                <a asp-action="GetAll" asp-controller="Product" asp-route-gender="@Shop.Common.Gender.Womens" asp-route-category="@x">@item</a>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <script>
+
+        let manMenuButton = document.querySelector(".man-fashion .menu-container button")
+
+        let manCloseMenuButton = document.querySelector(".man-fashion .menu-container .close-button")
+
+        manMenuButton.addEventListener("click", () => {
+
+            document.querySelector(".man-fashion .menu").classList.toggle("menu-container-open");
+
+            manMenuButton.classList.toggle("hidden");
+
+            manCloseMenuButton.classList.toggle("animated-close-button");
+        })
+
+        manCloseMenuButton.addEventListener("click", () => {
+
+            document.querySelector(".man-fashion .menu").classList.toggle("menu-container-open");
+
+            manMenuButton.classList.toggle("hidden");
+
+            manCloseMenuButton.classList.toggle("animated-close-button");
+        })
+
+
+
+        let womanMenuButton = document.querySelector(".woman-fashion .menu-container button")
+
+        let womanCloseMenuButton = document.querySelector(".woman-fashion .menu-container .close-button")
+
+        womanMenuButton.addEventListener("click", () => {
+
+            document.querySelector(".woman-fashion .menu").classList.toggle("menu-container-open");
+
+            womanMenuButton.classList.toggle("hidden");
+
+            womanCloseMenuButton.classList.toggle("animated-close-button");
+        })
+
+        document.querySelector(".woman-fashion .close-button").addEventListener("click", () => {
+
+            document.querySelector(".woman-fashion .menu").classList.toggle("menu-container-open");
+
+            womanMenuButton.classList.toggle("hidden");
+
+            womanCloseMenuButton.classList.toggle("animated-close-button");
+        })
+    </script>
+
+
+</body>
+</html>
