@@ -12,7 +12,7 @@
 <main class="products-list">
     @if (Model.Count == 0)
     {
-        <p>Nie mamy obecnie żadnego produktu w wybranej kategorii</p>
+        <p class="no-products-info">Nie mamy obecnie żadnego produktu w wybranej kategorii</p>
     }
     else
     {
@@ -47,10 +47,6 @@
         }
     }
 
-
 </main>
 
-<script>
-   
-
-</script>
+<script src="~/js/filters.js"></script>

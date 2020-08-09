@@ -68,55 +68,7 @@
         </div>
     </nav>
 
-    <script>
-
-        let manMenuButton = document.querySelector(".man-fashion .menu-container button")
-
-        let manCloseMenuButton = document.querySelector(".man-fashion .menu-container .close-button")
-
-        manMenuButton.addEventListener("click", () => {
-
-            document.querySelector(".man-fashion .menu").classList.toggle("menu-container-open");
-
-            manMenuButton.classList.toggle("hidden");
-
-            manCloseMenuButton.classList.toggle("animated-close-button");
-        })
-
-        manCloseMenuButton.addEventListener("click", () => {
-
-            document.querySelector(".man-fashion .menu").classList.toggle("menu-container-open");
-
-            manMenuButton.classList.toggle("hidden");
-
-            manCloseMenuButton.classList.toggle("animated-close-button");
-        })
-
-
-
-        let womanMenuButton = document.querySelector(".woman-fashion .menu-container button")
-
-        let womanCloseMenuButton = document.querySelector(".woman-fashion .menu-container .close-button")
-
-        womanMenuButton.addEventListener("click", () => {
-
-            document.querySelector(".woman-fashion .menu").classList.toggle("menu-container-open");
-
-            womanMenuButton.classList.toggle("hidden");
-
-            womanCloseMenuButton.classList.toggle("animated-close-button");
-        })
-
-        document.querySelector(".woman-fashion .close-button").addEventListener("click", () => {
-
-            document.querySelector(".woman-fashion .menu").classList.toggle("menu-container-open");
-
-            womanMenuButton.classList.toggle("hidden");
-
-            womanCloseMenuButton.classList.toggle("animated-close-button");
-        })
-    </script>
-
+    <script src="~/js/home-page.js"></script>
 
 </body>
 </html>

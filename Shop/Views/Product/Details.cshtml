@@ -3,6 +3,7 @@
     ViewData["Title"] = "Details";
 }
 
+<main>
 <a asp-action="Update" asp-controller="Product" asp-route-productId="@Model.Id">Edytuj</a>
 
 <h1>@Model.Name </h1>
@@ -24,4 +25,4 @@
 }
 
 @await Html.PartialAsync("_AddToCartPartial", new Shop.ViewModels.AddToCartViewModel() { Id = Model.Id, Sizes = Model.Sizes, Quantity = Model.Quantity})
-
+</main>

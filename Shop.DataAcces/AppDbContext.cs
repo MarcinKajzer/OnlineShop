@@ -16,7 +16,7 @@ namespace Shop.DataAcces
         {
             optionsBuilder.UseLazyLoadingProxies();
         }
-        public DbSet<Product> Items { get; set; }
+        public DbSet<Product> Products { get; set; }
 
     }
 }

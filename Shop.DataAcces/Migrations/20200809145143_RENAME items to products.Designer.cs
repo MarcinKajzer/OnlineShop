@@ -10,8 +10,8 @@ using Shop.DataAcces;
 namespace Shop.DataAcces.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20200803173620_ADD image")]
-    partial class ADDimage
+    [Migration("20200809145143_RENAME items to products")]
+    partial class RENAMEitemstoproducts
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -66,7 +66,7 @@ namespace Shop.DataAcces.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Items");
+                    b.ToTable("Products");
                 });
 
             modelBuilder.Entity("Entities.SizeInfo", b =>

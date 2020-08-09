@@ -19,7 +19,7 @@ namespace Shop.DataAcces
 
         public List<Product> FindAll(Filters filter)
         {
-            IQueryable<Product> products = _dbContext.Items.
+            IQueryable<Product> products = _dbContext.Products.
                 Where(x => x.Category == filter.Category && x.Gender == filter.Gender).
                 Where(x => x.IsOverpriced == filter.IsOverpriced).
                 Where(x => x.Price >= filter.MinPrice && x.Price <= filter.MaxPrice);
@@ -52,12 +52,12 @@ namespace Shop.DataAcces
 
         public async Task<Product> FindOne(int productId)
         {
-            return await _dbContext.Items.FindAsync(productId);
+            return await _dbContext.Products.FindAsync(productId);
         }
 
         public async Task<Product> Create(Product product)
         {
-            await _dbContext.Items.AddAsync(product);
+            await _dbContext.Products.AddAsync(product);
             await _dbContext.SaveChangesAsync();
 
             return product;
@@ -65,7 +65,7 @@ namespace Shop.DataAcces
 
         public async Task Remove(int productId)
         {
-            Product prod = await _dbContext.Items.FindAsync(productId);
+            Product prod = await _dbContext.Products.FindAsync(productId);
             if(prod != null)
             {
                 prod.IsArchived = true;
@@ -77,7 +77,7 @@ namespace Shop.DataAcces
 
         public async Task<Product> Update(Product product)
         {
-            if (await _dbContext.Items.FindAsync(product.Id) != null)
+            if (await _dbContext.Products.FindAsync(product.Id) != null)
             {
                 _dbContext.Update(product);
                 await _dbContext.SaveChangesAsync();

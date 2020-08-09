@@ -52,6 +52,7 @@ button:hover::before, button:focus::before{
     top: 35px;
     right: 10%;
     cursor: pointer;
+    transition: background .3s;
 }
 
 .close-button::before{
@@ -194,6 +195,57 @@ h1{
 
 .account-icon {
     background-image: url('../assets/login-icon.svg');
+    position: relative;
+}
+
+.account-icon::after{
+    content: '';
+    background: white;
+    width: 50px;
+    height: 20px;
+    position: absolute;
+    bottom:-20px;
+}
+
+.options div {
+    width: 80%;
+    height: 200px;
+    z-index: 10;
+    border: solid 1px #F6F6F6;
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    align-items: center;
+    padding: 20px;
+    top: 60px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: white;
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0s, opacity 0.3s;
+    max-width: 200px;
+}
+
+.options div:hover{
+    visibility: visible;
+  opacity: 1;
+}
+
+.options .visible{
+    visibility: visible;
+  opacity: 1;
+}
+
+.options div a{
+    width: 90%;
+    background: forestgreen;
+    margin-top: 20px;
+    height: 40px;
+    text-align: center;
+    color: white;
+    line-height: 40px;
 }
 
 .favourites-icon {
@@ -493,12 +545,18 @@ h2{
 .price label{
     font-weight: 500;
     font-size: 14px;
+    display: block;
+    margin-top: 5px;
+}
+
+.price div:last-child{
+    margin-top: 10px;
 }
 
 .filters input[type="checkbox"]{
     height: 20px;
     width: 20px;
-    border-radius: none;
+    border-radius: 0;
     margin-right: 20px;
 }
 
@@ -521,7 +579,11 @@ main{
 
 /*..........LIST_OF_PRODUCTS..........*/
 
-.single-product{
+.no-products-info{
+    margin-top: 50px;
+}
+
+.single-product {
     margin: 20px;
     width: 90%;
     max-width: 400px;
@@ -605,6 +667,80 @@ main{
     text-align: center;
 }
 
+/*..........LOGIN-AND-REGISTER-PAGES.............*/
+
+.account-form{
+    width: 90%;
+    max-width: 400px;
+    margin: 50px auto 100px;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    font-size: 13px;
+    -webkit-box-shadow: 0px 0px 28px -17px rgba(179,179,179,1);
+-moz-box-shadow: 0px 0px 28px -17px rgba(179,179,179,1);
+box-shadow: 0px 0px 28px -17px rgba(179,179,179,1);
+}
+
+.account-form .header{
+    width: 80%;
+    border-bottom: solid 1px lightgray;
+    height: 70px;
+    font-size: 18px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin: 0 auto 50px;
+}
+
+.account-form .form-group{
+    width: 60%;
+    margin: 0 auto;
+    height: 60px;
+}
+
+.account-form input{
+    width: 100%;
+    border: none;
+    border-bottom: solid 1px lightgray;
+    padding-bottom: 10px;
+    outline: none;
+}
+
+.account-form input:focus{
+    border-bottom: solid 1px forestgreen;
+}
+
+.account-form .link{
+    color: rgba(0,0,0,.3)
+}
+
+.remember-me{
+    display: flex;
+    align-items: center;
+    height: 20px;
+}
+
+.remember-me input{
+    margin-right:  10px;
+    height: 20px;
+    width: 20px;
+}
+
+.account-form button{
+    background: forestgreen;
+    width: 60%;
+    margin: 10px 0 50px;
+}
+
+.account-form .form-group span{
+    color: red;
+    margin-top: 5px;
+    display: block;
+}
+
+
+
 /*.........MEDIA-QUERIES............*/
 
 @media screen and (min-width: 700px){
@@ -622,6 +758,12 @@ main{
         position: fixed;
         z-index: 6;
         background: white;
+    }
+    .options div {
+        right: 50px;
+        left: auto;
+        top: 70px;
+        transform: translateX(0)
     }
     nav{
         margin-top: 100px;

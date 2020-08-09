@@ -19,20 +19,6 @@ function toggleNavigationVisibility(navSelector) {
     document.querySelector(navSelector + " .close-button").classList.toggle("animated-close-button");
 }
 
-document.querySelector(".show-filters-button").addEventListener("click", () => {
-    toggleFiltersVisibility()
-})
-
-document.querySelector(".filters .close-button").addEventListener("click", () => {
-    toggleFiltersVisibility()
-})
-
-function toggleFiltersVisibility() {
-    document.querySelector(".filters").classList.toggle("filters-open")
-    document.querySelector(".show-filters-button").classList.toggle("hidden");
-    document.querySelector(".filters .close-button").classList.toggle("animated-close-button")
-}
-
 window.addEventListener("scroll", function (e) {
 
     if (window.scrollY >= 50 && window.innerWidth > 800) {
@@ -42,3 +28,27 @@ window.addEventListener("scroll", function (e) {
         document.querySelector(".top-bar").classList.remove("small-top-bar")
     }
 });
+
+
+let accountIcon = document.querySelector(".account-icon");
+let popupAccountOptions = document.querySelector(".options div")
+
+if ("ontouchstart" in document.documentElement) {
+    window.addEventListener("click", (event) => {
+        if (event.target != accountIcon && event.target != popupAccountOptions) {
+            popupAccountOptions.classList.remove("visible")
+        }
+    })
+
+    accountIcon.addEventListener("click", () => {
+        popupAccountOptions.classList.toggle("visible")
+    })
+}
+else {
+    accountIcon.addEventListener("mouseover", () => {
+        popupAccountOptions.classList.add("visible")
+    })
+    accountIcon.addEventListener("mouseout", () => {
+        popupAccountOptions.classList.remove("visible")
+    })
+}           
