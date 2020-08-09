@@ -4,7 +4,7 @@
 }
 
     <main>
-        <h2>Twój koszyk</h2>
+        <h2 class="cart-title">Twój koszyk</h2>
 
         @if(Model.Count == 0)
         {
@@ -21,6 +21,10 @@
                     <th>Suma</th>
                     <th></th>
                 </tr>
+
+                @{ 
+                    double totalAmount = 0;
+                }
                 @foreach (var item in Model)
                 {
                     <tr>
@@ -35,10 +39,11 @@
                         <td><input asp-for="@item.Quantity" min="0"></td>
 
                         @{
-                            double totalAmount = item.Quantity * item.Price;
+                            double singleProductAmount = item.Quantity * item.Price;
+                            totalAmount += singleProductAmount;
                         }
 
-                        <td class="amount">@totalAmount.ToString("0.00") zł</td>
+                        <td class="amount">@singleProductAmount.ToString("0.00") zł</td>
                         <td>
                             <a asp-action="RemoveProduct" asp-controller="Cart" asp-route-productId="@item.Id" asp-route-productSize="@item.Size">Usuń</a>
                         </td>
@@ -50,7 +55,7 @@
                     <td>Razem</td>
                     <td></td>
                     <td></td>
-                    <td class="total-amount">250,59 zł</td>
+                    <td class="total-amount">@totalAmount.ToString("0.00") zł</td>
                     <td></td>
                 </tr>
                 <tr>

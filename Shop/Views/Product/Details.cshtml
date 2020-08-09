@@ -4,25 +4,33 @@
 }
 
 <main>
-<a asp-action="Update" asp-controller="Product" asp-route-productId="@Model.Id">Edytuj</a>
 
-<h1>@Model.Name </h1>
-<p>@Model.Price Zł</p>
-<p>Rodzaj: @Model.Gender</p>
-<p>Opis: @Model.Description</p>
-<p>Kolor: @Model.Color</p>
-<p>Kategoria: @Model.Category</p>
-<p>Dostępne rozmiary:</p>
-<p>Ilość: @Model.Quantity</p>
+    <div class="single-product-details">
+        <div class="product-image">
+            <img src="~/assets/product.png" />
+        </div>
+        <div class="details">
+            <a asp-action="Update" asp-controller="Product" asp-route-productId="@Model.Id">Edytuj</a>
+            <h2>@Model.Name</h2>
+            <p>@Model.Description</p>
+            <span class="color">Kolor: @Model.Color</span>
+            <div class="price-container">
+                <div>
+                    <span class="current-price">@Model.Price.ToString("0.00") zł</span>
+                    @if (Model.IsOverpriced)
+                    {
+                        <span class="before-price">70,99 zł</span>
+                    }
+                </div>
+                @if (Model.IsOverpriced)
+                {
+                    double? discount = 100 - Model.BeforePrice / Model.Price;
+                    <span class="discount">@discount %</span>
+                }
+            </div>
 
-@foreach (var size in Model.Sizes)
-{
-    if (size.Quantity > 0)
-    {
-        <span>@size.Size:</span><span>@size.Quantity</span>
-    }
+            @await Html.PartialAsync("_AddToCartPartial", new Shop.ViewModels.AddToCartViewModel() { Id = Model.Id, Sizes = Model.Sizes, Quantity = Model.Quantity })
+        </div>
+    </div>
 
-}
-
-@await Html.PartialAsync("_AddToCartPartial", new Shop.ViewModels.AddToCartViewModel() { Id = Model.Id, Sizes = Model.Sizes, Quantity = Model.Quantity})
 </main>

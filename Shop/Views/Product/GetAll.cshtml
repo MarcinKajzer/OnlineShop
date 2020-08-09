@@ -33,16 +33,16 @@
                         </div>
                         @if (item.IsOverpriced)
                         {
-                            double? discount = 100 - item.BeforePrice/item.Price;
+                            double? discount = 100 - item.BeforePrice / item.Price;
                             <span class="discount">@discount %</span>
                         }
 
                     </div>
                     <span>@item.Name</span>
-
-                    @await Html.PartialAsync("_AddToCartPartial", new Shop.ViewModels.AddToCartViewModel() { Id = item.Id, Sizes = item.Sizes, Quantity = item.Quantity })
-
                 </a>
+                @await Html.PartialAsync("_AddToCartPartial", new Shop.ViewModels.AddToCartViewModel() { Id = item.Id, Sizes = item.Sizes, Quantity = item.Quantity })
+
+                
             </div>
 
         }

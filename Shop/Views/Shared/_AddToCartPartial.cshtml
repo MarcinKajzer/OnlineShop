@@ -6,9 +6,9 @@
 
         <div class="size-and-quantity">
             <div>
-                @{ 
+                @{
                     Guid id = Guid.NewGuid();
-                }  
+                }
 
                 @for (int i = 0; i < Model.Sizes.Count(); i++)
                 {
@@ -16,7 +16,14 @@
                     {
                         int sizeValue = (int)Model.Sizes[i].Size;
 
-                        <input type="radio" asp-for="SelectedSize" value="@sizeValue" id="@id@i"/>
+                        if (i == 0)
+                        {
+                            <input type="radio" asp-for="SelectedSize" value="@sizeValue" id="@id@i" checked/>
+                        }
+                        else
+                        {
+                            <input type="radio" asp-for="SelectedSize" value="@sizeValue" id="@id@i" />
+                        }
                         <label for="@id@i">@Model.Sizes[i].Size</label>
                     }
                 }
