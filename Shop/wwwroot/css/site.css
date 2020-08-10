@@ -185,6 +185,7 @@ h1{
     width: 50px;
     transition: transform .2s;
     cursor:pointer;
+    position:relative;
 }
 
 .account-icon, .options ul li a{
@@ -203,8 +204,28 @@ h1{
     transform: scale(1.2)
 }
 
+.favourites-icon {
+    background-image: url('../assets/favourites-icon.svg');
+    height: 27px;
+}
+
 .cart-icon {
     background-image: url('../assets/cart-icon.svg');
+}
+
+.number-of-cart-items {
+    height: 22px;
+    width: 22px;
+    background: red;
+    position: absolute;
+    z-index: 2000;
+    top: 0;
+    right: 0;
+    border-radius: 20px;
+    text-align: center;
+    line-height: 23px;
+    color: white;
+    font-size: 15px
 }
 
 .account-icon {
@@ -221,7 +242,7 @@ h1{
     bottom:-20px;
 }
 
-.options div {
+.account-options-popup {
     width: 80%;
     height: 200px;
     z-index: 10;
@@ -242,9 +263,9 @@ h1{
     max-width: 200px;
 }
 
-.options div:hover{
+.account-options-popup:hover {
     visibility: visible;
-  opacity: 1;
+    opacity: 1;
 }
 
 .options .visible{
@@ -252,7 +273,7 @@ h1{
   opacity: 1;
 }
 
-.options div a{
+.account-options-popup a {
     width: 90%;
     background: forestgreen;
     margin-top: 20px;
@@ -260,11 +281,6 @@ h1{
     text-align: center;
     color: white;
     line-height: 40px;
-}
-
-.favourites-icon {
-    background-image: url('../assets/favourites-icon.svg');
-    height: 27px;
 }
 
 nav{
@@ -752,8 +768,8 @@ main{
     flex-wrap: wrap;
     font-size: 13px;
     -webkit-box-shadow: 0px 0px 28px -17px rgba(179,179,179,1);
--moz-box-shadow: 0px 0px 28px -17px rgba(179,179,179,1);
-box-shadow: 0px 0px 28px -17px rgba(179,179,179,1);
+    -moz-box-shadow: 0px 0px 28px -17px rgba(179,179,179,1);
+    box-shadow: 0px 0px 28px -17px rgba(179,179,179,1);
 }
 
 .account-form .header{
@@ -858,6 +874,19 @@ td span:nth-child(2){
     color: forestgreen;
 }
 
+.quantity-input-field {
+    display: flex;
+    align-items: center;
+}
+
+.increase-quantity-button, .decrease-quantity-button{
+    width: 26px;
+    color: forestgreen;
+    border: solid 1px lightgray;
+    background: none;
+    height: 26px;
+    font-size: 20px;
+}
 
 table input{
     width: 70px;
@@ -867,7 +896,19 @@ table input{
     color: orange;
 }
 
-table button{
+table input::-webkit-outer-spin-button,
+table input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+table input[type=number] {
+    -moz-appearance: textfield;
+}
+
+
+
+.cart-submit-button {
     width: 100%;
     background: forestgreen;
 }
@@ -905,6 +946,9 @@ table button{
     tr{
         height: 100px;
     }
+    .quantity-input-field {
+        height: 100px;
+    }
 }
 
 
@@ -926,7 +970,7 @@ table button{
         z-index: 6;
         background: white;
     }
-    .options div {
+    .account-options-popup {
         right: 50px;
         left: auto;
         top: 70px;

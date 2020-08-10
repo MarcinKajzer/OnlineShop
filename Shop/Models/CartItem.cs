@@ -1,5 +1,4 @@
 ﻿using Shop.Common;
-using System.Collections.Generic;
 
 namespace Shop.Models
 {

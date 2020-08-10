@@ -2,10 +2,13 @@
     <div class="options">
         <ul>
             <li><a href="#" class="favourites-icon"></a></li>
-            <li><a asp-action="Index" asp-controller="Cart" class="cart-icon"></a></li>
+            <li>
+                <a asp-action="Index" asp-controller="Cart" class="cart-icon"></a>
+                <div class="number-of-cart-items">0</div>
+            </li>
             <li class="account-icon"></li>
         </ul>
-        <div>
+        <div class="account-options-popup">
             @if (User.Identity.IsAuthenticated)
             {
                 <span>@User.Identity.Name</span>
@@ -26,3 +29,24 @@
         <button></button>
     </div>
 </div>
+
+<script src="~/js/top-bar.js"></script>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script type="text/javascript">
+
+        $(document).ready(function () {
+            $.ajax({
+                type: 'GET',
+                url: '../Cart/GetTotalQuantity',
+                dataType: 'json',
+                success: function (quantity) {
+                    document.querySelector(".number-of-cart-items").innerHTML = quantity;
+                },
+                error: function (ex) {
+                    alert('Coś poszło nie tak' + ex);
+                }
+            });
+            return false;
+        })
+
+</script>

@@ -1,5 +1,6 @@
 ﻿using Entities;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using Shop.Common;
 using Shop.DataAcces.Interfaces;
 using Shop.Helpers;
@@ -22,35 +23,40 @@ namespace Shop.Controllers
 
         public IActionResult Index()
         {
-            List<CartItem> cart = SessionHelper.Get<List<CartItem>>(HttpContext.Session, "cart");
+            Cart cart = SessionHelper.Get<Cart>(HttpContext.Session, "cart");
 
-            return View(cart != null ? cart : new List<CartItem>());
+            return View(cart != null && cart.Items != null ? cart.Items : new List<CartItem>());
         }
 
         public async Task<IActionResult> AddProduct(AddToCartViewModel model)
         {
-            List<CartItem> currentCart = SessionHelper.Get<List<CartItem>>(HttpContext.Session, "cart");
+            Cart currentCart = SessionHelper.Get<Cart>(HttpContext.Session, "cart");
 
             Product prod = await _productRepository.FindOne(model.Id);
 
             if (currentCart == null)
             {
-                List<CartItem> newCart = new List<CartItem>
+                Cart newCart = new Cart
                 {
-                    new CartItem
+                    Items = new List<CartItem>
                     {
-                        Quantity = model.Quantity,
-                        Id = prod.Id,
-                        Name = prod.Name,
-                        Price = prod.Price,
-                        Size = model.SelectedSize
-                    }
+                        new CartItem
+                        {
+                            Quantity = model.Quantity,
+                            Id = prod.Id,
+                            Name = prod.Name,
+                            Price = prod.Price,
+                            Size = model.SelectedSize
+                        }
+                    },
+                    TotalAmount = model.Quantity * prod.Price
+                    
                 };
                 SessionHelper.Set(HttpContext.Session, "cart", newCart);
             }
             else
             {
-                CartItem findProduct = currentCart.SingleOrDefault(i => i.Id == model.Id && i.Size == model.SelectedSize);
+                CartItem findProduct = currentCart.Items.SingleOrDefault(i => i.Id == model.Id && i.Size == model.SelectedSize);
 
                 if (findProduct != null)
                 {
@@ -58,15 +64,17 @@ namespace Shop.Controllers
                 }
                 else
                 {
-                    currentCart.Add(new CartItem
+                    currentCart.Items.Add(new CartItem
                     {
                         Quantity = model.Quantity,
                         Id = prod.Id,
                         Name = prod.Name,
                         Price = prod.Price,
                         Size = model.SelectedSize
-                    }); ;
+                    });
+                    
                 }
+                currentCart.TotalAmount += model.Quantity * prod.Price;
                 SessionHelper.Set(HttpContext.Session, "cart", currentCart);
             }
 
@@ -75,32 +83,68 @@ namespace Shop.Controllers
 
         public IActionResult RemoveProduct(int productId, Size productSize)
         {
-            List<CartItem> cart = SessionHelper.Get<List<CartItem>>(HttpContext.Session, "cart");
+            Cart cart = SessionHelper.Get<Cart>(HttpContext.Session, "cart");
 
-            CartItem findProduct = cart.SingleOrDefault(i => i.Id == productId && i.Size == productSize);
+            CartItem findProduct = cart.Items.SingleOrDefault(i => i.Id == productId && i.Size == productSize);
 
             if (findProduct != null)
             {
-                cart.Remove(findProduct);
+                cart.Items.Remove(findProduct);
+                cart.TotalAmount -= findProduct.Price * findProduct.Quantity;
                 SessionHelper.Set(HttpContext.Session, "cart", cart);
             }
 
             return RedirectToAction(nameof(Index));
         }
 
-        public IActionResult SetQuantity(int productId, Size productSize, int quantity)
+        public JsonResult DecreaseQuantity(int productId, Size productSize)
         {
-            List<CartItem> cart = SessionHelper.Get<List<CartItem>>(HttpContext.Session, "cart");
+            return Json(SetQuantity(productId, productSize, -1));
+        }
 
-            CartItem findProduct = cart.SingleOrDefault(i => i.Id == productId);
+        public JsonResult IncreaseQuantity(int productId, Size productSize)
+        {
+            return  Json(SetQuantity(productId, productSize, 1));
+        }
+
+        [NonAction]
+        public CartInfo SetQuantity(int productId, Size productSize, int value)
+        {
+            Cart cart = SessionHelper.Get<Cart>(HttpContext.Session, "cart");
+
+            CartItem findProduct = cart.Items.SingleOrDefault(i => i.Id == productId && i.Size == productSize);
 
             if (findProduct != null)
             {
-                findProduct.Quantity = quantity;
+                findProduct.Quantity += value;
+                cart.TotalAmount += value * findProduct.Price;
                 SessionHelper.Set(HttpContext.Session, "cart", cart);
             }
 
-            return RedirectToAction(nameof(Index));
+            return new CartInfo
+            {
+                CurrentItemQuantity = findProduct.Quantity,
+                CurrentItemAmount = findProduct.Quantity * findProduct.Price,
+                TotalAmount = cart.TotalAmount,
+                TotalQuantity = GetTotalQuantity()
+            };
+        }
+
+        public int GetTotalQuantity()
+        {
+            Cart cart = SessionHelper.Get<Cart>(HttpContext.Session, "cart");
+
+            var quantity = 0;
+
+            if (cart != null && cart.Items.Count>0)
+            {
+                foreach(var item in cart.Items)
+                {
+                    quantity += item.Quantity;
+                }
+            }
+
+            return quantity;
         }
     }
 }
