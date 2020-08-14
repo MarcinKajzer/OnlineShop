@@ -1,4 +1,5 @@
 ﻿using Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -20,19 +21,17 @@ namespace Shop.Controllers
     public class ProductController : Controller
     {
         private readonly IProductRepository _repository;
-        private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly UserManager<User> _userManager;
         private readonly ProductMapper productMapper = new ProductMapper();
         public ProductController(IProductRepository repository, 
-                                 IHttpContextAccessor httpContextAccessor,
                                  UserManager<User> userManager)
         {
             _repository = repository;
-            _httpContextAccessor = httpContextAccessor;
             _userManager = userManager;
         }
 
         [HttpGet]
+        [Authorize]
         public IActionResult Add()
         {
             CreateProductViewModel model = new CreateProductViewModel();
@@ -105,20 +104,30 @@ namespace Shop.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll(Filters filters)
         {
-            var currentUser = await GetCurrentUser();
-            List<int> userFavouritesProductsIds = currentUser.Favourites.Select(x => x.Id).ToList();
-
             List<Product> products = _repository.FindAll(filters).ToList();
-
             List<ProductDetailsViewModel> prods = new List<ProductDetailsViewModel>();
 
-            foreach (var item in products)
+            var currentUser = await GetCurrentUser();
+            if(currentUser != null )
             {
-                if(userFavouritesProductsIds.Contains(item.Id))
-                    prods.Add(productMapper.MapToProductDetailsViewModel(item, true));
-                else
-                    prods.Add(productMapper.MapToProductDetailsViewModel(item, false));
+                List<int> userFavouritesProductsIds = currentUser.Favourites.Select(x => x.Id).ToList();
+
+                foreach (var item in products)
+                {
+                    if (userFavouritesProductsIds.Contains(item.Id))
+                        prods.Add(productMapper.MapToProductDetailsViewModel(item, true));
+                    else
+                        prods.Add(productMapper.MapToProductDetailsViewModel(item, false));
+                }
             }
+            else
+            {
+                foreach (var item in products)
+                {
+                    prods.Add(productMapper.MapToProductDetailsViewModel(item, false));
+                }
+            }
+            
 
             ViewBag.Filter = filters;
             return View(prods);
@@ -127,9 +136,14 @@ namespace Shop.Controllers
         [NonAction]
         private async Task<User> GetCurrentUser()
         {
-            var currentUserId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            var currentUser = await _userManager.FindByIdAsync(currentUserId);
-            return currentUser;
+            var currentUserName = HttpContext.User.Identity.Name;
+            if(currentUserName != null)
+            {
+                var currentUser = await _userManager.FindByNameAsync(currentUserName);
+                return currentUser;
+            }
+
+            return null;
         }
 
         [HttpGet]

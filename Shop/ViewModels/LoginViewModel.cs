@@ -12,6 +12,7 @@ namespace Shop.Controllers
         [Required(ErrorMessage = "Password is required.")]
         public string Password { get; set; }
         public bool rememberMe { get; set; }
+        public string ReturnUrl { get; set; }
 
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -14,45 +15,55 @@ namespace Shop.Controllers
     {
         private readonly IProductRepository _repository;
         private readonly UserManager<User> _userManager;
-        private readonly IHttpContextAccessor _httpContextAccessor;
 
         public FavouritesController(IProductRepository repository, 
-                                    UserManager<User> userManager,
-                                    IHttpContextAccessor httpContextAccessor)
+                                    UserManager<User> userManager)
         {
             _repository = repository;
             _userManager = userManager;
-            _httpContextAccessor = httpContextAccessor;
         }
 
         [HttpGet]
+        [Authorize]
         public async Task Add(int productId)
         {
             var currentUser = await GetCurrentUser();
 
-            Product product = await _repository.FindOne(productId);
-            currentUser.Favourites.Add(product);
+            if (currentUser != null)
+            {
+                Product product = await _repository.FindOne(productId);
+                currentUser.Favourites.Add(product);
 
-            await _userManager.UpdateAsync(currentUser);
+                await _userManager.UpdateAsync(currentUser);
+            }
         }
 
         [HttpGet]
+        [Authorize]
         public async Task Remove(int productId)
         {
             var currentUser = await GetCurrentUser();
 
-            Product product = await _repository.FindOne(productId);
-            currentUser.Favourites.Remove(product);
+            if(currentUser != null)
+            {
+                Product product = await _repository.FindOne(productId);
+                currentUser.Favourites.Remove(product);
 
-            await _userManager.UpdateAsync(currentUser);
+                await _userManager.UpdateAsync(currentUser);
+            }
         }
 
         [NonAction]
         private async Task<User> GetCurrentUser()
         {
-            var currentUserId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            var currentUser = await _userManager.FindByIdAsync(currentUserId);
-            return currentUser;
+            var currentUserName = HttpContext.User.Identity.Name;
+            if (currentUserName != null)
+            {
+                var currentUser = await _userManager.FindByNameAsync(currentUserName);
+                return currentUser;
+            }
+
+            return null;
         }
 
         public async Task<List<Product>> GetAll ()

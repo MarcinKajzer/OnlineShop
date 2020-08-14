@@ -21,15 +21,23 @@
         {
             <div class="single-product">
                 <div class="favoutites-links-container">
-                    @if (Model[i].IsFavourite)
+                    @if (User.Identity.IsAuthenticated)
                     {
-                        <a class="remove-from-favourites" onclick="removeFromFavourites(@Model[i].Id, @i)"></a>
+                        @if (Model[i].IsFavourite)
+                        {
+                            <a class="remove-from-favourites" onclick="removeFromFavourites(@Model[i].Id, @i)"></a>
+                        }
+                        else
+                        {
+                            <a class="add-to-favourites" onclick="addToFavourites(@Model[i].Id, @i)"></a>
+                        }
                     }
                     else
                     {
-                        <a class="add-to-favourites" onclick="addToFavourites(@Model[i].Id, @i)"></a>
+                        <a class="add-to-favourites" asp-action="Login" asp-controller="Account"  asp-route-ReturnUrl="gender=@Model[i].Gender&category=@Model[i].Category"></a>
                     }
-                </div>
+
+                    </div>
                 <a asp-action="Details" asp-controller="Product" asp-route-productId="@Model[i].Id">
 
                     <img src="~/assets/product.png" />

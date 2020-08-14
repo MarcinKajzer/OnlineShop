@@ -1,4 +1,5 @@
 ﻿using Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Shop.Common;
@@ -21,6 +22,7 @@ namespace Shop.Controllers
             _productRepository = productRepository;
         }
 
+        [Authorize]
         public IActionResult Index()
         {
             Cart cart = SessionHelper.Get<Cart>(HttpContext.Session, "cart");

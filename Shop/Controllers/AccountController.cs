@@ -64,12 +64,14 @@ namespace Shop.Controllers
         }
 
         [HttpGet]
-        public IActionResult Login()
+        public IActionResult Login(string ReturnUrl)
         {
+            ViewBag.ReturnUrl = ReturnUrl;
             return View();
         }
 
-        public async Task<IActionResult> Login(LoginViewModel model, string returnUrl)
+        [HttpPost]
+        public async Task<IActionResult> Login(LoginViewModel model)
         {
             if (ModelState.IsValid)
             {
@@ -77,7 +79,7 @@ namespace Shop.Controllers
 
                 if (result.Succeeded)
                 {
-                    RedirectToLocal(returnUrl); // returnUrl is null ? 
+                    return RedirectToLocal(model.ReturnUrl);
                 }
                 else
                 {

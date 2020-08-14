@@ -6,7 +6,7 @@
 
 <main>
 
-    <form asp-action="Login" asp-controller="Account" method="post" class="account-form">
+    <form asp-action="Login" asp-controller="Account" asp-route-ReturnUrl="@ViewBag.ReturnUrl" method="post" class="account-form">
 
         <div class="header">
             <span>Logowanie</span>
