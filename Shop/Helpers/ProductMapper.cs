@@ -99,7 +99,7 @@ namespace Shop.Helpers
             return viewModel;
         }
 
-        public ProductDetailsViewModel MapToProductDetailsViewModel(Product from)
+        public ProductDetailsViewModel MapToProductDetailsViewModel(Product from, bool isFavourite)
         {
             ProductDetailsViewModel product = new ProductDetailsViewModel
             {
@@ -114,8 +114,8 @@ namespace Shop.Helpers
                 Quantity = from.Quantity,
                 Image = from.Image,
                 BeforePrice = from.BeforePrice,
-                IsOverpriced = from.IsOverpriced
-                
+                IsOverpriced = from.IsOverpriced,
+                IsFavourite = isFavourite
             };
 
             foreach (var size in from.Sizes.OrderBy(x => x.Size))

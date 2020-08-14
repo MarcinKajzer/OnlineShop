@@ -46,6 +46,7 @@ namespace Shop
 
             services.AddScoped<IProductRepository, ProductRepository>();
 
+            services.AddHttpContextAccessor();
             services.AddSession();
         }
 

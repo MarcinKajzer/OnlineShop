@@ -1,7 +1,8 @@
 ﻿using Entities;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.Extensions.Logging;
 using Shop.Common;
 using Shop.DataAcces.Interfaces;
 using Shop.Enums;
@@ -11,6 +12,7 @@ using Shop.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace Shop.Controllers
@@ -18,12 +20,16 @@ namespace Shop.Controllers
     public class ProductController : Controller
     {
         private readonly IProductRepository _repository;
-        private readonly ILogger<ProductController> _logger;
-
-        public ProductController(IProductRepository repository, ILogger<ProductController> logger)
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly UserManager<User> _userManager;
+        private readonly ProductMapper productMapper = new ProductMapper();
+        public ProductController(IProductRepository repository, 
+                                 IHttpContextAccessor httpContextAccessor,
+                                 UserManager<User> userManager)
         {
             _repository = repository;
-            _logger = logger;
+            _httpContextAccessor = httpContextAccessor;
+            _userManager = userManager;
         }
 
         [HttpGet]
@@ -46,7 +52,7 @@ namespace Shop.Controllers
         {
             if (ModelState.IsValid)
             {
-                var result = await _repository.Create(new ProductMapper().MapToProductModel(model));
+                var result = await _repository.Create(productMapper.MapToProductModel(model));
 
                 if (result != null)
                 {
@@ -64,7 +70,7 @@ namespace Shop.Controllers
         {
             Product prod = await _repository.FindOne(productId);
 
-            return View(new ProductMapper().MapToUpdateProductViewModel(prod));
+            return View(productMapper.MapToUpdateProductViewModel(prod));
         }
 
         [HttpPost]
@@ -79,7 +85,7 @@ namespace Shop.Controllers
 
             if (product != null)
             {
-                product = new ProductMapper().UpdateExistingProduct(model, product);
+                product = productMapper.UpdateExistingProduct(model, product);
             }
             else
             {
@@ -97,21 +103,34 @@ namespace Shop.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll(Filters filter)
+        public async Task<IActionResult> GetAll(Filters filters)
         {
-            List<Product> products = _repository.FindAll(filter).ToList();
+            var currentUser = await GetCurrentUser();
+            List<int> userFavouritesProductsIds = currentUser.Favourites.Select(x => x.Id).ToList();
+
+            List<Product> products = _repository.FindAll(filters).ToList();
 
             List<ProductDetailsViewModel> prods = new List<ProductDetailsViewModel>();
 
             foreach (var item in products)
             {
-                prods.Add(new ProductMapper().MapToProductDetailsViewModel(item));
+                if(userFavouritesProductsIds.Contains(item.Id))
+                    prods.Add(productMapper.MapToProductDetailsViewModel(item, true));
+                else
+                    prods.Add(productMapper.MapToProductDetailsViewModel(item, false));
             }
 
-            ViewBag.Filter = filter;
+            ViewBag.Filter = filters;
             return View(prods);
         }
 
+        [NonAction]
+        private async Task<User> GetCurrentUser()
+        {
+            var currentUserId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var currentUser = await _userManager.FindByIdAsync(currentUserId);
+            return currentUser;
+        }
 
         [HttpGet]
         public async Task<IActionResult> Details(int productId)
@@ -119,11 +138,19 @@ namespace Shop.Controllers
             Product prod = await _repository.FindOne(productId);
 
             if(prod != null)
-                return View(new ProductMapper().MapToProductDetailsViewModel(prod));
+            {
+                var currentUser = await GetCurrentUser();
+                List<int> userFavouritesProductsIds = currentUser.Favourites.Select(x => x.Id).ToList();
+
+                if (userFavouritesProductsIds.Contains(prod.Id))
+                    return View(productMapper.MapToProductDetailsViewModel(prod, true));
+                else
+                    return View(productMapper.MapToProductDetailsViewModel(prod, false));
+            }
+               
 
             return NotFound();
         }
-
 
         [HttpGet]
         public JsonResult GetCategories(int gender)

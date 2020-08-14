@@ -1,10 +1,19 @@
 ﻿<div class="top-bar">
     <div class="options">
         <ul>
-            <li><a href="#" class="favourites-icon"></a></li>
+            <li>
+                <a href="#" class="favourites-icon"></a>
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <div class="number-of-favourites">0</div>
+                }
+            </li>
             <li>
                 <a asp-action="Index" asp-controller="Cart" class="cart-icon"></a>
-                <div class="number-of-cart-items">0</div>
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <div class="number-of-cart-items">0</div>
+                }
             </li>
             <li class="account-icon"></li>
         </ul>
@@ -32,7 +41,10 @@
 
 <script src="~/js/top-bar.js"></script>
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
-<script type="text/javascript">
+
+@if (User.Identity.IsAuthenticated)
+{
+    <script type="text/javascript">
 
         $(document).ready(function () {
             $.ajax({
@@ -49,4 +61,19 @@
             return false;
         })
 
-</script>
+        $(document).ready(function () {
+            $.ajax({
+                type: 'GET',
+                url: '../Favourites/GetQuantity',
+                dataType: 'json',
+                success: function (quantity) {
+                    document.querySelector(".number-of-favourites").innerHTML = quantity;
+                },
+                error: function (ex) {
+                    alert('Coś poszło nie tak' + ex);
+                }
+            });
+            return false;
+        })
+    </script>
+}

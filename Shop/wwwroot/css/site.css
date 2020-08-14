@@ -213,7 +213,7 @@ h1{
     background-image: url('../assets/cart-icon.svg');
 }
 
-.number-of-cart-items {
+.number-of-cart-items, .number-of-favourites {
     height: 22px;
     width: 22px;
     background: red;
@@ -225,7 +225,7 @@ h1{
     text-align: center;
     line-height: 23px;
     color: white;
-    font-size: 15px
+    font-size: 15px;
 }
 
 .account-icon {
@@ -624,26 +624,45 @@ main{
     margin: auto auto;
 }
 
-.add-to-favourites {
+.favoutites-links-container{
+    height:30px;
+}
+
+.add-to-favourites, .remove-from-favourites {
     width: 30px;
     height: 30px;
     position: absolute;
-    background: url('../assets/favourite-product-icon.svg') no-repeat;
     background-size: contain;
+    background-repeat: no-repeat;
+}
+
+.add-to-favourites {
+    background-image: url('../assets/favourite-product-icon.svg');
+}
+
+.products-list .add-to-favourites, .products-list .remove-from-favourites {
     top: 20px;
     left: 20px;
+}
+
+
+.products-list .add-to-favourites {
     transform: translateX(-200%);
     transition: transform .2s;
 }
 
-.single-product:hover{
+.remove-from-favourites {
+    background-image: url('../assets/full-hearth-icon.svg');
+}
+
+.single-product:hover {
     transform: scale(1.04);
     -webkit-box-shadow: 0px 0px 76px -35px rgba(232,232,232,1);
     -moz-box-shadow: 0px 0px 76px -35px rgba(232,232,232,1);
     box-shadow: 0px 0px 76px -35px rgba(232,232,232,1);
 }
 
-.single-product:hover .add-to-favourites{
+.products-list .single-product:hover .add-to-favourites {
     transform: translateX(0);
 }
 
@@ -706,6 +725,7 @@ main{
 
 .product-image, .details {
     width: 100%;
+    position: relative;
 }
 
 .single-product-details img {

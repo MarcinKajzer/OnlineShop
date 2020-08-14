@@ -4,12 +4,21 @@
 }
 
 <main>
-
     <div class="single-product-details">
         <div class="product-image">
             <img src="~/assets/product.png" />
         </div>
         <div class="details">
+            <div class="favoutites-links-container">
+                @if (Model.IsFavourite)
+                {
+                    <a class="remove-from-favourites" onclick="removeFromFavourites(@Model.Id, 0)"></a>
+                }
+                else
+                {
+                    <a class="add-to-favourites" onclick="addToFavourites(@Model.Id, 0)"></a>
+                }
+            </div>
             <a asp-action="Update" asp-controller="Product" asp-route-productId="@Model.Id">Edytuj</a>
             <h2>@Model.Name</h2>
             <p>@Model.Description</p>
@@ -32,5 +41,6 @@
             @await Html.PartialAsync("_AddToCartPartial", new Shop.ViewModels.AddToCartViewModel() { Id = Model.Id, Sizes = Model.Sizes, Quantity = Model.Quantity })
         </div>
     </div>
-
 </main>
+
+<script src="~/js/favourites.js"></script>

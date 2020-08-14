@@ -16,31 +16,41 @@
     }
     else
     {
-        foreach (var item in Model)
+        int productListLength = Model.Count();
+        for ( int i= 0; i < productListLength; i++)
         {
             <div class="single-product">
-                <a class="add-to-favourites"></a>
-                <a asp-action="Details" asp-controller="Product" asp-route-productId="@item.Id">
+                <div class="favoutites-links-container">
+                    @if (Model[i].IsFavourite)
+                    {
+                        <a class="remove-from-favourites" onclick="removeFromFavourites(@Model[i].Id, @i)"></a>
+                    }
+                    else
+                    {
+                        <a class="add-to-favourites" onclick="addToFavourites(@Model[i].Id, @i)"></a>
+                    }
+                </div>
+                <a asp-action="Details" asp-controller="Product" asp-route-productId="@Model[i].Id">
 
                     <img src="~/assets/product.png" />
                     <div class="price-container">
                         <div>
-                            <span class="current-price">@item.Price.ToString("0.00") zł</span>
-                            @if (item.IsOverpriced)
+                            <span class="current-price">@Model[i].Price.ToString("0.00") zł</span>
+                            @if (Model[i].IsOverpriced)
                             {
                                 <span class="before-price">70,99 zł</span>
                             }
                         </div>
-                        @if (item.IsOverpriced)
+                        @if (Model[i].IsOverpriced)
                         {
-                            double? discount = 100 - item.BeforePrice / item.Price;
+                            double? discount = 100 - Model[i].BeforePrice / Model[i].Price;
                             <span class="discount">@discount %</span>
                         }
 
                     </div>
-                    <span>@item.Name</span>
+                    <span>@Model[i].Name</span>
                 </a>
-                @await Html.PartialAsync("_AddToCartPartial", new Shop.ViewModels.AddToCartViewModel() { Id = item.Id, Sizes = item.Sizes, Quantity = item.Quantity })
+                @await Html.PartialAsync("_AddToCartPartial", new Shop.ViewModels.AddToCartViewModel() { Id = Model[i].Id, Sizes = Model[i].Sizes, Quantity = Model[i].Quantity })
 
                 
             </div>
@@ -51,3 +61,4 @@
 </main>
 
 <script src="~/js/filters.js"></script>
+<script src="~/js/favourites.js"></script>

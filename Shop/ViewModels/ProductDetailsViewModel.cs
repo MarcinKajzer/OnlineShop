@@ -25,5 +25,8 @@ namespace Shop.ViewModels
 
         public List<SizeInfoDTO> Sizes { get; set; }
 
+        public bool IsFavourite { get; set; }
+
+
     }
 }
