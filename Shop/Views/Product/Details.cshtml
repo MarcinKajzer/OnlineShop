@@ -13,13 +13,20 @@
         </div>
         <div class="details">
             <div class="favoutites-links-container">
-                @if (Model.IsFavourite)
+                @if (User.Identity.IsAuthenticated)
                 {
-                    <a class="remove-from-favourites" onclick="removeFromFavourites(@Model.Id, 0)"></a>
+                    @if (Model.IsFavourite)
+                    {
+                        <a class="remove-from-favourites" onclick="removeFromFavourites(@Model.Id, 0)"></a>
+                    }
+                    else
+                    {
+                        <a class="add-to-favourites" onclick="addToFavourites(@Model.Id, 0)"></a>
+                    }
                 }
                 else
                 {
-                    <a class="add-to-favourites" onclick="addToFavourites(@Model.Id, 0)"></a>
+                    ; <a class="add-to-favourites" asp-action="Login" asp-controller="Account" asp-route-ReturnUrl="/Product/Details?productId=@Model.Id"></a>
                 }
             </div>
             <a asp-action="Update" asp-controller="Product" asp-route-productId="@Model.Id">Edytuj</a>

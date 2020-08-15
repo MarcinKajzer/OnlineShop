@@ -8,7 +8,13 @@
                 document.getElementsByClassName("favoutites-links-container")[index].innerHTML =
                     '<a onclick="removeFromFavourites(' + productId + ',' + index + ')" class="remove-from-favourites"></a>';
 
-                document.querySelector(".number-of-favourites").innerHTML = parseInt(document.querySelector(".number-of-favourites").innerHTML) + 1;
+                if (document.querySelector(".number-of-favourites").style.display == "none") {
+                    document.querySelector(".number-of-favourites").style.display = "block";
+                    document.querySelector(".number-of-favourites").innerHTML = 1;
+                }
+                else {
+                    document.querySelector(".number-of-favourites").innerHTML = parseInt(document.querySelector(".number-of-favourites").innerHTML) + 1;
+                }
             },
             error: function (ex) {
                 alert('Coś poszło nie tak' + ex);
@@ -29,6 +35,13 @@ function removeFromFavourites(productId, index) {
                     '<a onclick="addToFavourites(' + productId + ',' + index + ')" class="add-to-favourites"></a>';
 
                 document.querySelector(".number-of-favourites").innerHTML = parseInt(document.querySelector(".number-of-favourites").innerHTML) - 1;
+
+                if (document.querySelector(".number-of-favourites").innerHTML == 0) {
+                    document.querySelector(".number-of-favourites").style.display = "none";
+                }
+                else {
+                    document.querySelector(".number-of-favourites").style.display = "block";
+                }
             },
             error: function (ex) {
                 alert('Coś poszło nie tak' + ex);

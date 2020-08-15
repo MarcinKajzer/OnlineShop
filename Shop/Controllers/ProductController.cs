@@ -162,10 +162,16 @@ namespace Shop.Controllers
             if(prod != null)
             {
                 var currentUser = await GetCurrentUser();
-                List<int> userFavouritesProductsIds = currentUser.Favourites.Select(x => x.Id).ToList();
 
-                if (userFavouritesProductsIds.Contains(prod.Id))
-                    return View(productMapper.MapToProductDetailsViewModel(prod, true));
+                if (currentUser != null)
+                {
+                    List<int> userFavouritesProductsIds = currentUser.Favourites.Select(x => x.Id).ToList();
+
+                    if (userFavouritesProductsIds.Contains(prod.Id))
+                        return View(productMapper.MapToProductDetailsViewModel(prod, true));
+                    else
+                        return View(productMapper.MapToProductDetailsViewModel(prod, false));
+                }
                 else
                     return View(productMapper.MapToProductDetailsViewModel(prod, false));
             }

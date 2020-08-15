@@ -20,10 +20,19 @@ namespace Shop.DataAcces
         public List<Product> FindAll(Filters filter)
         {
             IQueryable<Product> products = _dbContext.Products.
-                Where(x => x.Category == filter.Category && x.Gender == filter.Gender).
                 Where(x => x.Price >= filter.MinPrice && x.Price <= filter.MaxPrice).
                 Where(x => !x.IsArchived);
-                
+
+            if (filter.Category != 0 && filter.Gender != 0)
+            {
+                products = products.Where(x => x.Category == filter.Category && x.Gender == filter.Gender);
+            }
+
+            if (!string.IsNullOrEmpty(filter.SearchBoxValue))
+            {
+                products = products.Where(p => p.Name.Contains(filter.SearchBoxValue));
+            }
+                 
             if (filter.IsOverpriced)
                 products = products.Where(p => p.IsOverpriced);
 

@@ -5,15 +5,12 @@
                 <a href="#" class="favourites-icon"></a>
                 @if (User.Identity.IsAuthenticated)
                 {
-                    <div class="number-of-favourites">0</div>
+                    <div class="number-of-favourites"></div>
                 }
             </li>
             <li>
                 <a asp-action="Index" asp-controller="Cart" class="cart-icon"></a>
-                @if (User.Identity.IsAuthenticated)
-                {
-                    <div class="number-of-cart-items">0</div>
-                }
+                <div class="number-of-cart-items"></div>
             </li>
             <li class="account-icon"></li>
         </ul>
@@ -34,17 +31,18 @@
         <h1><a asp-action="Index" asp-controller="Home">Online Shop</a> </h1>
     </div>
     <div class="search-box">
-        <input placeholder="Szukaj">
-        <button></button>
+        <form asp-action="GetAll" asp-controller="Product" method="get">
+            <input placeholder="Szukaj" name="SearchBoxValue">
+            <button type="submit"></button>
+        </form>
     </div>
 </div>
 
 <script src="~/js/top-bar.js"></script>
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
 
-@if (User.Identity.IsAuthenticated)
-{
-    <script type="text/javascript">
+
+<script type="text/javascript">
 
         $(document).ready(function () {
             $.ajax({
@@ -52,7 +50,13 @@
                 url: '../Cart/GetTotalQuantity',
                 dataType: 'json',
                 success: function (quantity) {
-                    document.querySelector(".number-of-cart-items").innerHTML = quantity;
+                    if (quantity == 0) {
+                        document.querySelector(".number-of-cart-items").style.display = "none";
+                    }
+                    else {
+                        document.querySelector(".number-of-cart-items").style.display = "block";
+                        document.querySelector(".number-of-cart-items").innerHTML = quantity;
+                    }
                 },
                 error: function (ex) {
                     alert('Coś poszło nie tak' + ex);
@@ -60,14 +64,25 @@
             });
             return false;
         })
+</script >
 
+
+@if (User.Identity.IsAuthenticated)
+{
+    <script>
         $(document).ready(function () {
             $.ajax({
                 type: 'GET',
                 url: '../Favourites/GetQuantity',
                 dataType: 'json',
                 success: function (quantity) {
-                    document.querySelector(".number-of-favourites").innerHTML = quantity;
+                    if (quantity == 0) {
+                        document.querySelector(".number-of-favourites").style.display = "none";
+                    }
+                    else {
+                        document.querySelector(".number-of-favourites").style.display = "block";
+                        document.querySelector(".number-of-favourites").innerHTML = quantity;
+                    }
                 },
                 error: function (ex) {
                     alert('Coś poszło nie tak' + ex);

@@ -22,7 +22,13 @@
                 quantityInput.value = result.currentItemQuantity;
                 totalAmount.innerHTML = result.totalAmount.toFixed(2) + ' zł';
                 productAmount.innerHTML = result.currentItemAmount.toFixed(2) + ' zł';
-                document.querySelector(".number-of-cart-items").innerHTML = result.totalQuantity;
+                if (result.totalQuantity == 0) {
+                    document.querySelector(".number-of-cart-items").style.display = "none";
+                } else {
+                    document.querySelector(".number-of-cart-items").style.display = "block";
+                    document.querySelector(".number-of-cart-items").innerHTML = result.totalQuantity;
+                }
+                
             },
             error: function (ex) {
                 alert('Coś poszło nie tak' + ex);

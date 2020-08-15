@@ -226,6 +226,7 @@ h1{
     line-height: 23px;
     color: white;
     font-size: 15px;
+    display: none;
 }
 
 .account-icon {
@@ -705,7 +706,6 @@ main{
 }
 
 .single-product {
-    margin: 20px;
     width: 90%;
     max-width: 400px;
     padding: 20px;
@@ -714,7 +714,7 @@ main{
     position: relative;
     overflow: hidden;
     font-size: 18px;
-    margin: auto auto;
+    margin: 20px auto;
 }
 
 .favoutites-links-container{
