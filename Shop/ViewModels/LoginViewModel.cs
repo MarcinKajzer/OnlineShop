@@ -14,5 +14,6 @@ namespace Shop.Controllers
         public bool rememberMe { get; set; }
         public string ReturnUrl { get; set; }
 
+
     }
 }

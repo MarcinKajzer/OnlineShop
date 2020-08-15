@@ -13,7 +13,6 @@ using Shop.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace Shop.Controllers
@@ -128,7 +127,6 @@ namespace Shop.Controllers
                 }
             }
             
-
             ViewBag.Filter = filters;
             return View(prods);
         }
@@ -162,9 +160,25 @@ namespace Shop.Controllers
                     return View(productMapper.MapToProductDetailsViewModel(prod, false));
             }
                
-
             return NotFound();
         }
+
+        public async Task<IActionResult> Delete(int productId)
+        {
+            Product prod = await _repository.FindOne(productId);
+
+            if(prod == null)
+                return NotFound();
+            
+            prod.IsArchived = true;
+            var result = _repository.Update(prod);
+
+            if (result == null)
+                return NotFound();
+
+            return RedirectToAction(nameof(GetAll), new { prod.Gender, prod.Category });
+        }
+
 
         [HttpGet]
         public JsonResult GetCategories(int gender)

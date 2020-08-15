@@ -20,13 +20,9 @@ namespace Shop.Controllers
         protected ActionResult RedirectToLocal(string returnUrl)
         {
             if (Url.IsLocalUrl(returnUrl))
-            {
                 return Redirect(returnUrl);
-            }
             else
-            {
                 return RedirectToAction("Index", "Home");
-            }
         }
 
         [HttpGet]
@@ -51,13 +47,10 @@ namespace Shop.Controllers
                 var result = await _userManager.CreateAsync(user, model.Password);
 
                 if (result.Succeeded)
-                {
                     return RedirectToAction("Index", "Home");
-                }
+
                 foreach (var error in result.Errors)
-                {
                     ModelState.AddModelError(string.Empty, error.Description);
-                }
             }
             
             return View(model);
@@ -78,9 +71,7 @@ namespace Shop.Controllers
                 var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.rememberMe, lockoutOnFailure: false);
 
                 if (result.Succeeded)
-                {
                     return RedirectToLocal(model.ReturnUrl);
-                }
                 else
                 {
                     ModelState.AddModelError(string.Empty, "Invalid login attempt.");

@@ -603,6 +603,99 @@ main{
     width: 100%;
 }
 
+/*........ADD-NEW-PRODUCT...........*/
+
+.add-product-form{
+    width: 90%;
+    max-width: 900px;
+    margin: 50px auto;
+     -webkit-box-shadow: 0px 0px 28px -17px rgba(179,179,179,1);
+    -moz-box-shadow: 0px 0px 28px -17px rgba(179,179,179,1);
+    box-shadow: 0px 0px 28px -17px rgba(179,179,179,1);
+    padding: 20px 0 50px;
+}
+
+.add-product-form .header{
+    border-bottom: solid 1px lightgray;
+    height: 70px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;
+    color: gray;
+    width: 80%;
+    margin: 0 auto 50px;
+}
+
+.add-product-form .details, .add-product-form .sizes{
+    width: 80%;
+    margin: 0 auto;
+}
+
+.add-product-form .form-group{
+    margin: 10px 0;
+}
+
+.add-product-form .form-group label{
+    display: block;
+    font-size: 15px;
+    line-height: 25px;
+    color: gray;
+}
+
+.add-product-form input, .add-product-form select {
+    height: 25px;
+}
+
+.add-product-form .form-group textarea{
+    height: 80px
+}
+
+.add-product-form .form-group input, .add-product-form .form-group textarea, button, .add-product-form select{
+    width: 100%;
+    padding: 3px;
+}
+
+.add-product-form button {
+    background: forestgreen;
+    margin-top: 20px;
+    overflow: hidden
+}
+
+.checkbox-form-group input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+}
+
+.checkbox-form-group {
+    display: flex;
+    align-items: center;
+}
+
+.checkbox-form-group label {
+    padding-left: 10px;
+}
+
+
+@media screen and (min-width: 800px){
+    .add-product-form .header{
+        width: 72%
+    }
+    
+    .add-product-form form{
+        display: flex;
+        justify-content: space-between;
+        width: 80%;
+        margin: 0 auto;
+    }
+    
+    .add-product-form .details, .add-product-form .sizes{
+        width: 40%;
+    }
+}
+
+
+
 /*..........LIST_OF_PRODUCTS..........*/
 
 .products-list {

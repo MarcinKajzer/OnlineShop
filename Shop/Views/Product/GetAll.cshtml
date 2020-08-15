@@ -34,7 +34,9 @@
                     }
                     else
                     {
-                        <a class="add-to-favourites" asp-action="Login" asp-controller="Account"  asp-route-ReturnUrl="gender=@Model[i].Gender&category=@Model[i].Category"></a>
+                        int gender = (int)Model[i].Gender;
+                        int category = (int)Model[i].Category;
+;                        <a class="add-to-favourites" asp-action="Login" asp-controller="Account"  asp-route-ReturnUrl="/Product/GetAll?gender=@gender&category=@category"></a>
                     }
 
                     </div>
@@ -46,13 +48,14 @@
                             <span class="current-price">@Model[i].Price.ToString("0.00") zł</span>
                             @if (Model[i].IsOverpriced)
                             {
-                                <span class="before-price">70,99 zł</span>
+                                string beforePrice = Model[i].BeforePrice.HasValue ? Model[i].BeforePrice.ToString() : "";
+                                <span class="before-price">@beforePrice zł</span>
                             }
                         </div>
                         @if (Model[i].IsOverpriced)
                         {
-                            double? discount = 100 - Model[i].BeforePrice / Model[i].Price;
-                            <span class="discount">@discount %</span>
+                            double  discount = Model[i].BeforePrice.HasValue ? (double)(100 - Model[i].Price / Model[i].BeforePrice * 100) : 5;
+                            <span class="discount">- @discount.ToString("0") %</span>
                         }
 
                     </div>

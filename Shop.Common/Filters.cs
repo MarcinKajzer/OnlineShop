@@ -22,11 +22,35 @@ namespace Shop.Common
 
         public Filters()
         {
+            InitializeColors();
+            InitializeSizes();
+        }
+
+        public Filters(Gender gender, Category category)
+        {
+            Category = category;
+            Gender = gender;
+
             foreach (Color color in Enum.GetValues(typeof(Color)))
             {
                 ColorCheckboxes.Add(new ColorCheckbox { Color = color });
             }
 
+            foreach (Size size in Enum.GetValues(typeof(Size)))
+            {
+                SizeCheckboxes.Add(new SizeCheckbox { Size = size });
+            }
+        }
+
+        private void InitializeColors()
+        {
+            foreach (Color color in Enum.GetValues(typeof(Color)))
+            {
+                ColorCheckboxes.Add(new ColorCheckbox { Color = color });
+            }
+        }
+        private void InitializeSizes()
+        {
             foreach (Size size in Enum.GetValues(typeof(Size)))
             {
                 SizeCheckboxes.Add(new SizeCheckbox { Size = size });

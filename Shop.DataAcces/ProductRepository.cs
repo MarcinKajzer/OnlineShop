@@ -21,8 +21,11 @@ namespace Shop.DataAcces
         {
             IQueryable<Product> products = _dbContext.Products.
                 Where(x => x.Category == filter.Category && x.Gender == filter.Gender).
-                Where(x => x.IsOverpriced == filter.IsOverpriced).
-                Where(x => x.Price >= filter.MinPrice && x.Price <= filter.MaxPrice);
+                Where(x => x.Price >= filter.MinPrice && x.Price <= filter.MaxPrice).
+                Where(x => !x.IsArchived);
+                
+            if (filter.IsOverpriced)
+                products = products.Where(p => p.IsOverpriced);
 
             var selectedColors = filter.SelectedColors;
             

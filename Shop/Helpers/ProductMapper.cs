@@ -39,15 +39,22 @@ namespace Shop.Helpers
 
         public Product UpdateExistingProduct(UpdateProductViewModel from, Product to)
         {
+            to.Id = from.Id;
             to.Category = from.Category;
             to.Color = from.Color;
             to.Description = from.Description;
             to.Gender = from.Gender;
             to.Name = from.Name;
-            to.Price = from.Price;
             to.Quantity = 0;
+            to.Price = from.Price;
             to.IsOverpriced = from.IsOverpriced;
 
+            if (from.IsOverpriced)
+            {
+                to.BeforePrice = to.Price;
+                to.Price = from.NewPrice;
+            }
+            
             for (int i = 0; i < from.Sizes.Count(); i++)
             {
                 if (from.Sizes[i].ExistsInDB)
@@ -55,11 +62,13 @@ namespace Shop.Helpers
                     to.Sizes.FirstOrDefault(s => s.Id == from.Sizes[i].Id).Quantity = from.Sizes[i].Quantity;
                     to.Quantity += from.Sizes[i].Quantity;
                 }
-                    
-                else if (from.Sizes[i].Quantity > 0)
+                else
                 {
-                    SizeInfo s = new SizeInfo { Quantity = from.Sizes[i].Quantity, Size = from.Sizes[i].Size };
-                    to.Sizes.Add(s);
+                    if (from.Sizes[i].Quantity > 0)
+                    {
+                        SizeInfo s = new SizeInfo { Quantity = from.Sizes[i].Quantity, Size = from.Sizes[i].Size };
+                        to.Sizes.Add(s);
+                    }
                 }
             }
 
@@ -77,6 +86,7 @@ namespace Shop.Helpers
                 Id = from.Id,
                 Name = from.Name,
                 Price = from.Price,
+                IsOverpriced = from.IsOverpriced,
                 Sizes = new List<SizeInfoDTO>()
             };
 
