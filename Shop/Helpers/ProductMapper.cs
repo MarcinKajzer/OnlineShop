@@ -20,6 +20,7 @@ namespace Shop.Helpers
                 Gender = from.Gender,
                 Name = from.Name,
                 Price = from.Price,
+                Image = from.ImageName,
                 Sizes = new List<SizeInfo>()
             };
 

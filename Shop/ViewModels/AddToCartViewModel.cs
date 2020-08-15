@@ -10,5 +10,6 @@ namespace Shop.ViewModels
         public List<SizeInfoDTO> Sizes { get; set; }
         public Size SelectedSize { get; set; }
         public int Quantity { get; set; }
+        public string Image { get; set; }
     }
 }

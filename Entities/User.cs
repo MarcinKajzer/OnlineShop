@@ -15,6 +15,6 @@ namespace Entities
         [Column(TypeName = "Varchar(50)")]
         public string LastName { get; set; }
 
-        public virtual List<Product> Favourites { get; set; } 
+        public virtual List<Product> Favourites { get; set; }
     }
 }

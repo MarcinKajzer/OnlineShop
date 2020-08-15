@@ -28,6 +28,7 @@ namespace Shop.ViewModels
         [Required]
         public Category Category { get; set; }
         public IFormFile Image { get; set; }
+        public string ImageName { get; set; }
 
     }
 }

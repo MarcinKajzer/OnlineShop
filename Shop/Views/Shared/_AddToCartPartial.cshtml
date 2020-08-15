@@ -3,6 +3,7 @@
     <form asp-action="AddProduct" asp-controller="Cart" method="post">
 
         <input type="hidden" asp-for="@Model.Id" />
+        <input type="hidden" asp-for="@Model.Image" />
 
         <div class="size-and-quantity">
             <div>

@@ -1,5 +1,6 @@
 ﻿using Entities;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -21,12 +22,15 @@ namespace Shop.Controllers
     {
         private readonly IProductRepository _repository;
         private readonly UserManager<User> _userManager;
+        private readonly IWebHostEnvironment _environment;
         private readonly ProductMapper productMapper = new ProductMapper();
         public ProductController(IProductRepository repository, 
-                                 UserManager<User> userManager)
+                                 UserManager<User> userManager,
+                                 IWebHostEnvironment environment)
         {
             _repository = repository;
             _userManager = userManager;
+            _environment = environment;
         }
 
         [HttpGet]
@@ -50,10 +54,16 @@ namespace Shop.Controllers
         {
             if (ModelState.IsValid)
             {
+                string newImageName = Guid.NewGuid().ToString();
+                model.ImageName = newImageName;
+
                 var result = await _repository.Create(productMapper.MapToProductModel(model));
 
                 if (result != null)
                 {
+                    ImageUploader uploader = new ImageUploader(_environment);
+                    await uploader.Upload(model.Image, newImageName);
+
                     return RedirectToAction(nameof(Details), new { productId = result.Id }); 
                 }
 

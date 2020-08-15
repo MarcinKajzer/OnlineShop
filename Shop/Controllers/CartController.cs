@@ -48,7 +48,8 @@ namespace Shop.Controllers
                             Id = prod.Id,
                             Name = prod.Name,
                             Price = prod.Price,
-                            Size = model.SelectedSize
+                            Size = model.SelectedSize,
+                            Image = model.Image
                         }
                     },
                     TotalAmount = model.Quantity * prod.Price
@@ -72,7 +73,8 @@ namespace Shop.Controllers
                         Id = prod.Id,
                         Name = prod.Name,
                         Price = prod.Price,
-                        Size = model.SelectedSize
+                        Size = model.SelectedSize,
+                        Image = model.Image
                     });
                     
                 }

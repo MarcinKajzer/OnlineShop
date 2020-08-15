@@ -1,4 +1,5 @@
-﻿using Shop.Common;
+﻿using Microsoft.AspNetCore.Http;
+using Shop.Common;
 using Shop.Models;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -31,5 +32,6 @@ namespace Shop.ViewModels
         public bool IsArchived { get; set; }
         public bool IsOverpriced { get; set; }
         public double NewPrice { get; set; }
+        public IFormFile Image  { get; set; }
     }
 }

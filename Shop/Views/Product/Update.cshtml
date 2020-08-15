@@ -47,15 +47,19 @@
                     <span asp-validation-for="Color"></span>
                 </div>
                 <div class="checkbox-form-group form-group">
-                    <input asp-for="IsOverpriced" type="checkbox" class="is-overpriced"/>
+                    <input asp-for="IsOverpriced" type="checkbox" class="is-overpriced" />
                     <label asp-for="IsOverpriced">Przeceń produkt</label>
                 </div>
                 <div class="form-group">
                     <label asp-for="NewPrice">Nowa cena</label>
-                    <input asp-for="NewPrice" class="new-price"/>
+                    <input asp-for="NewPrice" class="new-price" />
                     <span asp-validation-for="NewPrice"></span>
                 </div>
-
+                <div class="form-group">
+                    <label asp-for="Image">Zdjęcie</label>
+                    <input asp-for="Image" />
+                    <span asp-validation-for="Image"></span>
+                </div>
             </div>
             <div class="sizes">
                

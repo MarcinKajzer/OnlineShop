@@ -42,7 +42,10 @@
                     </div>
                 <a asp-action="Details" asp-controller="Product" asp-route-productId="@Model[i].Id">
 
-                    <img src="~/assets/product.png" />
+                    @{ 
+                        string imageSrc = "/products-images/" + Model[i].Image + ".jpg";
+                    } 
+                    <img src="@imageSrc" />
                     <div class="price-container">
                         <div>
                             <span class="current-price">@Model[i].Price.ToString("0.00") zł</span>
@@ -61,7 +64,7 @@
                     </div>
                     <span>@Model[i].Name</span>
                 </a>
-                @await Html.PartialAsync("_AddToCartPartial", new Shop.ViewModels.AddToCartViewModel() { Id = Model[i].Id, Sizes = Model[i].Sizes, Quantity = Model[i].Quantity })
+                @await Html.PartialAsync("_AddToCartPartial", new Shop.ViewModels.AddToCartViewModel() { Id = Model[i].Id, Sizes = Model[i].Sizes, Quantity = Model[i].Quantity, Image = Model[i].Image })
 
                 
             </div>

@@ -33,7 +33,10 @@
 
                 <tr>
                     <td>
-                        <img src="~/assets/product.png" />
+                        @{
+                            string imageSrc = "/products-images/" + Model[i].Image + ".jpg";
+                        }
+                        <img src="@imageSrc" />
                     </td>
                     <td>
                         <span><a asp-action="Details" asp-controller="Product" asp-route-productId="@Model[i].Id">@Model[i].Name</a></span>
