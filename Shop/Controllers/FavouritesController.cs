@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Shop.DataAcces.Interfaces;
+using Shop.Helpers;
+using Shop.ViewModels;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
@@ -66,10 +68,18 @@ namespace Shop.Controllers
             return null;
         }
 
-        public async Task<List<Product>> GetAll ()
+        [Authorize]
+        public async Task<IActionResult> GetAll()
         {
             var currentUser = await GetCurrentUser();
-            return currentUser.Favourites.ToList();
+            List<Product> favourites = currentUser.Favourites.ToList();
+
+            List<ProductDetailsViewModel> prods = new List<ProductDetailsViewModel>();
+
+            ProductMapper productMapper = new ProductMapper();
+            favourites.ForEach(f => prods.Add(productMapper.MapToProductDetailsViewModel(f, true)));
+
+            return View(prods);
         }
 
         public async Task<int> GetQuantity()

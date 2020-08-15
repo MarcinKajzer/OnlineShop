@@ -695,8 +695,6 @@ main{
     }
 }
 
-
-
 /*..........LIST_OF_PRODUCTS..........*/
 
 .products-list {
@@ -870,9 +868,19 @@ main{
     }
 }
 
-/*..........LOGIN-AND-REGISTER-PAGES.............*/
+/*..........LIST-OF-FAVOURITES................*/
 
-.account-form{
+.favourites-list{
+    display: flex;
+    flex-wrap: wrap;
+    max-width: 1100px;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-top: 170px;
+}
+
+/*..........LOGIN-AND-REGISTER-PAGES.............*/
+.account-form {
     width: 90%;
     max-width: 400px;
     margin: 50px auto 100px;

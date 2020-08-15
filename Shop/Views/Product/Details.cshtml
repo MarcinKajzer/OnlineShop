@@ -43,6 +43,7 @@
                         <span class="before-price">@beforePrice zł</span>
                     }
                 </div>
+
                 @if (Model.IsOverpriced)
                 {
                     double discount = Model.BeforePrice.HasValue ? (double)(100 - Model.Price / Model.BeforePrice * 100) : 5;
@@ -55,4 +56,4 @@
     </div>
 </main>
 
-<script src="~/js/favourites.js"></script>
+<script src="~/js/add-and-remove-favourite-product.js"></script>

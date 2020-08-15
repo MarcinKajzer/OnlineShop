@@ -1,18 +1,12 @@
 ﻿@model List<Shop.ViewModels.ProductDetailsViewModel>
-
 @{
-    ViewData["Title"] = "GetByCategory";
+    ViewData["Title"] = "GetAll";
 }
 
-<p class="show-filters-button">Filtruj</p>
-
-
-@await Html.PartialAsync("_FilterResultsPartial", (Shop.Common.Filters)ViewBag.Filter)
-
-<main class="products-list">
+<main class="favourites-list">
     @if (Model.Count == 0)
     {
-        <p class="no-products-info">Nie mamy obecnie żadnego produktu w wybranej kategorii</p>
+        <p class="no-products-info">Nie masz obecnie ulubionych produktów</p>
     }
     else
     {
@@ -21,24 +15,7 @@
         {
             <div class="single-product">
                 <div class="favoutites-links-container">
-                    @if (User.Identity.IsAuthenticated)
-                    {
-                        @if (Model[i].IsFavourite)
-                        {
-                            <a class="remove-from-favourites" onclick="removeFromFavourites(@Model[i].Id, @i)"></a>
-                        }
-                        else
-                        {
-                            <a class="add-to-favourites" onclick="addToFavourites(@Model[i].Id, @i)"></a>
-                        }
-                    }
-                    else
-                    {
-                        int gender = (int)Model[i].Gender;
-                        int category = (int)Model[i].Category;
-                        ; <a class="add-to-favourites" asp-action="Login" asp-controller="Account" asp-route-ReturnUrl="/Product/GetAll?gender=@gender&category=@category"></a>
-                    }
-
+                    <a class="remove-from-favourites" onclick="removeFromFavourites(@Model[i].Id, @i)"></a>
                 </div>
                 <a asp-action="Details" asp-controller="Product" asp-route-productId="@Model[i].Id">
 
@@ -74,5 +51,4 @@
 
 </main>
 
-<script src="~/js/filters.js"></script>
-<script src="~/js/add-and-remove-favourite-product.js"></script>
+<script src="~/js/remove-product-form-favourites-list.js"></script>
