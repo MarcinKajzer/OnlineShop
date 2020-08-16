@@ -32,6 +32,7 @@ namespace Shop
             services.AddDbContext<AppDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Default")));
 
             services.AddIdentity<User, IdentityRole>()
+               .AddRoles<IdentityRole>()
                .AddEntityFrameworkStores<AppDbContext>();
 
             services.Configure<IdentityOptions>(options =>

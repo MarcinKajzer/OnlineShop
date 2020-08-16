@@ -19,7 +19,7 @@
 
                         if (i == 0)
                         {
-                            <input type="radio" asp-for="SelectedSize" value="@sizeValue" id="@id@i" checked/>
+                            <input type="radio" asp-for="SelectedSize" value="@sizeValue" id="@id@i" checked />
                         }
                         else
                         {
@@ -32,16 +32,15 @@
             <input name="quantity" type="number" value="1" />
         </div>
 
-        <button type="submit">Do koszyka</button>
+        @if (User.IsInRole("Administrator"))
+        {
+            <button type="submit" disabled class="disabled-button">Produkt</button>
+        }
+        else
+        {
+            <button type="submit">Do koszyka</button>
+        }
+
 
     </form>
 
-
-
-<script>
-
-
-
-
-
-</script>

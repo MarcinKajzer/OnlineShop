@@ -1,4 +1,5 @@
 ﻿using Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Shop.ViewModels;
@@ -17,6 +18,7 @@ namespace Shop.Controllers
             _signInManager = signInManager;
         }
 
+        [NonAction]
         protected ActionResult RedirectToLocal(string returnUrl)
         {
             if (Url.IsLocalUrl(returnUrl))
@@ -47,8 +49,16 @@ namespace Shop.Controllers
                 var result = await _userManager.CreateAsync(user, model.Password);
 
                 if (result.Succeeded)
-                    return RedirectToAction("Index", "Home");
+                {
+                    var result2 = await _userManager.AddToRoleAsync(user, "User");
 
+                    if(result2.Succeeded)
+                        return RedirectToAction("Index", "Home");
+
+                    foreach (var error in result2.Errors)
+                        ModelState.AddModelError(string.Empty, error.Description);
+                }
+                    
                 foreach (var error in result.Errors)
                     ModelState.AddModelError(string.Empty, error.Description);
             }
@@ -82,6 +92,7 @@ namespace Shop.Controllers
             return View(model);
         }
 
+        [Authorize]
         public async Task<IActionResult> LogOut()
         {
             await _signInManager.SignOutAsync();

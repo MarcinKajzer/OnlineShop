@@ -986,7 +986,7 @@ td span:nth-child(2){
     font-size: 14px;
 }
 
-.amount, .price{
+table .amount, table .price{
     color: rgba(0,0,0,.4);
 }
 
@@ -1122,7 +1122,14 @@ table input[type=number] {
 }
 
 
+.disabled-button{
+    cursor: default;
+}
 
+.disabled-button::before {
+    width: 0;
+    height: 0;
+}
 
 
 

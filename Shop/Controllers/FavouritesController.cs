@@ -8,11 +8,11 @@ using Shop.Helpers;
 using Shop.ViewModels;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace Shop.Controllers
 {
+    [Authorize(Roles = "User")]
     public class FavouritesController : Controller
     {
         private readonly IProductRepository _repository;
@@ -26,7 +26,6 @@ namespace Shop.Controllers
         }
 
         [HttpGet]
-        [Authorize]
         public async Task Add(int productId)
         {
             var currentUser = await GetCurrentUser();
@@ -41,7 +40,6 @@ namespace Shop.Controllers
         }
 
         [HttpGet]
-        [Authorize]
         public async Task Remove(int productId)
         {
             var currentUser = await GetCurrentUser();
@@ -68,7 +66,6 @@ namespace Shop.Controllers
             return null;
         }
 
-        [Authorize]
         public async Task<IActionResult> GetAll()
         {
             var currentUser = await GetCurrentUser();

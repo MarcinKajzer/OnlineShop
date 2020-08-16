@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Shop.DataAcces;
 
 namespace Shop.DataAcces.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200816104305_ADD admin role")]
+    partial class ADDadminrole
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -172,7 +174,7 @@ namespace Shop.DataAcces.Migrations
                         {
                             Id = "e17cbb1b-adea-43b0-af7f-33c85a5cb976",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "be0b203b-8483-4649-9376-93a49cc6bb57",
+                            ConcurrencyStamp = "333e5b08-c488-4005-9619-0cb8e23cfa73",
                             Email = "admin@shop.com",
                             EmailConfirmed = false,
                             FirstName = "Admin",
@@ -180,9 +182,9 @@ namespace Shop.DataAcces.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@SHOP.COM",
                             NormalizedUserName = "ADMIN@SHOP.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEHRV9KNBzMO31EyPcIeNVanvttmbfTXQQGpzEnDcZwsPTKNEZeA3G/Ci6lCYFzd5kg==",
+                            PasswordHash = "AQAAAAEAACcQAAAAELEI2Hc7/hpGuu4Py0gS1D5UZ1cHP+eUU5UwaNG29zpTNxm4X9htE5zjcl5+UW74kA==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "adc0142e-ed1c-47e5-aad4-1a0a46ab3ebb",
+                            SecurityStamp = "643a15b6-8d23-4fdd-9d26-c9d61d61160c",
                             TwoFactorEnabled = false,
                             UserName = "admin@shop.com"
                         });
@@ -218,16 +220,9 @@ namespace Shop.DataAcces.Migrations
                         new
                         {
                             Id = "2c5e174e-3b0e-446f-86af-483d56fd7210",
-                            ConcurrencyStamp = "8c2e314c-cbdc-4afe-842f-f178729565d4",
+                            ConcurrencyStamp = "db354a9b-5965-45a4-acac-0b9da829ebc0",
                             Name = "Administrator",
                             NormalizedName = "ADMINISTRATOR"
-                        },
-                        new
-                        {
-                            Id = "ace800ca-6df1-415a-9cf4-2c48f3f125ba",
-                            ConcurrencyStamp = "65ccc249-55da-489d-8a30-2c8f321326e8",
-                            Name = "User",
-                            NormalizedName = "USER"
                         });
                 });
 

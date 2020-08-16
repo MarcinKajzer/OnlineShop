@@ -18,6 +18,7 @@ using System.Threading.Tasks;
 
 namespace Shop.Controllers
 {
+    [Authorize(Roles = "Administrator")]
     public class ProductController : Controller
     {
         private readonly IProductRepository _repository;
@@ -34,7 +35,6 @@ namespace Shop.Controllers
         }
 
         [HttpGet]
-        [Authorize]
         public IActionResult Add()
         {
             CreateProductViewModel model = new CreateProductViewModel();
@@ -111,6 +111,7 @@ namespace Shop.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> GetAll(Filters filters)
         {
             List<Product> products = _repository.FindAll(filters).ToList();
@@ -155,6 +156,7 @@ namespace Shop.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> Details(int productId)
         {
             Product prod = await _repository.FindOne(productId);
@@ -197,6 +199,7 @@ namespace Shop.Controllers
 
 
         [HttpGet]
+        [AllowAnonymous]
         public JsonResult GetCategories(int gender)
         {
             List<SelectListItem> list;

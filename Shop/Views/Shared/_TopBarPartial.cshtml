@@ -1,17 +1,21 @@
 ﻿<div class="top-bar">
     <div class="options">
         <ul>
-            <li>
-                <a asp-action="GetAll" asp-controller="Favourites" class="favourites-icon"></a>
-                @if (User.Identity.IsAuthenticated)
-                {
-                    <div class="number-of-favourites"></div>
-                }
-            </li>
-            <li>
-                <a asp-action="Index" asp-controller="Cart" class="cart-icon"></a>
-                <div class="number-of-cart-items"></div>
-            </li>
+            @if (!User.IsInRole("Administrator"))
+            {
+                <li>
+                    <a asp-action="GetAll" asp-controller="Favourites" class="favourites-icon"></a>
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <div class="number-of-favourites"></div>
+                    }
+                </li>
+                <li>
+                    <a asp-action="Index" asp-controller="Cart" class="cart-icon"></a>
+                    <div class="number-of-cart-items"></div>
+                </li>
+            }
+
             <li class="account-icon"></li>
         </ul>
         <div class="account-options-popup">
@@ -41,8 +45,9 @@
 <script src="~/js/top-bar.js"></script>
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
 
-
-<script type="text/javascript">
+@if (!User.IsInRole("Administrator"))
+{
+    <script type="text/javascript">
 
         $(document).ready(function () {
             $.ajax({
@@ -64,10 +69,10 @@
             });
             return false;
         })
-</script >
+    </script>
+}
 
-
-@if (User.Identity.IsAuthenticated)
+@if (User.IsInRole("User"))
 {
     <script>
         $(document).ready(function () {
