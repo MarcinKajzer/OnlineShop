@@ -6,7 +6,6 @@
 
 <p class="show-filters-button">Filtruj</p>
 
-
 @await Html.PartialAsync("_FilterResultsPartial", (Shop.Common.Filters)ViewBag.Filter)
 
 <main class="products-list">
@@ -17,6 +16,7 @@
     else
     {
         int productListLength = Model.Count();
+
         for (int i = 0; i < productListLength; i++)
         {
             <div class="single-product">
@@ -40,38 +40,36 @@
                     }
                     else
                     {
-                        int gender = (int)Model[i].Gender;
-                        int category = (int)Model[i].Category;
-                        ; <a class="add-to-favourites" asp-action="Login" asp-controller="Account" asp-route-ReturnUrl="/Product/GetAll?gender=@gender&category=@category"></a>
+                        <a class="add-to-favourites" asp-action="Login" asp-controller="Account" asp-route-ReturnUrl="/Product/GetAll?gender=@Model[i].Gender&category=@Model[i].Category"></a>
                     }
 
                 </div>
                 <a asp-action="Details" asp-controller="Product" asp-route-productId="@Model[i].Id">
-
-                    @{
-                        string imageSrc = "/products-images/" + Model[i].Image + ".jpg";
-                    }
-                    <img src="@imageSrc" />
+                    <img src="@Model[i].ImagePath" />
                     <div class="price-container">
                         <div>
-                            <span class="current-price">@Model[i].Price.ToString("0.00") zł</span>
                             @if (Model[i].IsOverpriced)
                             {
-                                string beforePrice = Model[i].BeforePrice.HasValue ? Model[i].BeforePrice.ToString() : "";
-                                <span class="before-price">@beforePrice zł</span>
+                                <span class="current-price">@Model[i].FormatedNewPrice zł</span>
+
+                                <span class="before-price">@Model[i].FormatedPrice zł</span>
+                            }
+                            else
+                            {
+                                <span class="current-price">@Model[i].FormatedPrice zł</span>
                             }
                         </div>
+
                         @if (Model[i].IsOverpriced)
                         {
-                            double discount = Model[i].BeforePrice.HasValue ? (double)(100 - Model[i].Price / Model[i].BeforePrice * 100) : 5;
-                            <span class="discount">- @discount.ToString("0") %</span>
+                            <span class="discount">- @Model[i].FormatedDiscount %</span>
                         }
 
                     </div>
                     <span>@Model[i].Name</span>
                 </a>
-                @await Html.PartialAsync("_AddToCartPartial", new Shop.ViewModels.AddToCartViewModel() { Id = Model[i].Id, Sizes = Model[i].Sizes, Quantity = Model[i].Quantity, Image = Model[i].Image })
 
+                @await Html.PartialAsync("_AddToCartPartial", new Shop.ViewModels.AddToCartViewModel() { Id = Model[i].Id, Sizes = Model[i].Sizes, Quantity = Model[i].Quantity, Image = Model[i].Image })
 
             </div>
 

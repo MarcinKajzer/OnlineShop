@@ -129,9 +129,12 @@ input[type="radio"]:hover+label{
     text-align: center;
 }
 
+.field-validation-error{
+    color: red;
+    font-size: 15px;
+}
 /*........LAYOUT..........*/
-
-.top-bar{
+.top-bar {
     border-bottom: solid 1px lightgray;
     display: flex;
     flex-direction: column;

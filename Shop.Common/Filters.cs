@@ -11,8 +11,8 @@ namespace Shop.Common
         public double MaxPrice { get; set; } = 1000;
         public bool IsOverpriced { get; set; }
         public string SearchBoxValue { get; set; }
-        public Gender Gender { get; set; }
-        public Category Category { get; set; }
+        public Gender? Gender { get; set; }
+        public Category? Category { get; set; }
         public SortBy SortBy { get; set; }
 
         public List<ColorCheckbox> ColorCheckboxes { get; set; } = new List<ColorCheckbox>();

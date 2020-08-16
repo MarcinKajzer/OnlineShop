@@ -23,7 +23,7 @@ namespace Shop.DataAcces
                 Where(x => x.Price >= filter.MinPrice && x.Price <= filter.MaxPrice).
                 Where(x => !x.IsArchived);
 
-            if (filter.Category != 0 && filter.Gender != 0)
+            if (filter.Category != null && filter.Gender != null)
             {
                 products = products.Where(x => x.Category == filter.Category && x.Gender == filter.Gender);
             }

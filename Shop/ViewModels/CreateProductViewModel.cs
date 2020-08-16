@@ -8,27 +8,38 @@ namespace Shop.ViewModels
 {
     public class CreateProductViewModel
     {
-        [Required(ErrorMessage = "Name is required.")]
-        [MaxLength(100)]
+        [Required(ErrorMessage = "Nazwa produktu jest wymagana.")]
+        [MinLength(20, ErrorMessage = "Minimalna długość to 20 znaków.")]
+        [MaxLength(100, ErrorMessage = "Maksymalna długość to 100 znaków.")]
         public string Name { get; set; }
 
-        [Required(ErrorMessage = "Prace is required.")]
-        public double Price { get; set; }
-
-        [MaxLength(1000, ErrorMessage = "Maximum length is 1000 characters")]
+        [Required(ErrorMessage = "Opis produktu jest wymagany.")]
+        [MinLength(50, ErrorMessage = "Minimalna długość to 50 znaków.")]
+        [MaxLength(1000, ErrorMessage = "Maksymalna długość to 1000 znaków.")]
         public string Description { get; set; }
 
+        [MaxLength(50)]
+        public string ImageName { get; set; }
+
+        [Required(ErrorMessage = "Cena jest wymagana")]
+        [Range(0, double.MaxValue, ErrorMessage = "Cena musi być wartością dodatnią.")]
+        public double? Price { get; set; }
+
+        
         [Required]
         public Color Color { get; set; }
+
         [Required]
         public Gender Gender { get; set; }
-        [Required]
-        public List<SizeInfoDTO> Sizes { get; set; }
 
         [Required]
         public Category Category { get; set; }
-        public IFormFile Image { get; set; }
-        public string ImageName { get; set; }
 
+        [Required(ErrorMessage = "Zdjęcie jest wymagane.")]
+        public IFormFile Image { get; set; }
+
+
+        [Required]
+        public List<SizeInfoDTO> Sizes { get; set; }
     }
 }

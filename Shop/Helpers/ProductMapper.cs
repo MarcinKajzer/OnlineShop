@@ -19,7 +19,7 @@ namespace Shop.Helpers
                 Description = from.Description,
                 Gender = from.Gender,
                 Name = from.Name,
-                Price = from.Price,
+                Price = (double)from.Price,
                 Image = from.ImageName,
                 Sizes = new List<SizeInfo>()
             };
@@ -47,14 +47,12 @@ namespace Shop.Helpers
             to.Gender = from.Gender;
             to.Name = from.Name;
             to.Quantity = 0;
-            to.Price = from.Price;
+            to.Price = (double)from.Price;
             to.IsOverpriced = from.IsOverpriced;
 
             if (from.IsOverpriced)
-            {
-                to.BeforePrice = to.Price;
-                to.Price = from.NewPrice;
-            }
+                to.NewPrice = from.NewPrice;
+            
             
             for (int i = 0; i < from.Sizes.Count(); i++)
             {
@@ -87,6 +85,7 @@ namespace Shop.Helpers
                 Id = from.Id,
                 Name = from.Name,
                 Price = from.Price,
+                NewPrice = from.NewPrice,
                 IsOverpriced = from.IsOverpriced,
                 Sizes = new List<SizeInfoDTO>()
             };
@@ -124,7 +123,7 @@ namespace Shop.Helpers
                 Sizes = new List<SizeInfoDTO>(),
                 Quantity = from.Quantity,
                 Image = from.Image,
-                BeforePrice = from.BeforePrice,
+                NewPrice = from.NewPrice,
                 IsOverpriced = from.IsOverpriced,
                 IsFavourite = isFavourite
             };

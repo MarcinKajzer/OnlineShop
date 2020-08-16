@@ -8,10 +8,14 @@ namespace Entities
     public class User : IdentityUser
     {
         [Required]
+        [MinLength(3)]
+        [MaxLength(20)]
         [Column(TypeName = "Varchar(50)")]
         public string FirstName { get; set; }
 
         [Required]
+        [MinLength(3)]
+        [MaxLength(20)]
         [Column(TypeName = "Varchar(50)")]
         public string LastName { get; set; }
 

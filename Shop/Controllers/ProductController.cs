@@ -35,7 +35,7 @@ namespace Shop.Controllers
         }
 
         [HttpGet]
-        public IActionResult Add()
+        public IActionResult Create()
         {
             CreateProductViewModel model = new CreateProductViewModel();
             List<SizeInfoDTO> sizes = new List<SizeInfoDTO>();
@@ -50,7 +50,7 @@ namespace Shop.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Add(CreateProductViewModel model)
+        public async Task<IActionResult> Create(CreateProductViewModel model)
         {
             if (ModelState.IsValid)
             {

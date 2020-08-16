@@ -6,10 +6,7 @@
 <main>
     <div class="single-product-details">
         <div class="product-image">
-            @{
-                string imageSrc = "/products-images/" + Model.Image + ".jpg";
-            }
-            <img src="@imageSrc" />
+            <img src="@Model.ImagePath" />
         </div>
         <div class="details">
             <div class="favoutites-links-container">
@@ -41,18 +38,21 @@
             <span class="color">Kolor: @Model.Color</span>
             <div class="price-container">
                 <div>
-                    <span class="current-price">@Model.Price.ToString("0.00") zł</span>
                     @if (Model.IsOverpriced)
                     {
-                        string beforePrice = Model.BeforePrice.HasValue ? ((double)(Model.BeforePrice)).ToString("0.00") : "";
-                        <span class="before-price">@beforePrice zł</span>
+                        <span class="current-price">@Model.FormatedNewPrice zł</span>
+
+                        <span class="before-price">@Model.FormatedPrice zł</span>
+                    }
+                    else
+                    {
+                        <span class="current-price">@Model.FormatedPrice zł</span>
                     }
                 </div>
 
                 @if (Model.IsOverpriced)
                 {
-                    double discount = Model.BeforePrice.HasValue ? (double)(100 - Model.Price / Model.BeforePrice * 100) : 5;
-                    <span class="discount">- @discount.ToString("0") %</span>
+                    <span class="discount">- @Model.FormatedDiscount %</span>
                 }
             </div>
 

@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Shop.DataAcces;
 
 namespace Shop.DataAcces.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200816174205_ADD nullable beforePrice")]
+    partial class ADDnullablebeforePrice
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -25,6 +27,9 @@ namespace Shop.DataAcces.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<double?>("BeforePrice")
+                        .HasColumnType("float");
 
                     b.Property<int>("Category")
                         .HasColumnType("int");
@@ -55,9 +60,6 @@ namespace Shop.DataAcces.Migrations
                         .IsRequired()
                         .HasColumnType("varchar(100)")
                         .HasMaxLength(100);
-
-                    b.Property<double?>("NewPrice")
-                        .HasColumnType("float");
 
                     b.Property<double>("Price")
                         .HasColumnType("float");
@@ -177,7 +179,7 @@ namespace Shop.DataAcces.Migrations
                         {
                             Id = "e17cbb1b-adea-43b0-af7f-33c85a5cb976",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "23f1a852-264c-47ed-ba12-c9cdd05d6f12",
+                            ConcurrencyStamp = "015580cd-9685-4fcf-a16b-613008fddfb2",
                             Email = "admin@shop.com",
                             EmailConfirmed = false,
                             FirstName = "Admin",
@@ -185,9 +187,9 @@ namespace Shop.DataAcces.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@SHOP.COM",
                             NormalizedUserName = "ADMIN@SHOP.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEAEGUWQmesC2GdWadTHF6PPdFUb91UVhUlRj7DqDQt5wMHebKh8iP/XJq7rhtVePbg==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEAiqajFP5psSToWRGrnYOjhfMmpeEtNHgNileDxSnHn1x+JKrPw6+75KaL+xtxoztQ==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "df8f8361-96e1-40d7-9ea0-c5dba575fd26",
+                            SecurityStamp = "a0d16a8e-397d-4421-bc95-bb9a101ccaf9",
                             TwoFactorEnabled = false,
                             UserName = "admin@shop.com"
                         });
@@ -223,14 +225,14 @@ namespace Shop.DataAcces.Migrations
                         new
                         {
                             Id = "2c5e174e-3b0e-446f-86af-483d56fd7210",
-                            ConcurrencyStamp = "b7db900e-eda7-49c8-af68-dfbc9615cd98",
+                            ConcurrencyStamp = "da772af5-1722-4562-bbbe-a38c619d6562",
                             Name = "Administrator",
                             NormalizedName = "ADMINISTRATOR"
                         },
                         new
                         {
                             Id = "ace800ca-6df1-415a-9cf4-2c48f3f125ba",
-                            ConcurrencyStamp = "bde4b1f4-ee22-43d6-8e3b-eb5d9814290c",
+                            ConcurrencyStamp = "90c38d1e-b4a5-479c-a2be-f572de03df49",
                             Name = "User",
                             NormalizedName = "USER"
                         });

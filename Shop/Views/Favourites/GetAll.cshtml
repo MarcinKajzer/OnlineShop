@@ -25,16 +25,22 @@
                     <img src="@imageSrc" />
                     <div class="price-container">
                         <div>
-                            <span class="current-price">@Model[i].Price.ToString("0.00") zł</span>
                             @if (Model[i].IsOverpriced)
                             {
-                                string beforePrice = Model[i].BeforePrice.HasValue ? Model[i].BeforePrice.ToString() : "";
-                                <span class="before-price">@beforePrice zł</span>
+                                string newPrice = Model[i].NewPrice.HasValue ? ((double)(Model[i].NewPrice)).ToString("0.00") : "";
+                                <span class="current-price">@newPrice zł</span>
+
+                                <span class="before-price">@Model[i].Price.ToString("0.00") zł</span>
+                            }
+                            else
+                            {
+                                <span class="current-price">@Model[i].Price.ToString("0.00") zł</span>
                             }
                         </div>
+
                         @if (Model[i].IsOverpriced)
                         {
-                            double discount = Model[i].BeforePrice.HasValue ? (double)(100 - Model[i].Price / Model[i].BeforePrice * 100) : 5;
+                            double discount = Model[i].NewPrice.HasValue ? (double)(100 - Model[i].NewPrice / Model[i].Price * 100) : 5;
                             <span class="discount">- @discount.ToString("0") %</span>
                         }
 
