@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Shop.Common;
 using Shop.Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
@@ -8,6 +9,14 @@ namespace Shop.ViewModels
 {
     public class CreateProductViewModel
     {
+        public CreateProductViewModel()
+        {
+            foreach (Size size in Enum.GetValues(typeof(Size)))
+            {
+                Sizes.Add(new SizeInfoDTO() { Size = size, Quantity = 0 });
+            }
+        }
+
         [Required(ErrorMessage = "Nazwa produktu jest wymagana.")]
         [MinLength(20, ErrorMessage = "Minimalna długość to 20 znaków.")]
         [MaxLength(100, ErrorMessage = "Maksymalna długość to 100 znaków.")]
@@ -40,6 +49,8 @@ namespace Shop.ViewModels
 
 
         [Required]
-        public List<SizeInfoDTO> Sizes { get; set; }
+        public List<SizeInfoDTO> Sizes { get; set; } = new List<SizeInfoDTO>();
+
+
     }
 }

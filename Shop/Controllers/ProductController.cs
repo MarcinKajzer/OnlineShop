@@ -9,7 +9,6 @@ using Shop.Common;
 using Shop.DataAcces.Interfaces;
 using Shop.Enums;
 using Shop.Helpers;
-using Shop.Models;
 using Shop.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -24,7 +23,8 @@ namespace Shop.Controllers
         private readonly IProductRepository _repository;
         private readonly UserManager<User> _userManager;
         private readonly IWebHostEnvironment _environment;
-        private readonly ProductMapper productMapper = new ProductMapper();
+        private readonly ProductMapper _productMapper;
+
         public ProductController(IProductRepository repository, 
                                  UserManager<User> userManager,
                                  IWebHostEnvironment environment)
@@ -32,21 +32,13 @@ namespace Shop.Controllers
             _repository = repository;
             _userManager = userManager;
             _environment = environment;
+            _productMapper = new ProductMapper();
         }
 
         [HttpGet]
         public IActionResult Create()
         {
-            CreateProductViewModel model = new CreateProductViewModel();
-            List<SizeInfoDTO> sizes = new List<SizeInfoDTO>();
-
-            foreach (Size size in Enum.GetValues(typeof(Size)))
-            {
-                sizes.Add(new SizeInfoDTO() { Size = size, Quantity = 0 });
-            }
-            model.Sizes = sizes;
-
-            return View(model);
+            return View(new CreateProductViewModel());
         }
 
         [HttpPost]
@@ -57,7 +49,7 @@ namespace Shop.Controllers
                 string newImageName = Guid.NewGuid().ToString();
                 model.ImageName = newImageName;
 
-                var result = await _repository.Create(productMapper.MapToProductModel(model));
+                var result = await _repository.Create(_productMapper.MapToProductModel(model));
 
                 if (result != null)
                 {
@@ -67,7 +59,7 @@ namespace Shop.Controllers
                     return RedirectToAction(nameof(Details), new { productId = result.Id }); 
                 }
 
-                ModelState.AddModelError(string.Empty, "Unable to add product. Try again.");
+                ModelState.AddModelError(string.Empty, "Nie udało się dodać nowego produktu. Spróbuj ponownie.");
             }
 
             return View(model);
@@ -76,38 +68,41 @@ namespace Shop.Controllers
         [HttpGet]
         public async Task<IActionResult> Update(int productId)
         {
-            Product prod = await _repository.FindOne(productId);
+            Product product = await _repository.FindOne(productId);
 
-            return View(productMapper.MapToUpdateProductViewModel(prod));
+            if (product == null)
+                return NotFound();
+
+            return View(_productMapper.MapToUpdateProductViewModel(product));
         }
 
         [HttpPost]
         public async Task<IActionResult> Update(UpdateProductViewModel model)
         {
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-                return View(model);
+                Product product = await _repository.FindOne(model.Id);
+
+                if (product == null)
+                {
+                    ModelState.AddModelError(string.Empty, "Nie można znaleźć tego produktu w bazie.");
+                    return View(model);
+                }
+                   
+                product = _productMapper.UpdateExistingProduct(model, product);
+               
+                var result = await _repository.Update(product);
+
+                if (result == null)
+                {
+                    ModelState.AddModelError(string.Empty, "Nie udało się edytować produktu. Spróbuj ponownie");
+                    return View(model);
+                }
+                    
+                return RedirectToAction(nameof(Details), new { productId = result.Id });
             }
-
-            Product product = await _repository.FindOne(model.Id);
-
-            if (product != null)
-            {
-                product = productMapper.UpdateExistingProduct(model, product);
-            }
-            else
-            {
-                return NotFound();
-            }
-
-            var result = await _repository.Update(product);
-
-            if (result == null)
-            {
-                return NotFound();
-            }
-
-            return RedirectToAction(nameof(Details), new { productId = result.Id });
+                
+            return View(model);
         }
 
         [HttpGet]
@@ -117,25 +112,14 @@ namespace Shop.Controllers
             List<Product> products = _repository.FindAll(filters).ToList();
             List<ProductDetailsViewModel> prods = new List<ProductDetailsViewModel>();
 
-            var currentUser = await GetCurrentUser();
-            if(currentUser != null )
-            {
-                List<int> userFavouritesProductsIds = currentUser.Favourites.Select(x => x.Id).ToList();
+            List<int> userFavouritesProductsIds = await GetCurrentUserFavouriteProductsIds();
 
-                foreach (var item in products)
-                {
-                    if (userFavouritesProductsIds.Contains(item.Id))
-                        prods.Add(productMapper.MapToProductDetailsViewModel(item, true));
-                    else
-                        prods.Add(productMapper.MapToProductDetailsViewModel(item, false));
-                }
-            }
-            else
+            bool isFavouritesListNull = userFavouritesProductsIds != null;
+
+            foreach (var item in products)
             {
-                foreach (var item in products)
-                {
-                    prods.Add(productMapper.MapToProductDetailsViewModel(item, false));
-                }
+                bool isFavourite = isFavouritesListNull && userFavouritesProductsIds.Contains(item.Id);
+                prods.Add(_productMapper.MapToProductDetailsViewModel(item, isFavourite));
             }
             
             ViewBag.Filter = filters;
@@ -143,13 +127,13 @@ namespace Shop.Controllers
         }
 
         [NonAction]
-        private async Task<User> GetCurrentUser()
+        private async Task<List<int>> GetCurrentUserFavouriteProductsIds()
         {
             var currentUserName = HttpContext.User.Identity.Name;
             if(currentUserName != null)
             {
                 var currentUser = await _userManager.FindByNameAsync(currentUserName);
-                return currentUser;
+                return currentUser.Favourites.Select(p => p.Id).ToList();
             }
 
             return null;
@@ -159,26 +143,16 @@ namespace Shop.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Details(int productId)
         {
-            Product prod = await _repository.FindOne(productId);
+            Product product = await _repository.FindOne(productId);
 
-            if(prod != null)
-            {
-                var currentUser = await GetCurrentUser();
+            if(product == null)
+                return NotFound();
 
-                if (currentUser != null)
-                {
-                    List<int> userFavouritesProductsIds = currentUser.Favourites.Select(x => x.Id).ToList();
+            List<int> favouriteProductsIds = await GetCurrentUserFavouriteProductsIds();
 
-                    if (userFavouritesProductsIds.Contains(prod.Id))
-                        return View(productMapper.MapToProductDetailsViewModel(prod, true));
-                    else
-                        return View(productMapper.MapToProductDetailsViewModel(prod, false));
-                }
-                else
-                    return View(productMapper.MapToProductDetailsViewModel(prod, false));
-            }
-               
-            return NotFound();
+            bool isFavourite = favouriteProductsIds != null && favouriteProductsIds.Contains(product.Id);
+
+            return View(_productMapper.MapToProductDetailsViewModel(product, isFavourite));
         }
 
         public async Task<IActionResult> Delete(int productId)
