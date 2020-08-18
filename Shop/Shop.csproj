@@ -19,6 +19,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Shop.Common\Shop.Common.csproj" />
     <ProjectReference Include="..\Shop.DataAcces\Shop.DataAcces.csproj" />
+    <ProjectReference Include="..\Shop.Entities\Shop.Entities.csproj" />
   </ItemGroup>
 
   <ItemGroup>
