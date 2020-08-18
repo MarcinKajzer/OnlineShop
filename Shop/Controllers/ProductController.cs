@@ -9,6 +9,7 @@ using Shop.Common;
 using Shop.DataAcces.Interfaces;
 using Shop.Enums;
 using Shop.Helpers;
+using Shop.Utility;
 using Shop.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -174,26 +175,15 @@ namespace Shop.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public JsonResult GetCategories(int gender)
+        public JsonResult GetCategories(Gender gender)
         {
             List<SelectListItem> list;
 
-            if (gender == 1)
-            {
-                list = Enum.GetValues(typeof(MansCategory)).Cast<MansCategory>().Select(v => new SelectListItem
-                {
-                    Text = v.ToString(),
-                    Value = ((int)v).ToString()
-                }).ToList();
-            }
+            if (gender == Gender.Mens)
+                list = new MansCategory().ConvertToSelectList();
             else
-            {
-                list = Enum.GetValues(typeof(WomanCategory)).Cast<WomanCategory>().Select(v => new SelectListItem
-                {
-                    Text = v.ToString(),
-                    Value = ((int)v).ToString()
-                }).ToList();
-            }
+                list = new WomanCategory().ConvertToSelectList();
+
             return Json(list);
         }
     }
