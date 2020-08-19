@@ -6,7 +6,7 @@
 <main>
     <h2 class="cart-title">Twój koszyk</h2>
 
-    @if(Model.Count == 0)
+    @if (Model.Count == 0)
     {
         <p class="no-products-info">Twój koszyk jest obecnie pusty</p>
     }
@@ -22,12 +22,12 @@
                 <th></th>
             </tr>
 
-            @{ 
+            @{
                 double totalAmount = 0;
                 int listLength = Model.Count();
             }
 
-            @for (int i=0; i<listLength; i++)
+            @for (int i = 0; i < listLength; i++)
             {
                 int numberSizeValue = (int)Model[i].Size;
 
@@ -78,7 +78,8 @@
             </tr>
         </table>
     }
-       
+
 </main>
 
+<script src="~/js/ajax-call.js"></script>
 <script src="~/js/cart.js"></script>

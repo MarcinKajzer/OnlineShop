@@ -1,10 +1,13 @@
-﻿namespace Shop.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Shop.Models
 {
     public class CartInfo
     {
-        public double CurrentItemQuantity { get; set; }
-        public double CurrentItemAmount { get; set; }
-        public int TotalQuantity { get; set; }
-        public double TotalAmount { get; set; }
+        [Range(0, int.MaxValue)]
+        public int Quantity { get; set; }
+
+        [Range(0, double.MaxValue)]
+        public double Amount { get; set; }
     }
 }

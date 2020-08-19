@@ -1,47 +1,89 @@
-﻿function setQuantity(index, productId, size, direction) {
-    let quantityInput = document.getElementsByClassName("quantity-input")[index]
-    let productAmount = document.getElementsByClassName("amount")[index]
-    let totalAmount = document.querySelector(".total-amount");
+﻿$(function () {
+    quantityInputs = document.getElementsByClassName("quantity-input")
+    decreaseButtons = document.getElementsByClassName("decrease-quantity-button");
+
+    Array.from(quantityInputs).forEach((el, index) => {
+        if (el.value == 1) {
+            decreaseButtons[index].disabled = true;
+        }
+    });
+});
+
+function changeQuantity(productId, size, increase, index) {
 
     let functionName;
 
-    if (direction == 1) {
+    if (increase == true) {
         functionName = "IncreaseQuantity"
     }
     else {
         functionName = "DecreaseQuantity"
     }
 
-    $(document).ready(function () {
-        $.ajax({
-            type: 'GET',
-            url: '../Cart/' + functionName,
-            dataType: 'json',
-            data: { productId: productId, productSize: size },
-            success: function (result) {
-                quantityInput.value = result.currentItemQuantity;
-                totalAmount.innerHTML = result.totalAmount.toFixed(2) + ' zł';
-                productAmount.innerHTML = result.currentItemAmount.toFixed(2) + ' zł';
-                if (result.totalQuantity == 0) {
-                    document.querySelector(".number-of-cart-items").style.display = "none";
-                } else {
-                    document.querySelector(".number-of-cart-items").style.display = "block";
-                    document.querySelector(".number-of-cart-items").innerHTML = result.totalQuantity;
-                }
-                
-            },
-            error: function (ex) {
-                alert('Coś poszło nie tak' + ex);
-            }
-        });
-        return false;
-    })
+    let method = 'GET';
+    let url = '../Cart/' + functionName;
+    let data = { productId: productId, productSize: size};
+    let dataType = '';
+    let callback = function () {
+        updateSingleItemInfo(productId, size, index);
+        updateTotalCartInfo()
+    }
+
+    AjaxCall(method, url, data, dataType, callback)
 }
 
+function updateSingleItemInfo(productId, size, index) {
+    let method = 'GET';
+    let url = '../Cart/GetSingleItemInfo' ;
+    let data = { productId: productId, productSize: size };
+    let dataType = 'json';
+    let callback = function (result) {
+
+        let quantityInput = document.getElementsByClassName("quantity-input")[index];
+        let productAmount = document.getElementsByClassName("amount")[index];
+        let decreaseButton = document.getElementsByClassName("decrease-quantity-button")[index];
+
+        quantityInput.value = result.quantity;
+        productAmount.innerHTML = result.amount.toFixed(2) + ' zł';
+
+        if (quantityInput.value == 1) {
+            decreaseButton.disabled = true;
+        }
+        else {
+            decreaseButton.disabled = false;
+        }
+    }
+
+    AjaxCall(method, url, data, dataType, callback)
+}
+
+function updateTotalCartInfo() {
+    let method = 'GET';
+    let url = '../Cart/GetTotalInfo';
+    let data = {};
+    let dataType = 'json';
+    let callback = function (result) {
+
+        let totalAmount = document.querySelector(".total-amount");
+
+        totalAmount.innerHTML = result.amount.toFixed(2) + ' zł';
+
+        if (result.quantity == 0) {
+            document.querySelector(".number-of-cart-items").style.display = "none";
+        } else {
+            document.querySelector(".number-of-cart-items").style.display = "block";
+            document.querySelector(".number-of-cart-items").innerHTML = result.quantity;
+        }
+    }
+
+    AjaxCall(method, url, data, dataType, callback)
+}
+
+
 function increaseQuantity(index, productId, size) {
-    setQuantity(index, productId, size, 1)
+    changeQuantity(productId, size, true, index);
 }
 
 function decreaseQuantity(index, productId, size) {
-    setQuantity(index, productId, size, 0)
+    changeQuantity(productId, size, false, index);
 }

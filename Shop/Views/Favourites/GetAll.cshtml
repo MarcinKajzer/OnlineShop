@@ -47,8 +47,15 @@
                     </div>
                     <span>@Model[i].Name</span>
                 </a>
-                @await Html.PartialAsync("_AddToCartPartial", new Shop.ViewModels.AddToCartViewModel() { Id = Model[i].Id, Sizes = Model[i].Sizes, Quantity = Model[i].Quantity, Image = Model[i].Image })
-
+                @await Html.PartialAsync("_AddToCartPartial", new Shop.ViewModels.AddProductToCartViewModel()
+               {
+                   Id = Model[i].Id,
+                   Sizes = Model[i].Sizes,
+                   Quantity = Model[i].Quantity,
+                   Image = Model[i].Image,
+                   Name = Model[i].Name,
+                   Price = Model[i].Price
+               })
 
             </div>
 

@@ -32,7 +32,7 @@
                     <a class="add-to-favourites" asp-action="Login" asp-controller="Account" asp-route-ReturnUrl="/Product/Details?productId=@Model.Id"></a>
                 }
             </div>
-            
+
             <h2>@Model.Name</h2>
             <p>@Model.Description</p>
             <span class="color">Kolor: @Model.Color</span>
@@ -56,7 +56,15 @@
                 }
             </div>
 
-            @await Html.PartialAsync("_AddToCartPartial", new Shop.ViewModels.AddToCartViewModel() { Id = Model.Id, Sizes = Model.Sizes, Quantity = Model.Quantity, Image = Model.Image })
+            @await Html.PartialAsync("_AddToCartPartial", new Shop.ViewModels.AddProductToCartViewModel()
+       {
+           Id = Model.Id,
+           Sizes = Model.Sizes,
+           Quantity = Model.Quantity,
+           Image = Model.Image,
+           Name = Model.Name,
+           Price = Model.Price
+       })
         </div>
     </div>
 </main>
