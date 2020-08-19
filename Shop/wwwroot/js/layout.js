@@ -19,13 +19,15 @@ function toggleNavigationVisibility(navSelector) {
     document.querySelector(navSelector + " .close-button").classList.toggle("animated-close-button");
 }
 
+let topBar = document.querySelector(".top-bar");
+
 window.addEventListener("scroll", function (e) {
 
     if (window.scrollY >= 50 && window.innerWidth > 800) {
-        document.querySelector(".top-bar").classList.add("small-top-bar")
+        topBar.classList.add("small-top-bar")
     }
     else {
-        document.querySelector(".top-bar").classList.remove("small-top-bar")
+        topBar.classList.remove("small-top-bar")
     }
 });
 
