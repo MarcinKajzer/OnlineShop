@@ -22,11 +22,12 @@ namespace Shop.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            Cart cart = SessionHelper.Get<Cart>(HttpContext.Session, "cart");
+            Cart cart = GetCartFromSession();
 
             return View(cart != null && cart.Items != null ? cart.Items : new List<CartItem>());
         }
 
+        
         [HttpPost]
         public async Task<IActionResult> AddProduct(AddProductToCartViewModel model)
         {
@@ -34,7 +35,7 @@ namespace Shop.Controllers
             if (prod == null)
                 return NotFound();
 
-            Cart cart = SessionHelper.Get<Cart>(HttpContext.Session, "cart");
+            Cart cart = GetCartFromSession();
 
             if (cart == null)
                 cart = new Cart();
@@ -48,7 +49,7 @@ namespace Shop.Controllers
         [HttpGet]
         public IActionResult RemoveProduct(int productId, Size productSize)
         {
-            Cart cart = SessionHelper.Get<Cart>(HttpContext.Session, "cart");
+            Cart cart = GetCartFromSession();
 
             cart.RemoveItem(productId, productSize);
             
@@ -57,16 +58,6 @@ namespace Shop.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        [HttpGet]
-        public int GetTotalQuantity()
-        {
-            Cart cart = SessionHelper.Get<Cart>(HttpContext.Session, "cart");
-
-            if(cart != null)
-                return cart.TotalQuantity;
-
-            return 0;
-        }
 
         [HttpGet]
         public void DecreaseQuantity(int productId, Size productSize)
@@ -80,20 +71,11 @@ namespace Shop.Controllers
             ChangeQunatity(productId, productSize, 1);
         }
 
-        [NonAction]
-        public void ChangeQunatity(int productId, Size productSize, int difference)
-        {
-            Cart cart = SessionHelper.Get<Cart>(HttpContext.Session, "cart");
-
-            cart.ChangeQuantity(productId, productSize, difference);
-
-            SessionHelper.Set(HttpContext.Session, "cart", cart);
-        }
 
         [HttpGet]
         public JsonResult GetSingleItemInfo(int productId, Size productSize)
         {
-            Cart cart = SessionHelper.Get<Cart>(HttpContext.Session, "cart");
+            Cart cart = GetCartFromSession();
 
             return Json(cart.GetSingleIntemInfo(productId, productSize));
         }
@@ -101,9 +83,33 @@ namespace Shop.Controllers
         [HttpGet]
         public JsonResult GetTotalInfo()
         {
-            Cart cart = SessionHelper.Get<Cart>(HttpContext.Session, "cart");
+            Cart cart = GetCartFromSession();
 
-            return Json(cart.GetTotalInfo());
+            if(cart != null)
+                return Json(cart.GetTotalInfo());
+
+            return Json(new CartInfo
+            {
+                Amount = 0, 
+                Quantity = 0
+            });
+        }
+
+
+        [NonAction]
+        private Cart GetCartFromSession()
+        {
+            return SessionHelper.Get<Cart>(HttpContext.Session, "cart");
+        }
+
+        [NonAction]
+        private void ChangeQunatity(int productId, Size productSize, int difference)
+        {
+            Cart cart = GetCartFromSession();
+
+            cart.ChangeQuantity(productId, productSize, difference);
+
+            SessionHelper.Set(HttpContext.Session, "cart", cart);
         }
     }
 }
