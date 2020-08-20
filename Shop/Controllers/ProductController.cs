@@ -127,19 +127,6 @@ namespace Shop.Controllers
             return View(prods);
         }
 
-        [NonAction]
-        private async Task<List<int>> GetCurrentUserFavouriteProductsIds()
-        {
-            var currentUserName = HttpContext.User.Identity.Name;
-            if(currentUserName != null)
-            {
-                var currentUser = await _userManager.FindByNameAsync(currentUserName);
-                return currentUser.Favourites.Select(p => p.Id).ToList();
-            }
-
-            return null;
-        }
-
         [HttpGet]
         [AllowAnonymous]
         public async Task<IActionResult> Details(int productId)
@@ -185,6 +172,20 @@ namespace Shop.Controllers
                 list = new WomanCategory().ConvertToSelectList();
 
             return Json(list);
+        }
+
+
+        [NonAction]
+        private async Task<List<int>> GetCurrentUserFavouriteProductsIds()
+        {
+            var currentUserName = HttpContext.User.Identity.Name;
+            if (currentUserName != null)
+            {
+                var currentUser = await _userManager.FindByNameAsync(currentUserName);
+                return currentUser.Favourites.Select(p => p.Id).ToList();
+            }
+
+            return null;
         }
     }
 }

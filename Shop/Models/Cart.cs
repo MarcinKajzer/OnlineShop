@@ -16,6 +16,8 @@ namespace Shop.Models
         public List<CartItem> Items { get; set; } = new List<CartItem>();
 
 
+        public string FormatedTotalAmount => TotalAmount.ToString("0.00");
+
         public void AddItem(CartItem item)
         {
             CartItem findItem = FindItem(item.Id, item.Size);
@@ -23,9 +25,7 @@ namespace Shop.Models
             if (findItem != null)
                 findItem.Quantity += item.Quantity;
             else
-            {
                 Items.Add(item);
-            }
 
             TotalQuantity += item.Quantity;
             TotalAmount += item.Quantity * item.Price;

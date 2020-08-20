@@ -83,8 +83,6 @@ namespace Shop.DataAcces
                 prod.IsArchived = true;
                 await _dbContext.SaveChangesAsync();
             }
-            
-            // return something to handle errors
         }
 
         public async Task<Product> Update(Product product)

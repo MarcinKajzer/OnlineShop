@@ -30,6 +30,11 @@ namespace Shop.Models
         public string Image { get; set; }
 
         public Size Size{ get; set; }
+         
 
+        public double Amount => Price * Quantity;
+        public string FormatedPrice => Price.ToString("0.00");
+        public string FormatedAmount => Amount.ToString("0.00");
+        public string ImagePath => "/products-images/" + Image + ".jpg";
     }
 }

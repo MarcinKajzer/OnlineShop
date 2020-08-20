@@ -40,6 +40,7 @@ button::before{
     transition: transform .3s;
 }
 
+
 button:hover::before, button:focus::before{
     transform: translateY(0%);
 }
@@ -248,7 +249,6 @@ h1{
 
 .account-options-popup {
     width: 80%;
-    height: 200px;
     z-index: 10;
     border: solid 1px #F6F6F6;
     position: absolute;
@@ -761,8 +761,10 @@ main{
 }
 
 .single-product img{
-    width: 100%;
-    margin-bottom: 15px;
+    height: 250px;
+    width: auto;
+    margin: 0 auto 15px;
+    display: block;
 }
 
 .price-container{
@@ -1010,6 +1012,8 @@ table .amount, table .price{
     background: none;
     height: 26px;
     font-size: 20px;
+    text-align: center;
+    cursor: pointer;
 }
 
 table input{
@@ -1125,8 +1129,9 @@ table input[type=number] {
 }
 
 
-.disabled-button{
+.disabled-button {
     cursor: default;
+    pointer-events: none;
 }
 
 .disabled-button::before {

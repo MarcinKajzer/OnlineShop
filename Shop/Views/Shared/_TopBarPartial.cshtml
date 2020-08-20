@@ -21,7 +21,15 @@
         <div class="account-options-popup">
             @if (User.Identity.IsAuthenticated)
             {
-                <span>@User.Identity.Name</span>
+                if (User.IsInRole("Administrator"))
+                {
+                    <a asp-action="Create" asp-controller="Product">Dodaj produkt</a>
+                    <a href="#">Zamówienia</a>
+                }
+                else
+                {
+                    <span>@User.Identity.Name</span>
+                }
                 <a asp-action="LogOut" asp-controller="Account">Wyloguj</a>
             }
             else

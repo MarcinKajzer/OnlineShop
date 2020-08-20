@@ -6,7 +6,7 @@ namespace Shop.Utility
 {
     public static class ExtensionMethods
     {
-        public static List<SelectListItem> ConvertToSelectList<T>(this T x) where T : Enum
+        public static List<SelectListItem> ConvertToSelectList<T>(this T arg) where T : Enum
         {
             List<SelectListItem> selectList = new List<SelectListItem>();
 

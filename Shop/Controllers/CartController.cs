@@ -24,7 +24,7 @@ namespace Shop.Controllers
         {
             Cart cart = GetCartFromSession();
 
-            return View(cart != null && cart.Items != null ? cart.Items : new List<CartItem>());
+            return View(cart != null && cart.Items != null ? cart : new Cart());
         }
 
         

@@ -11,6 +11,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 using Shop.DataAcces;
 using Shop.DataAcces.Interfaces;
 
@@ -45,7 +46,14 @@ namespace Shop
                 options.Password.RequiredUniqueChars = 0;
             });
 
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("UserRoleRequired",
+                    policy => policy.RequireRole("User"));
+            });
+
             services.AddScoped<IProductRepository, ProductRepository>();
+            services.AddScoped<IOrderRepository, OrderRepository>();
 
             services.AddHttpContextAccessor();
             services.AddSession();

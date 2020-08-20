@@ -1,17 +1,23 @@
-﻿@model List<CartItem>
+﻿@model Cart
 @{
     ViewData["Title"] = "Index";
+    List<CartItem> Items = Model.Items;
+    int listLength = Items.Count();
 }
 
 <main>
     <h2 class="cart-title">Twój koszyk</h2>
 
-    @if (Model.Count == 0)
+    @if (listLength == 0)
     {
         <p class="no-products-info">Twój koszyk jest obecnie pusty</p>
     }
     else
     {
+    <form asp-action="FinalizeOrder" asp-controller="Order" method="post">
+
+        <input type="hidden" asp-for="@Model.TotalAmount"  class="total-amount-input" />
+        
         <table>
             <tr>
                 <th></th>
@@ -22,51 +28,43 @@
                 <th></th>
             </tr>
 
-            @{
-                double totalAmount = 0;
-                int listLength = Model.Count();
-            }
-
             @for (int i = 0; i < listLength; i++)
             {
-                int numberSizeValue = (int)Model[i].Size;
+                int numberSizeValue = (int)Model.Items[i].Size;
 
+                <input type="hidden" asp-for="@Items[i].Id" />
+                <input type="hidden" asp-for="@Items[i].Name" />
+                <input type="hidden" asp-for="@Items[i].Size" />
+                <input type="hidden" asp-for="@Items[i].Price" />
+                <input type="hidden" asp-for="@Items[i].Amount" />
+                
                 <tr>
                     <td>
-                        @{
-                            string imageSrc = "/products-images/" + Model[i].Image + ".jpg";
-                        }
-                        <img src="@imageSrc" />
+                        <img src="@Items[i].ImagePath" />
                     </td>
                     <td>
-                        <span><a asp-action="Details" asp-controller="Product" asp-route-productId="@Model[i].Id">@Model[i].Name</a></span>
-                        <span>Rozmiar: @Model[i].Size</span>
+                        <span><a asp-action="Details" asp-controller="Product" asp-route-productId="@Items[i].Id">@Items[i].Name</a></span>
+                        <span>Rozmiar: @Items[i].Size</span>
                     </td>
-                    <td class="price">@Model[i].Price.ToString("0.00") zł</td>
-
+                    <td class="price">@Items[i].FormatedPrice zł</td>
                     <td class="quantity-input-field">
-                        <button class="decrease-quantity-button" onclick="decreaseQuantity(@i, @Model[i].Id, @numberSizeValue, @Model[i].Price)">-</button>
-                        <input asp-for="@Model[i].Quantity" min="0" type="number" class="quantity-input" readonly>
-                        <button class="increase-quantity-button" onclick="increaseQuantity(@i, @Model[i].Id, @numberSizeValue, @Model[i].Price)">+</button>
+                        <div class="decrease-quantity-button" onclick="decreaseQuantity(@i, @Items[i].Id, @numberSizeValue, @Items[i].Price)">-</div>
+                        <input asp-for="@Items[i].Quantity" min="0" type="number" class="quantity-input" readonly>
+                        <div class="increase-quantity-button" onclick="increaseQuantity(@i, @Items[i].Id, @numberSizeValue, @Items[i].Price)">+</div>
                     </td>
-
-                    @{
-                        double singleProductAmount = Model[i].Quantity * Model[i].Price;
-                        totalAmount += singleProductAmount;
-                    }
-
-                    <td class="amount">@singleProductAmount.ToString("0.00") zł</td>
+                    <td class="amount">@Items[i].FormatedAmount zł</td>
                     <td>
-                        <a asp-action="RemoveProduct" asp-controller="Cart" asp-route-productId="@Model[i].Id" asp-route-productSize="@Model[i].Size">Usuń</a>
+                        <a asp-action="RemoveProduct" asp-controller="Cart" asp-route-productId="@Items[i].Id" asp-route-productSize="@Items[i].Size">Usuń</a>
                     </td>
                 </tr>
             }
+
             <tr>
                 <td></td>
                 <td>Razem</td>
                 <td></td>
                 <td></td>
-                <td class="total-amount">@totalAmount.ToString("0.00") zł</td>
+                <td class="total-amount">@Model.FormatedTotalAmount zł</td>
                 <td></td>
             </tr>
             <tr>
@@ -74,9 +72,10 @@
                 <td></td>
                 <td></td>
                 <td></td>
-                <td colspan="2"><button class="cart-submit-button">Kupuję</button></td>
+                <td colspan="2"><button class="cart-submit-button" type="submit">Kupuję</button></td>
             </tr>
         </table>
+    </form>
     }
 
 </main>

@@ -4,7 +4,7 @@
 
     Array.from(quantityInputs).forEach((el, index) => {
         if (el.value == 1) {
-            decreaseButtons[index].disabled = true;
+            decreaseButtons[index].classList.add("disabled-button");
         }
     });
 });
@@ -47,10 +47,10 @@ function updateSingleItemInfo(productId, size, index) {
         productAmount.innerHTML = result.amount.toFixed(2) + ' zł';
 
         if (quantityInput.value == 1) {
-            decreaseButton.disabled = true;
+            decreaseButton.classList.add("disabled-button");
         }
         else {
-            decreaseButton.disabled = false;
+            decreaseButton.classList.remove("disabled-button");
         }
     }
 
@@ -65,8 +65,11 @@ function updateTotalCartInfo() {
     let callback = function (result) {
 
         let totalAmount = document.querySelector(".total-amount");
+        let totalAmountInpu = document.querySelector(".total-amount-input");
+
 
         totalAmount.innerHTML = result.amount.toFixed(2) + ' zł';
+        totalAmountInpu.value = result.amount;
 
         if (result.quantity == 0) {
             document.querySelector(".number-of-cart-items").style.display = "none";
