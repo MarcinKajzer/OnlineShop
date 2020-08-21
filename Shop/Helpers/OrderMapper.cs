@@ -17,7 +17,8 @@ namespace Shop.Helpers
                     City = from.Adress.City,
                     Street = from.Adress.Street,
                     BuildingNumber = from.Adress.BuildingNumber,
-                    FlatNumber = from.Adress.FlatNumber
+                    FlatNumber = from.Adress.FlatNumber,
+                    PostCode = from.Adress.PostCode
                 },
                 UserId = currentUserId,
                 Products = new List<ProductInfo>() { },

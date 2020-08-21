@@ -1,14 +1,70 @@
 ﻿@model Shop.ViewModels.CreateOrderViewModel
 @{
     ViewData["Title"] = "Buy";
+    List<CartItem> Items = Model.Items;
+    int listLength = Items.Count();
 }
 
-    <main>
-        <form asp-action="Buy" asp-controller="Order" method="post">
+<main>
+    <h2 class="cart-title">Twoje zamówienie</h2>
+
+    <form asp-action="Buy" asp-controller="Order" method="post">
+
+        <table class="cart-table order-summary-table">
+            <tr>
+                <th></th>
+                <th>Produkt</th>
+                <th>Cena</th>
+                <th>Ilość</th>
+                <th>Suma</th>
+            </tr>
+
+            @for (int i = 0; i < listLength; i++)
+            {
+                int numberSizeValue = (int)Model.Items[i].Size;
+
+                <input type="hidden" asp-for="@Model.Items[i].Id" />
+                <input type="hidden" asp-for="@Model.Items[i].Quantity" />
+
+                <tr>
+                    <td>
+                        <img src="@Items[i].ImagePath" />
+                    </td>
+                    <td>
+                        <span><a asp-action="Details" asp-controller="Product" asp-route-productId="@Items[i].Id">@Items[i].Name</a></span>
+                        <span>Rozmiar: @Items[i].Size</span>
+                    </td>
+                    <td class="price">@Items[i].FormatedPrice zł</td>
+                    <td class="quantity-input-field">
+                        <span>@Items[i].Quantity</span>
+                    </td>
+                    <td class="amount">@Items[i].FormatedAmount zł</td>
+                </tr>
+            }
+
+            <tr>
+                <td></td>
+                <td>Razem</td>
+                <td></td>
+                <td></td>
+                <td class="total-amount">@Model.FormatedTotalAmount zł</td>
+            </tr>
+        </table>
+
+        <input type="hidden" asp-for="TotalAmount" />
+
+        <h2 class="cart-title">Dane do wysyłki</h2>
+
+        <div class="addres-form">
             <div class="form-group">
                 <label asp-for="Adress.City">Miasto</label>
                 <input asp-for="Adress.City" />
                 <span asp-validation-for="Adress.City"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Adress.PostCode">Kod pocztowy</label>
+                <input asp-for="Adress.PostCode" />
+                <span asp-validation-for="Adress.PostCode"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Adress.Street">Ulica</label>
@@ -25,28 +81,9 @@
                 <input asp-for="Adress.FlatNumber" />
                 <span asp-validation-for="Adress.FlatNumber"></span>
             </div>
+            <button class="cart-submit-button" type="submit">Kupuję</button>
+        </div>
+    </form>
+    
 
-            @for (int i = 0; i < Model.Items.Count; i++)
-            {
-                <input type="hidden" asp-for="@Model.Items[i].Id" />
-                <input type="hidden" asp-for="@Model.Items[i].Quantity" />
-                
-                <div>
-                    @Model.Items[i].Name,
-                    @Model.Items[i].Size,
-                    @Model.Items[i].Quantity,
-                    @Model.Items[i].Price,
-                    @Model.Items[i].Amount,
-                </div>
-                <hr />
-            }
-
-            Kwota całkowita: @Model.TotalAmount
-
-            <input type="hidden" asp-for="TotalAmount" />
-
-            <button type="submit">Kupuję i płacę</button>
-        </form>
-        
-    </main>
-
+</main>

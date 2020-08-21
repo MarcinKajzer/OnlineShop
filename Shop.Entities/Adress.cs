@@ -1,8 +1,4 @@
-﻿using Entities;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Text;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Shop.Entities
 {
@@ -12,12 +8,12 @@ namespace Shop.Entities
         public int Id { get; set; }
 
         [Required]
+        public string PostCode { get; set; }
+        [Required]
         public string City { get; set; }
         public string Street { get; set; }
-
-        [Required]
+        
         public int BuildingNumber { get; set; }
         public int FlatNumber { get; set; }
-
     }
 }

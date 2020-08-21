@@ -14,11 +14,7 @@
     }
     else
     {
-    <form asp-action="FinalizeOrder" asp-controller="Order" method="post">
-
-        <input type="hidden" asp-for="@Model.TotalAmount"  class="total-amount-input" />
-        
-        <table>
+        <table class="cart-table">
             <tr>
                 <th></th>
                 <th>Produkt</th>
@@ -32,12 +28,6 @@
             {
                 int numberSizeValue = (int)Model.Items[i].Size;
 
-                <input type="hidden" asp-for="@Items[i].Id" />
-                <input type="hidden" asp-for="@Items[i].Name" />
-                <input type="hidden" asp-for="@Items[i].Size" />
-                <input type="hidden" asp-for="@Items[i].Price" />
-                <input type="hidden" asp-for="@Items[i].Amount" />
-                
                 <tr>
                     <td>
                         <img src="@Items[i].ImagePath" />
@@ -54,7 +44,7 @@
                     </td>
                     <td class="amount">@Items[i].FormatedAmount zł</td>
                     <td>
-                        <a asp-action="RemoveProduct" asp-controller="Cart" asp-route-productId="@Items[i].Id" asp-route-productSize="@Items[i].Size">Usuń</a>
+                        <a asp-action="RemoveProduct" asp-controller="Cart" asp-route-productId="@Items[i].Id" asp-route-productSize="@Items[i].Size" class="delete-item-link">Usuń</a>
                     </td>
                 </tr>
             }
@@ -72,10 +62,9 @@
                 <td></td>
                 <td></td>
                 <td></td>
-                <td colspan="2"><button class="cart-submit-button" type="submit">Kupuję</button></td>
+                <td colspan="2"> <a asp-action="Buy" asp-controller="Order" class="cart-submit-link link-button">Kupuję</a></td>
             </tr>
         </table>
-    </form>
     }
 
 </main>

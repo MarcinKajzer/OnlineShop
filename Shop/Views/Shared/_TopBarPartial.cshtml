@@ -23,19 +23,19 @@
             {
                 if (User.IsInRole("Administrator"))
                 {
-                    <a asp-action="Create" asp-controller="Product">Dodaj produkt</a>
-                    <a href="#">Zamówienia</a>
+                    <a asp-action="Create" asp-controller="Product" class="link-button">Dodaj produkt</a>
+                    <a href="#" class="link-button">Zamówienia</a>
                 }
                 else
                 {
                     <span>@User.Identity.Name</span>
                 }
-                <a asp-action="LogOut" asp-controller="Account">Wyloguj</a>
+                <a asp-action="LogOut" asp-controller="Account" class="link-button">Wyloguj</a>
             }
             else
             {
-                <a asp-action="Login" asp-controller="Account">Logowanie</a>
-                <a asp-action="Register" asp-controller="Account">Rejestracja</a>
+                <a asp-action="Login" asp-controller="Account" class="link-button">Logowanie</a>
+                <a asp-action="Register" asp-controller="Account" class="link-button">Rejestracja</a>
             }
         </div>
     </div>

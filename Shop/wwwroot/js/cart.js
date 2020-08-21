@@ -65,11 +65,7 @@ function updateTotalCartInfo() {
     let callback = function (result) {
 
         let totalAmount = document.querySelector(".total-amount");
-        let totalAmountInpu = document.querySelector(".total-amount-input");
-
-
         totalAmount.innerHTML = result.amount.toFixed(2) + ' zł';
-        totalAmountInpu.value = result.amount;
 
         if (result.quantity == 0) {
             document.querySelector(".number-of-cart-items").style.display = "none";

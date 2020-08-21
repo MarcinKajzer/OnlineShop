@@ -5,6 +5,8 @@ namespace Shop.DTOs
     public class AdressDTO
     {
         [Required]
+        public string PostCode { get; set; }
+        [Required]
         public string City { get; set; }
         public string Street { get; set; }
 

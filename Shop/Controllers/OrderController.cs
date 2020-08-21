@@ -1,4 +1,5 @@
-﻿using Entities;
+﻿using Castle.DynamicProxy.Generators;
+using Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -22,23 +23,18 @@ namespace Shop.Controllers
             _repository = repository;
         }
 
-        [HttpPost]
-        public IActionResult FinalizeOrder(Cart model)
-        {
-            TempData["cart"] = JsonConvert.SerializeObject(model);
-            return RedirectToAction(nameof(Buy));
-        }
-
         // [Authorize(Roles = "User")] returns acces denied
-        [Authorize(Policy = "UserRoleRequired")] 
+        //[Authorize(Policy = "UserRoleRequired")] 
+        [Authorize(Roles = "User")]
         [HttpGet]
         public IActionResult Buy()
         {
-            CreateOrderViewModel viewModel = JsonConvert.DeserializeObject<CreateOrderViewModel>(TempData["cart"].ToString());
+            CreateOrderViewModel viewModel = SessionHelper.Get<CreateOrderViewModel>(HttpContext.Session, "cart");
             return View(viewModel);
         }
 
-        [Authorize(Policy = "UserRoleRequired")]
+        //[Authorize(Policy = "UserRoleRequired")]
+        [Authorize(Roles = "User")]
         [HttpPost]
         public async Task<IActionResult> Buy(CreateOrderViewModel model)
         {
@@ -58,6 +54,11 @@ namespace Shop.Controllers
 
             return View(model);
         }
+
+
+
+
+
 
 
 
