@@ -58,7 +58,7 @@ namespace Shop.Models
             }
         }
 
-        public CartInfo GetSingleIntemInfo(int id, Size size)
+        public CartInfo GetSingleItemInfo(int id, Size size)
         {
             CartItem findItem = FindItem(id, size);
 

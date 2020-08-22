@@ -24,7 +24,7 @@
                 if (User.IsInRole("Administrator"))
                 {
                     <a asp-action="Create" asp-controller="Product" class="link-button">Dodaj produkt</a>
-                    <a href="#" class="link-button">Zamówienia</a>
+                    <a asp-action="GetAll" asp-controller="Order" asp-route-isSent="false" class="link-button">Zamówienia</a>
                 }
                 else
                 {

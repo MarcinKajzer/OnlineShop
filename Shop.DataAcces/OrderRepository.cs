@@ -1,6 +1,8 @@
 ﻿using Entities;
 using Shop.DataAcces.Interfaces;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Shop.DataAcces
@@ -32,6 +34,32 @@ namespace Shop.DataAcces
             if (order != null)
             {
                 order.IsSent = true;
+                _context.Update(order);
+                await _context.SaveChangesAsync();
+            }
+
+            return order;
+        }
+
+        public List<Order> FindAllNotSent()
+        {
+            return _context.Orders.Where(o => !o.IsSent).OrderByDescending(o => o.CreationDate).ToList();
+        }
+
+        public List<Order> FindAllSent()
+        {
+            return _context.Orders.Where(o => o.IsSent).OrderByDescending(o => o.CreationDate).ToList();
+        }
+
+        public async Task<Order> FindOne(int orderId)
+        {
+            return await _context.Orders.FindAsync(orderId);
+        }
+
+        public async Task<Order> Update(Order order)
+        {
+            if (await _context.Orders.FindAsync(order.Id) != null)
+            {
                 _context.Update(order);
                 await _context.SaveChangesAsync();
             }

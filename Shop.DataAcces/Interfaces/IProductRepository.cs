@@ -10,7 +10,7 @@ namespace Shop.DataAcces.Interfaces
         List<Product> FindAll(Filters filters);
         Task<Product> FindOne(int productId);
         Task<Product> Create(Product product);
-        Task Remove(int productId);
+        Task Archive(int productId);
         Task<Product> Update(Product product);
     }
 }

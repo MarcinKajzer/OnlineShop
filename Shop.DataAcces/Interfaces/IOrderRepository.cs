@@ -10,5 +10,9 @@ namespace Shop.DataAcces.Interfaces
     {
         Task<Order> Create(Order order);
         Task<Order> Send(int id);
+        List<Order> FindAllNotSent();
+        List<Order> FindAllSent();
+        Task<Order> FindOne(int orderId);
+        Task<Order> Update(Order order);
     }
 }

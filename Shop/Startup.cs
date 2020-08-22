@@ -46,12 +46,6 @@ namespace Shop
                 options.Password.RequiredUniqueChars = 0;
             });
 
-            services.AddAuthorization(options =>
-            {
-                options.AddPolicy("UserRoleRequired",
-                    policy => policy.RequireRole("User"));
-            });
-
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<IOrderRepository, OrderRepository>();
 

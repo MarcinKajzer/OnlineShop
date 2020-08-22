@@ -1085,11 +1085,6 @@ h2.cart-title {
     height: 60px;
 }
 
-
-
-
-
-
 @media screen and (max-width: 900px) {
     .cart-table tr {
         display: flex;
@@ -1131,8 +1126,91 @@ h2.cart-title {
     }
 }
 
+/*........LIST-OF-ORDERS............*/
 
+.order-table{
+    margin: 50px auto;
+    width: 90%;
+    max-width: 1200px;
+}
 
+.order-table th{
+    background: #A6CBA6;
+    font-weight: 300;
+}
+
+.order-table thead tr{
+    height: 50px;
+    color: white;
+    text-align: left;
+}
+
+.order-table tr:nth-child(odd){
+    background: #F5F3F3;
+}
+
+.order-table tr:nth-child(even){
+    background: #ECEAEA;
+}
+
+.order-table td, .order-table th{
+    padding: 10px 20px;
+}
+
+.order-table div{
+    margin: 20px 0;
+}
+
+.order-table span{
+    color: darkred;
+}
+
+@media screen and (max-width: 800px){
+    .order-table tr{
+        display: flex;
+        flex-wrap: wrap;
+    }
+    .order-table td{
+        width: 100%;
+        position: relative;
+        padding-left: 120px;
+    }
+    .order-table thead{
+        display: none;
+    }
+    .order-table tr{
+        padding: 20px;
+    }
+    
+    .order-table td::before{
+        position: absolute;
+        left: 0;
+        color: forestgreen;
+    }
+    
+    .order-table div{
+        margin-top: 0;
+    }
+
+    .order-table tr td:nth-child(1)::before {
+        content: "Data"
+    }
+    .order-table tr td:nth-child(2)::before{
+        content: "Użytkownik"
+    }
+    .order-table tr td:nth-child(3)::before{
+        content: "Adres"
+    }
+     .order-table tr td:nth-child(4)::before{
+        content: "Zamówienie"
+    }
+     .order-table tr td:nth-child(5)::before{
+        content: "Status"
+    }
+     .order-table tr td:nth-child(6)::before{
+        content: "Opcje"
+    }
+}
 
 
 

@@ -77,7 +77,7 @@ namespace Shop.Controllers
         {
             Cart cart = GetCartFromSession();
 
-            return Json(cart.GetSingleIntemInfo(productId, productSize));
+            return Json(cart.GetSingleItemInfo(productId, productSize));
         }
 
         [HttpGet]

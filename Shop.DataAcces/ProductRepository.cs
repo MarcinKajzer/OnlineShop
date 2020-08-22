@@ -75,7 +75,7 @@ namespace Shop.DataAcces
             return product;
         }
 
-        public async Task Remove(int productId)
+        public async Task Archive(int productId)
         {
             Product prod = await _dbContext.Products.FindAsync(productId);
             if(prod != null)
