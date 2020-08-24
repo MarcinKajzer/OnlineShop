@@ -29,9 +29,7 @@ namespace Shop.DataAcces
             }
 
             if (!string.IsNullOrEmpty(filter.SearchBoxValue))
-            {
                 products = products.Where(p => p.Name.Contains(filter.SearchBoxValue));
-            }
                  
             if (filter.IsOverpriced)
                 products = products.Where(p => p.IsOverpriced);
@@ -47,7 +45,7 @@ namespace Shop.DataAcces
             selectedSizes.ForEach(x => sizesToSearch = sizesToSearch | x);
 
             if (selectedSizes.Count() > 0)
-                products = products.Where(p => p.Sizes.Any(s => (s.Size & sizesToSearch) != 0));
+                products = products.Where(p => p.Sizes.Where(s => s.Quantity > 0).Any(s => (s.Size & sizesToSearch) != 0));
 
             switch (filter.SortBy)
             {
@@ -75,15 +73,6 @@ namespace Shop.DataAcces
             return product;
         }
 
-        public async Task Archive(int productId)
-        {
-            Product prod = await _dbContext.Products.FindAsync(productId);
-            if(prod != null)
-            {
-                prod.IsArchived = true;
-                await _dbContext.SaveChangesAsync();
-            }
-        }
 
         public async Task<Product> Update(Product product)
         {

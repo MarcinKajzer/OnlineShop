@@ -8,33 +8,44 @@
         <input type="hidden" asp-for="@Model.Name" />
 
         <div class="size-and-quantity">
-            <div>
-                @{
-                    Guid id = Guid.NewGuid();
-                }
 
-                @for (int i = 0; i < Model.Sizes.Count(); i++)
-                {
-                    if (Model.Sizes[i].Quantity >= 1)
-                    {
-                        int sizeValue = (int)Model.Sizes[i].Size;
+            @if (Model.Quantity > 1)
+            {
+                Guid id = Guid.NewGuid();
 
-                        if (i == 0)
-                        {
-                            <input type="radio" asp-for="SelectedSize" value="@sizeValue" id="@id@i" checked />
-                        }
-                        else
-                        {
-                            <input type="radio" asp-for="SelectedSize" value="@sizeValue" id="@id@i" />
-                        }
-                        <label for="@id@i">@Model.Sizes[i].Size</label>
+                <div>
+                    @{ int numberOfSizes = Model.Sizes.Count();
+                       bool isChecked = true;
                     }
-                }
-            </div>
-            <input name="quantity" type="number" value="1" />
+                    @for (int i = 0; i < numberOfSizes; i++)
+                    {
+                        if (Model.Sizes[i].Quantity >= 1)
+                        {
+                            int sizeValue = (int)Model.Sizes[i].Size;
+
+                            if (isChecked)
+                            {
+                                <input type="radio" asp-for="SelectedSize" value="@sizeValue" id="@id@i" checked />
+                                isChecked = false;
+                            }
+                            else
+                            {
+                                <input type="radio" asp-for="SelectedSize" value="@sizeValue" id="@id@i" />
+                            }
+                            <label for="@id@i">@Model.Sizes[i].Size</label>
+                        }
+                    }
+                </div>
+                <input name="quantity" type="number" value="1" />
+            }
+            else
+            {
+                <span class="product-not-available">Brak w magazynie</span>
+            }
+
         </div>
 
-        @if (User.IsInRole("Administrator"))
+        @if (User.IsInRole("Administrator") || Model.Quantity == 0)
         {
             <button type="submit" disabled class="disabled-button">Produkt</button>
         }

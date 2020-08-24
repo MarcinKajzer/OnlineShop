@@ -69,7 +69,7 @@ namespace Shop.Controllers
         public async Task<IActionResult> GetAll()
         {
             var currentUser = await GetCurrentUser();
-            List<Product> favourites = currentUser.Favourites.ToList();
+            List<Product> favourites = currentUser.Favourites.Where(f => !f.IsArchived).ToList();
 
             List<ProductDetailsViewModel> prods = new List<ProductDetailsViewModel>();
 
@@ -82,7 +82,7 @@ namespace Shop.Controllers
         public async Task<int> GetQuantity()
         {
             var currentUser = await GetCurrentUser();
-            return currentUser.Favourites.Count();
+            return currentUser.Favourites.Where(f => !f.IsArchived).Count();
         }
     }
 }

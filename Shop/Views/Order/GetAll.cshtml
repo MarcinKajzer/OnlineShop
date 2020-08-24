@@ -4,12 +4,22 @@
     int listLength = Model.Count();
 }
 
-    <main>
+<main>
 
-        <a asp-action="GetAll" asp-controller="Order" asp-route-isSent="true">Wysłane</a>
+    <h2 class="order-list-title">Lista zamówień</h2>
+
+    <div class="links-container">
+        <a asp-action="GetAll" asp-controller="Order" asp-route-isSent="false" class="custom-link">Oczekujące</a>
         <span>|</span>
-        <a asp-action="GetAll" asp-controller="Order" asp-route-isSent="false">Niewysłane</a>
+        <a asp-action="GetAll" asp-controller="Order" asp-route-isSent="true" class="custom-link">Wysłane</a>
+    </div>
 
+    @if(listLength < 1)
+    {
+        <p class="no-orders-info">Nie masz żadnych zamówień w tej kategorii.</p>
+    }
+    else
+    {
         <table cellspacing="0" class="order-table">
             <thead>
                 <tr>
@@ -41,12 +51,12 @@
                             @{ int productListLength = Model[i].Products.Count();}
                             @for (int j = 0; j < productListLength; j++)
                             {
-                                <div>@Model[i].Products[j].Name x @Model[i].Products[j].Quantity<br><span>Rozmiar: @Model[i].Products[j].Size</span> </div>
+                                <div>@Model[i].Products[j].Name x @Model[i].Products[j].Quantity<br><span class="size-span">Rozmiar: @Model[i].Products[j].Size</span> </div>
                             }
                         </td>
                         @if (!Model[i].IsSent)
                         {
-                             <td>Opłacono</td>
+                            <td>Opłacono</td>
                         }
                         else
                         {
@@ -56,7 +66,7 @@
                         @if (!Model[i].IsSent)
                         {
                             <td>
-                                <a asp-action="SendShipping" asp-controller="Order" asp-route-orderId="@Model[i].Id" class="link-button">Wysłano</a>
+                                <span class="link-button" onclick="showConfirmationPopup(@Model[i].Id)">Wysłano</span>
                             </td>
                         }
 
@@ -66,5 +76,10 @@
 
             </tbody>
         </table>
-    </main>
+    }
 
+   
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+<script src="~/js/send-order-confirmation-popup.js"></script>

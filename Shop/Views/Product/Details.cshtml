@@ -23,9 +23,9 @@
                 }
                 else if (User.IsInRole("Administrator"))
                 {
-                    <a asp-action="Update" asp-controller="Product" asp-route-productId="@Model.Id" class="single-product-admin-links">Edytuj</a>
+                    <a asp-action="Update" asp-controller="Product" asp-route-productId="@Model.Id" class="custom-link">Edytuj</a>
                     <span> | </span>
-                    <a asp-action="Delete" asp-controller="Product" asp-route-productId="@Model.Id" class="single-product-admin-links">Usuń</a>
+                    <span onclick="showConfirmationPopup(@Model.Id)" class="custom-link">Usuń</span>
                 }
                 else
                 {
@@ -70,3 +70,6 @@
 </main>
 
 <script src="~/js/add-and-remove-favourite-product.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+<script src="~/js/archive-product-confirmation-popup.js"></script>

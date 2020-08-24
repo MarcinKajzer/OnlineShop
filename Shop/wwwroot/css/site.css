@@ -52,6 +52,17 @@ button:hover::before, button:focus::before, .link-button:hover::before, .link-bu
     transform: translateY(0%);
 }
 
+
+.custom-link{
+    color: darkseagreen;
+    transition: color .2s;
+    cursor: pointer;
+}
+
+.custom-link:hover{
+    color: #1C551B;
+}
+
 .close-button{
     height: 5px;
     width: 40px;
@@ -192,13 +203,19 @@ h1{
     margin: 2px 0 0 5px;
 }
 
-.options ul li{
-    display: inline-block;
+.options ul{
+    width: 200px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.options ul li {
     height: 30px;
     width: 50px;
     transition: transform .2s;
-    cursor:pointer;
-    position:relative;
+    cursor: pointer;
+    position: relative;
 }
 
 .account-icon, .options ul li a{
@@ -713,6 +730,10 @@ main{
     grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
 }
 
+.not-allow-product{
+    opacity: .5;
+}
+
 .single-product {
     width: 90%;
     max-width: 400px;
@@ -750,7 +771,6 @@ main{
     left: 20px;
 }
 
-
 .products-list .add-to-favourites {
     transform: translateX(-200%);
     transition: transform .2s;
@@ -758,16 +778,6 @@ main{
 
 .remove-from-favourites {
     background-image: url('../assets/full-hearth-icon.svg');
-}
-
-.single-product-admin-links{
-    color: darkseagreen;
-    transition: color .2s;
-}
-
-
-.single-product-admin-links:hover{
-    color: #1C551B;
 }
 
 .single-product:hover {
@@ -816,6 +826,13 @@ main{
     height: 24px
 }
 
+.product-not-available {
+    color: darkred;
+    font-size: 13px;
+    height: 25px;
+    line-height: 25px;
+}
+
 .single-product button {
     width: 100%;
 }
@@ -830,6 +847,8 @@ main{
     max-width: 50px;
     text-align: center;
 }
+
+
 
 /*.........SINGLE-PRODUCT-DETAILS..............*/
 
@@ -1128,7 +1147,19 @@ h2.cart-title {
 
 /*........LIST-OF-ORDERS............*/
 
-.order-table{
+.order-list-title, .no-orders-info {
+    text-align: center;
+    margin-top: 30px;
+}
+
+.links-container{
+    width: 300px;
+    margin: 30px auto 0;
+    text-align: center;
+    color: darkseagreen
+}
+
+.order-table {
     margin: 50px auto;
     width: 90%;
     max-width: 1200px;
@@ -1161,7 +1192,7 @@ h2.cart-title {
     margin: 20px 0;
 }
 
-.order-table span{
+.order-table .size-span{
     color: darkred;
 }
 
@@ -1235,6 +1266,9 @@ h2.cart-title {
         z-index: 6;
         background: white;
     }
+    .options ul {
+        justify-content: flex-end;
+    }
     .account-options-popup {
         right: 50px;
         left: auto;
@@ -1263,8 +1297,28 @@ h2.cart-title {
     .show-filters-button, .filters .close-button{
         display: none;
     }
+    .products-list {
+        grid-template-columns: repeat(2, 1fr)
+    }
 }
 
+@media screen and (min-width: 1400px) {
+    .products-list {
+        grid-template-columns: repeat(3, 1fr)
+    }
+}
+
+@media screen and (min-width: 1730px) {
+    .products-list {
+        grid-template-columns: repeat(4, 1fr)
+    }
+}
+
+@media screen and (min-width: 2080px) {
+    .products-list {
+        grid-template-columns: repeat(5, 1fr)
+    }
+}
 
 .disabled-button {
     cursor: default;

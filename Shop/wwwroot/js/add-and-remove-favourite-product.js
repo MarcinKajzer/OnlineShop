@@ -20,6 +20,13 @@ function addToFavourites(productId, index) {
         else {
             numberOfFavourites.innerHTML = parseInt(numberOfFavourites.innerHTML) + 1;
         }
+
+        Swal.fire({
+            title: 'Dodano do ulubionych!',
+            icon: "success",
+            showConfirmButton: false,
+            timer: 500
+        })
     }
 
     AjaxCall(method, url, data, dataType, callback)

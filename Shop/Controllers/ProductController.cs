@@ -145,18 +145,18 @@ namespace Shop.Controllers
 
         public async Task<IActionResult> Delete(int productId)
         {
-            Product prod = await _repository.FindOne(productId);
+            Product product = await _repository.FindOne(productId);
 
-            if(prod == null)
-                return NotFound();
-            
-            prod.IsArchived = true;
-            var result = _repository.Update(prod);
+            if(product != null)
+            {
+                product.IsArchived = true;
+                var result = await _repository.Update(product);
 
-            if (result == null)
-                return NotFound();
+                if (result == null)
+                    return NotFound();
+            }
 
-            return RedirectToAction(nameof(GetAll), new { prod.Gender, prod.Category });
+            return RedirectToAction(nameof(GetAll), new { product.Gender, product.Category });
         }
 
 

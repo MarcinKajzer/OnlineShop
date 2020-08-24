@@ -1,6 +1,7 @@
 ﻿@model List<Shop.ViewModels.ProductDetailsViewModel>
 @{
     ViewData["Title"] = "GetAll";
+    string allowClass = "";
 }
 
 <main class="favourites-list">
@@ -13,6 +14,14 @@
         int productListLength = Model.Count();
         for (int i = 0; i < productListLength; i++)
         {
+            if (Model[i].Quantity < 1)
+            {
+                allowClass = "not-allow-product";
+            }
+            else
+            {
+                allowClass = "";
+            }
             <div class="single-product">
                 <div class="favoutites-links-container">
                     <a class="remove-from-favourites" onclick="removeFromFavourites(@Model[i].Id, @i)"></a>
@@ -22,7 +31,7 @@
                     @{
                         string imageSrc = "/products-images/" + Model[i].Image + ".jpg";
                     }
-                    <img src="@imageSrc" />
+                    <img src="@imageSrc" class="@allowClass"/>
                     <div class="price-container">
                         <div>
                             @if (Model[i].IsOverpriced)
