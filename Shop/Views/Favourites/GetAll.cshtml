@@ -56,6 +56,8 @@
                     </div>
                     <span>@Model[i].Name</span>
                 </a>
+
+                @{ViewBag.Index = i;}
                 @await Html.PartialAsync("_AddToCartPartial", new Shop.ViewModels.AddProductToCartViewModel()
                {
                    Id = Model[i].Id,
@@ -74,3 +76,6 @@
 </main>
 
 <script src="~/js/remove-product-form-favourites-list.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+
+<script src="~/js/add-product-to-cart-popup.js"></script>

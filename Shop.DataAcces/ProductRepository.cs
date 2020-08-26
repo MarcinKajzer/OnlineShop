@@ -17,47 +17,13 @@ namespace Shop.DataAcces
             _dbContext = dbContext;
         }
 
-        public List<Product> FindAll(Filters filter)
+        public List<Product> FindAll(Filters filters)
         {
-            IQueryable<Product> products = _dbContext.Products.
-                Where(x => x.Price >= filter.MinPrice && x.Price <= filter.MaxPrice).
-                Where(x => !x.IsArchived);
+            List<Product> products = DoFiltering(filters);
 
-            if (filter.Category != null && filter.Gender != null)
-            {
-                products = products.Where(x => x.Category == filter.Category && x.Gender == filter.Gender);
-            }
+            products = DoSorting(products, filters.SortBy);
 
-            if (!string.IsNullOrEmpty(filter.SearchBoxValue))
-                products = products.Where(p => p.Name.Contains(filter.SearchBoxValue));
-                 
-            if (filter.IsOverpriced)
-                products = products.Where(p => p.IsOverpriced);
-
-            var selectedColors = filter.SelectedColors;
-            
-            if (selectedColors.Count() > 0)
-                products = products.Where(p => selectedColors.Contains(p.Color));
-
-            var selectedSizes = filter.SelectedSizes;
-
-            Size sizesToSearch = 0;
-            selectedSizes.ForEach(x => sizesToSearch = sizesToSearch | x);
-
-            if (selectedSizes.Count() > 0)
-                products = products.Where(p => p.Sizes.Where(s => s.Quantity > 0).Any(s => (s.Size & sizesToSearch) != 0));
-
-            switch (filter.SortBy)
-            {
-                case SortBy.PriceAscending:
-                    products = products.OrderBy(p => p.Price);
-                    break;
-                case SortBy.PriceDescending:
-                    products = products.OrderByDescending(p => p.Price);
-                    break;
-            }
-
-            return products.ToList();
+            return products;
         }
 
         public async Task<Product> FindOne(int productId)
@@ -73,7 +39,6 @@ namespace Shop.DataAcces
             return product;
         }
 
-
         public async Task<Product> Update(Product product)
         {
             if (await _dbContext.Products.FindAsync(product.Id) != null)
@@ -83,6 +48,48 @@ namespace Shop.DataAcces
             }
 
             return product;
+        }
+
+
+        private List<Product> DoFiltering(Filters filters)
+        {
+            IQueryable<Product> products = _dbContext.Products.
+                Where(x => x.Price >= filters.MinPrice && x.Price <= filters.MaxPrice).
+                Where(x => !x.IsArchived);
+
+            if (filters.Category != null && filters.Gender != null)
+                products = products.Where(x => x.Category == filters.Category && x.Gender == filters.Gender);
+
+            if (!string.IsNullOrEmpty(filters.SearchBoxValue))
+                products = products.Where(p => p.Name.Contains(filters.SearchBoxValue));
+
+            if (filters.IsOverpriced)
+                products = products.Where(p => p.IsOverpriced);
+
+            if (filters.SelectedColors.Count() > 0)
+                products = products.Where(p => filters.SelectedColors.Contains(p.Color));
+
+            Size sizesToSearch = 0;
+            filters.SelectedSizes.ForEach(x => sizesToSearch |= x);
+
+            if (filters.SelectedSizes.Count() > 0)
+                products = products.Where(p => p.Sizes.Where(s => s.Quantity > 0).Any(s => (s.Size & sizesToSearch) != 0));
+
+            return products.ToList();
+        }
+
+        private List<Product> DoSorting(List<Product> products, SortBy sortBy)
+        {
+            switch (sortBy)
+            {
+                case SortBy.PriceAscending:
+                    products = products.OrderBy(p => p.Price).ToList();
+                    break;
+                case SortBy.PriceDescending:
+                    products = products.OrderByDescending(p => p.Price).ToList();
+                    break;
+            }
+            return products;
         }
     }
 }

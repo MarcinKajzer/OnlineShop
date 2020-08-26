@@ -113,6 +113,19 @@ button:hover::before, button:focus::before, .link-button:hover::before, .link-bu
     }
 }
 
+.popup-custom{
+    border-radius: 0 !important;
+}
+
+.popup-button {
+    margin: 10px 20px;
+    font-weight: 500;
+}
+
+.popup-button-cancel {
+    background: #d33;
+}
+
 .hidden{
     opacity: 0;
 }
@@ -1329,7 +1342,6 @@ h2.cart-title {
     width: 0;
     height: 0;
 }
-
 
 
 

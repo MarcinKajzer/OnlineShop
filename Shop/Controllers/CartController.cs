@@ -27,13 +27,16 @@ namespace Shop.Controllers
             return View(cart != null && cart.Items != null ? cart : new Cart());
         }
 
-        
         [HttpPost]
-        public async Task<IActionResult> AddProduct(AddProductToCartViewModel model)
+        public async Task Add(AddProductToCartViewModel model)
         {
             Product prod = await _productRepository.FindOne(model.Id);
             if (prod == null)
-                return NotFound();
+                return;
+
+            model.Name = prod.Name;
+            model.Price = prod.Price;
+            model.Image = prod.Image;
 
             Cart cart = GetCartFromSession();
 
@@ -43,7 +46,6 @@ namespace Shop.Controllers
             cart.AddItem(new CartItem(model));
 
             SessionHelper.Set(HttpContext.Session, "cart", cart);
-            return RedirectToAction(nameof(Index));
         }
 
         [HttpGet]

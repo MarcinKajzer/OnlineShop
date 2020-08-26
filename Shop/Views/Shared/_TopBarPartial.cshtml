@@ -53,55 +53,14 @@
 <script src="~/js/top-bar.js"></script>
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
 
+<script src="~/js/ajax-call.js"></script>
+
 @if (!User.IsInRole("Administrator"))
 {
-    <script type="text/javascript">
-
-        $(document).ready(function () {
-            $.ajax({
-                type: 'GET',
-                url: '../Cart/GetTotalInfo',
-                dataType: 'json',
-                success: function (result) {
-                    if (result.quantity == 0) {
-                        document.querySelector(".number-of-cart-items").style.display = "none";
-                    }
-                    else {
-                        document.querySelector(".number-of-cart-items").style.display = "block";
-                        document.querySelector(".number-of-cart-items").innerHTML = result.quantity;
-                    }
-                },
-                error: function (ex) {
-                    alert('Coś poszło nie tak' + ex);
-                }
-            });
-            return false;
-        })
-    </script>
+    <script src="~/js/get-cart-items-number.js"></script>
 }
 
 @if (User.IsInRole("User"))
 {
-    <script>
-        $(document).ready(function () {
-            $.ajax({
-                type: 'GET',
-                url: '../Favourites/GetQuantity',
-                dataType: 'json',
-                success: function (quantity) {
-                    if (quantity == 0) {
-                        document.querySelector(".number-of-favourites").style.display = "none";
-                    }
-                    else {
-                        document.querySelector(".number-of-favourites").style.display = "block";
-                        document.querySelector(".number-of-favourites").innerHTML = quantity;
-                    }
-                },
-                error: function (ex) {
-                    alert('Coś poszło nie tak' + ex);
-                }
-            });
-            return false;
-        })
-    </script>
+    <script src="~/js/get-favourites-number.js"></script>
 }

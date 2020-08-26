@@ -55,16 +55,16 @@
                     <span class="discount">- @Model.FormatedDiscount %</span>
                 }
             </div>
-
+            @{ViewBag.Index = 0;}
             @await Html.PartialAsync("_AddToCartPartial", new Shop.ViewModels.AddProductToCartViewModel()
-       {
-           Id = Model.Id,
-           Sizes = Model.Sizes,
-           Quantity = Model.Quantity,
-           Image = Model.Image,
-           Name = Model.Name,
-           Price = Model.Price
-       })
+           {
+               Id = Model.Id,
+               Sizes = Model.Sizes,
+               Quantity = Model.Quantity,
+               Image = Model.Image,
+               Name = Model.Name,
+               Price = Model.Price
+           })
         </div>
     </div>
 </main>
@@ -73,3 +73,5 @@
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
 <script src="~/js/archive-product-confirmation-popup.js"></script>
+
+<script src="~/js/add-product-to-cart-popup.js"></script>

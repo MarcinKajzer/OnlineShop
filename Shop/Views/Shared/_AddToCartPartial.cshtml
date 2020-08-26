@@ -1,11 +1,8 @@
 ﻿@model Shop.ViewModels.AddProductToCartViewModel
 
-    <form asp-action="AddProduct" asp-controller="Cart" method="post">
+    <form>
 
         <input type="hidden" asp-for="@Model.Id" />
-        <input type="hidden" asp-for="@Model.Image" />
-        <input type="hidden" asp-for="@Model.Price" />
-        <input type="hidden" asp-for="@Model.Name" />
 
         <div class="size-and-quantity">
 
@@ -21,22 +18,21 @@
                     {
                         if (Model.Sizes[i].Quantity >= 1)
                         {
-                            int sizeValue = (int)Model.Sizes[i].Size;
-
                             if (isChecked)
                             {
-                                <input type="radio" asp-for="SelectedSize" value="@sizeValue" id="@id@i" checked />
+                                <input type="radio" asp-for="SelectedSize" value="@Model.Sizes[i].Size" id="@id@i" checked />
                                 isChecked = false;
                             }
                             else
                             {
-                                <input type="radio" asp-for="SelectedSize" value="@sizeValue" id="@id@i" />
+                                <input type="radio" asp-for="SelectedSize" value="@Model.Sizes[i].Size" id="@id@i" />
                             }
                             <label for="@id@i">@Model.Sizes[i].Size</label>
                         }
                     }
                 </div>
-                <input name="quantity" type="number" value="1" />
+              
+                <input class="quantity" name="quantity" type="number" value="1" min="1"/>
             }
             else
             {
@@ -51,9 +47,10 @@
         }
         else
         {
-            <button type="submit">Do koszyka</button>
+            <button type="button" onclick="addToCart(@Model.Id, '@Model.Name', @ViewBag.Index)">Do koszyka</button>
         }
 
-
     </form>
+
+
 
