@@ -6,7 +6,7 @@
 
 <main>
 
-    <h2 class="order-list-title">Lista zamówień</h2>
+    <h2>Lista zamówień</h2>
 
     <div class="links-container">
         <a asp-action="GetAll" asp-controller="Order" asp-route-isSent="false" class="custom-link">Oczekujące</a>
@@ -16,7 +16,7 @@
 
     @if(listLength < 1)
     {
-        <p class="no-orders-info">Nie masz żadnych zamówień w tej kategorii.</p>
+        <p class="additional-info">Nie masz żadnych zamówień w tej kategorii.</p>
     }
     else
     {

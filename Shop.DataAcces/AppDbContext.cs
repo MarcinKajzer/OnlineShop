@@ -21,7 +21,8 @@ namespace Shop.DataAcces
                 UserName = "admin@shop.com",
                 NormalizedUserName = "ADMIN@SHOP.COM",
                 Email = "admin@shop.com",
-                NormalizedEmail = "ADMIN@SHOP.COM"
+                NormalizedEmail = "ADMIN@SHOP.COM",
+                EmailConfirmed = true
             };
             user.PasswordHash = new PasswordHasher<User>().HashPassword(user, "1234");
 

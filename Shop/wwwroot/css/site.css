@@ -17,6 +17,16 @@ a{
     cursor: pointer;
 }
 
+h2, .additional-info {
+    text-align: center;
+    margin: 30px 0;
+}
+
+.additional-info {
+    margin: 50px 0;
+    width: 100%;
+}
+
 button, .link-button {
     height: 40px;
     color: white;
@@ -27,6 +37,7 @@ button, .link-button {
     outline: none;
     overflow: hidden;
     background: #1C551B;
+    max-width: 300px;
 }
 
 .link-button {
@@ -153,12 +164,6 @@ input[type="radio"]:checked+label{
 
 input[type="radio"]:hover+label{
     background: lightgray;
-}
-
-.no-products-info {
-    margin-top: 50px;
-    width: 100%;
-    text-align: center;
 }
 
 .field-validation-error{
@@ -435,7 +440,9 @@ nav ul li:hover a {
 /*........HOME-PAGE..........*/
 
 .main-page-nav h2 {
-    padding: 20px
+    padding: 20px;
+    text-align: left;
+    margin: 0;
 }
 
 .description p{
@@ -534,7 +541,6 @@ nav ul li:hover a {
     .main-page-nav h2 {
         font-weight: 500;
         font-size: 55px;
-        text-align: left;
         padding: 50px 0;
         text-transform: uppercase;
     }
@@ -862,13 +868,16 @@ main{
 }
 
 
-
 /*.........SINGLE-PRODUCT-DETAILS..............*/
 
 .single-product-details {
     width: 90%;
     max-width: 500px;
     margin: 50px auto;
+}
+
+h2.product-name {
+    text-align: left;
 }
 
 .product-image, .details {
@@ -1003,11 +1012,8 @@ main{
     display: block;
 }
 
-/*..........CART-PAGE..............*/
 
-h2.cart-title {
-    text-align: center;
-}
+/*..........CART-PAGE..............*/
 
 .cart-table {
     width: 80%;
@@ -1136,9 +1142,7 @@ h2.cart-title {
 
 
 @media screen and (min-width: 900px){
-    h2.cart-title {
-        margin-top: 30px;
-    }
+   
     .cart-table {
         width: 90%;
         max-width: 1000px;
@@ -1160,10 +1164,6 @@ h2.cart-title {
 
 /*........LIST-OF-ORDERS............*/
 
-.order-list-title, .no-orders-info {
-    text-align: center;
-    margin-top: 30px;
-}
 
 .links-container{
     width: 300px;

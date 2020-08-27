@@ -2,7 +2,6 @@
 using Shop.DTOs;
 using Shop.Entities;
 using Shop.ViewModels;
-using System;
 using System.Collections.Generic;
 
 namespace Shop.Helpers
@@ -24,7 +23,7 @@ namespace Shop.Helpers
                 UserId = currentUserId,
                 TotalAmount = from.TotalAmount,
                 Products = new List<ProductInfo>() { },
-                CreationDate = DateTime.Now
+                CreationDate = from.CreationDate
             };
 
             from.Items.ForEach(i => order.Products.Add(new ProductInfo

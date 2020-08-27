@@ -3,24 +3,26 @@
 @{
     ViewData["Title"] = "GetByCategory";
     string allowClass = "";
+    int productListLength = Model.Count();
 }
 
 <p class="show-filters-button">Filtruj</p>
 
 @await Html.PartialAsync("_FilterResultsPartial", (Shop.Common.Filters)ViewBag.Filter)
 
-<main class="products-list">
-    @if (Model.Count == 0)
-    {
-        <p class="no-products-info">Nie mamy obecnie żadnego produktu w wybranej kategorii</p>
-    }
-    else
-    {
-        int productListLength = Model.Count();
+@if (Model.Count == 0)
+{
+    <main>
+        <p class="additional-info">Nie mamy obecnie żadnego produktu w wybranej kategorii</p>
+    </main>
+}
+else
+{
+    <main class="products-list">
 
-        for (int i = 0; i < productListLength; i++)
+        @for (int i = 0; i < productListLength; i++)
         {
-            if(Model[i].Quantity < 1)
+            if (Model[i].Quantity < 1)
             {
                 allowClass = "not-allow-product";
             }
@@ -55,7 +57,7 @@
 
                 </div>
                 <a asp-action="Details" asp-controller="Product" asp-route-productId="@Model[i].Id">
-                    <img src="@Model[i].ImagePath" class="@allowClass"/>
+                    <img src="@Model[i].ImagePath" class="@allowClass" />
                     <div class="price-container">
                         <div>
                             @if (Model[i].IsOverpriced)
@@ -82,21 +84,24 @@
                 @{ViewBag.Index = i;}
 
                 @await Html.PartialAsync("_AddToCartPartial", new Shop.ViewModels.AddProductToCartViewModel()
-               {
-                   Id = Model[i].Id,
-                   Sizes = Model[i].Sizes,
-                   Quantity = Model[i].Quantity,
-                   Image = Model[i].Image,
-                   Name = Model[i].Name,
-                   Price = Model[i].Price
-               })
+                {
+                    Id = Model[i].Id,
+                    Sizes = Model[i].Sizes,
+                    Quantity = Model[i].Quantity,
+                    Image = Model[i].Image,
+                    Name = Model[i].Name,
+                    Price = Model[i].Price
+                })
 
             </div>
 
         }
-    }
 
-</main>
+    </main>
+}
+
+
+
 
 <script src="~/js/filters.js"></script>
 <script src="~/js/add-and-remove-favourite-product.js"></script>

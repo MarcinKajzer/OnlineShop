@@ -16,6 +16,8 @@ namespace Shop.ViewModels
         public  AdressDTO Adress { get; set; }
         public  List<CartItem> Items { get; set; }
 
+        public DateTime CreationDate { get; set; }
+
         public string FormatedTotalAmount => TotalAmount.ToString("0.00");
     }
 }

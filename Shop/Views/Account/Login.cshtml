@@ -14,12 +14,12 @@
         </div>
 
         <div class="form-group">
-            <input asp-for="Email" type="text" placeholder="Adress email"/>
+            <input asp-for="Email" type="text" placeholder="Adress email" />
             <span asp-validation-for="Email"></span>
         </div>
 
         <div class="form-group">
-            <input asp-for="Password" type="password" placeholder="Hasło"/>
+            <input asp-for="Password" type="password" placeholder="Hasło" />
             <span asp-validation-for="Password"></span>
         </div>
 
@@ -28,9 +28,9 @@
             <label asp-for="RememberMe">Zapamiętaj mnie</label>
         </div>
 
-        <button type="submit">Zaloguj</button>
-
         <div asp-validation-summary="ModelOnly"></div>
+
+        <button type="submit">Zaloguj</button>
 
     </form>
 </main>
