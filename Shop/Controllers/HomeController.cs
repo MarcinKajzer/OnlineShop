@@ -1,12 +1,14 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Shop.Models;
+using Shop.Services;
 using System.Diagnostics;
+using System.Threading.Tasks;
 
 namespace Shop.Controllers
 {
     public class HomeController : Controller
     {
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             return View();
         }

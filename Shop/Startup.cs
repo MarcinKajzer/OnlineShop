@@ -1,19 +1,15 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Entities;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Options;
 using Shop.DataAcces;
 using Shop.DataAcces.Interfaces;
+using Shop.Interfaces;
+using Shop.Services;
 
 namespace Shop
 {
@@ -34,7 +30,8 @@ namespace Shop
 
             services.AddIdentity<User, IdentityRole>()
                .AddRoles<IdentityRole>()
-               .AddEntityFrameworkStores<AppDbContext>();
+               .AddEntityFrameworkStores<AppDbContext>()
+               .AddDefaultTokenProviders();
 
             services.Configure<IdentityOptions>(options =>
             {
@@ -44,10 +41,14 @@ namespace Shop
                 options.Password.RequireUppercase = false;
                 options.Password.RequiredLength = 4;
                 options.Password.RequiredUniqueChars = 0;
+
+                options.SignIn.RequireConfirmedEmail = true;
             });
 
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<IOrderRepository, OrderRepository>();
+
+            services.AddScoped<IMailSender, MailSender>();
 
             services.AddHttpContextAccessor();
             services.AddSession();
@@ -63,7 +64,6 @@ namespace Shop
             else
             {
                 app.UseExceptionHandler("/Home/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
             app.UseHttpsRedirection();

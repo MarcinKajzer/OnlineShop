@@ -11,7 +11,7 @@ namespace Shop.Controllers
         [DataType(DataType.Password)]
         [Required(ErrorMessage = "Password is required.")]
         public string Password { get; set; }
-        public bool rememberMe { get; set; }
+        public bool RememberMe { get; set; }
         public string ReturnUrl { get; set; }
     }
 }

@@ -1,4 +1,4 @@
-﻿{
+{
   "iisSettings": {
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
@@ -12,16 +12,17 @@
       "commandName": "IISExpress",
       "launchBrowser": true,
       "environmentVariables": {
+        "SEND_GRID_API_KEY": "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",
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
     "Shop": {
       "commandName": "Project",
       "launchBrowser": true,
-      "applicationUrl": "https://localhost:5001;http://localhost:5000",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
-      }
+      },
+      "applicationUrl": "https://localhost:5001;http://localhost:5000"
     }
   }
 }

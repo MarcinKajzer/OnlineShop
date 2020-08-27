@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Shop.Interfaces;
 using Shop.ViewModels;
 using System.Threading.Tasks;
 
@@ -11,11 +12,15 @@ namespace Shop.Controllers
     {
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
+        private readonly IMailSender _mailSender;
 
-        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager)
+        public AccountController(UserManager<User> userManager, 
+                                SignInManager<User> signInManager,
+                                IMailSender mailSender)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _mailSender = mailSender;
         }
 
         [HttpGet]
@@ -41,10 +46,14 @@ namespace Shop.Controllers
 
                 if (creationResult.Succeeded)
                 {
+                    string confirmationToken = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                    string confirmationLink = Url.Action(nameof(ConfirmEmail), "Account", new { userId = user.Id, token = confirmationToken }, "https");
+                    await _mailSender.SendPasswordConfirmationAsync(user.Email, confirmationLink);
+
                     var addingToRoleResult = await _userManager.AddToRoleAsync(user, "User");
 
                     if(addingToRoleResult.Succeeded)
-                        return RedirectToAction("Index", "Home");
+                        return RedirectToAction(nameof(RegistratedSuccessfully));
 
                     foreach (var error in addingToRoleResult.Errors)
                         ModelState.AddModelError(string.Empty, error.Description);
@@ -58,6 +67,30 @@ namespace Shop.Controllers
         }
 
         [HttpGet]
+        public IActionResult RegistratedSuccessfully()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ConfirmEmail(string userId, string token)
+        {
+            User user = await _userManager.FindByIdAsync(userId);
+            if(user != null)
+            {
+                var result = await _userManager.ConfirmEmailAsync(user, token);
+                if (result.Succeeded)
+                    return View("EmailConfirmedSuccesfully");
+                else
+                    ViewBag.Error = "Nie udało się potwierdzić adresu email.";
+            }
+            ViewBag.Error = "Uzytkownik o podanym identyfikatorze nie istnieje.";
+
+            return View();
+        }
+
+
+        [HttpGet]
         public IActionResult Login(string ReturnUrl)
         {
             ViewBag.ReturnUrl = ReturnUrl;
@@ -69,7 +102,7 @@ namespace Shop.Controllers
         {
             if (ModelState.IsValid)
             {
-                var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.rememberMe, lockoutOnFailure: false);
+                var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
 
                 if (result.Succeeded)
                     return RedirectToLocal(model.ReturnUrl);
