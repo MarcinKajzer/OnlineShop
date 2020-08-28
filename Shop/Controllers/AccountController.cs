@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Shop.DTOs;
+using Shop.Entities;
 using Shop.Interfaces;
 using Shop.ViewModels;
 using System.Threading.Tasks;
@@ -124,13 +126,102 @@ namespace Shop.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+        [Authorize]
+        [HttpGet]
+        public async Task<IActionResult> Update()
+        {
+            User user = await GetCurrentUser();
+            UpdateUserViewModel viewModel = new UpdateUserViewModel
+            {
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Id = user.Id
+            };
+
+            if(user.Adress != null)
+            {
+                viewModel.Adress = new AdressDTO
+                {
+                    City = user.Adress.City,
+                    Street = user.Adress.Street,
+                    PostCode = user.Adress.Street,
+                    BuildingNumber = user.Adress.BuildingNumber,
+                    FlatNumber = user.Adress.FlatNumber
+                };
+            }
+            
+            return View(viewModel);
+        }
+
+        [Authorize]
+        [HttpPost]
+        public async Task<IActionResult> Update(UpdateUserViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                User user = await GetCurrentUser();
+                user.FirstName = model.FirstName;
+                user.LastName = model.LastName;
+
+                var result =  await _userManager.UpdateAsync(user);
+                if (result.Succeeded)
+                    return RedirectToAction("index", "home");
+            }
+            return View(model);
+        }
+
+        [Authorize]
+        [HttpGet]
+        public IActionResult AddAdress()
+        {
+            return View();
+        }
+
+        [Authorize]
+        [HttpPost]
+        public async Task<IActionResult> AddAdress(AdressDTO model)
+        {
+            if (ModelState.IsValid)
+            {
+                User user = await GetCurrentUser();
+                user.Adress = new Adress
+                {
+                    City = model.City,
+                    PostCode = model.PostCode,
+                    BuildingNumber = model.BuildingNumber,
+                    FlatNumber = model.FlatNumber,
+                    Street = model.Street
+                };
+
+                var result = await _userManager.UpdateAsync(user);
+                if (result.Succeeded)
+                    return RedirectToAction(nameof(Update));
+
+            }
+            return View(model);
+        }
+
+
         [NonAction]
-        protected ActionResult RedirectToLocal(string returnUrl)
+        private ActionResult RedirectToLocal(string returnUrl)
         {
             if (Url.IsLocalUrl(returnUrl))
                 return Redirect(returnUrl);
             else
                 return RedirectToAction("Index", "Home");
+        }
+
+        [NonAction]
+        private async Task<User> GetCurrentUser()
+        {
+            var currentUserName = HttpContext.User.Identity.Name;
+            if (currentUserName != null)
+            {
+                var currentUser = await _userManager.FindByNameAsync(currentUserName);
+                return currentUser;
+            }
+
+            return null;
         }
     }
 }

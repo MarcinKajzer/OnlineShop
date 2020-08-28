@@ -976,8 +976,17 @@ h2.product-name {
 
 .account-form .form-group{
     width: 60%;
-    height: 60px;
+    margin-bottom: 5px;
+    min-height: 60px;
 }
+
+.account-form label{
+    color: darkseagreen;
+    font-size: 15px;
+    display: block;
+    margin-bottom: 5px;
+}
+
 
 .account-form input, .addres-form input{
     width: 100%;
@@ -1012,14 +1021,33 @@ h2.product-name {
     margin: 10px 0 50px;
 }
 
+.account-form .custom-link {
+    display: block;
+    width: 60%;
+    margin: 0 auto;
+    margin: 10px 0;
+    font-size: 15px;
+}
+
 .account-form .form-group span{
     margin-top: 5px;
     display: block;
 }
 
+.account-form .section-name{
+    display: block;
+    width: 60%;
+    text-align:center;
+    font-size: 15px;
+    margin-bottom: 20px ;
+}
+
+.account-form .section-name:last-of-type{
+    margin-top: 20px;
+}
+
 
 /*..........CART-PAGE..............*/
-
 .cart-table {
     width: 80%;
     max-width: 400px;

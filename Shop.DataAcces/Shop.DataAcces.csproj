@@ -7,6 +7,8 @@
   <ItemGroup>
     <Compile Remove="Migrations\20200816102406_ADD seed admin.cs" />
     <Compile Remove="Migrations\20200816102406_ADD seed admin.Designer.cs" />
+    <Compile Remove="Migrations\20200828093400_ADD adres prop to user.cs" />
+    <Compile Remove="Migrations\20200828093400_ADD adres prop to user.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
