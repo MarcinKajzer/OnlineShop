@@ -196,7 +196,6 @@ namespace Shop.Controllers
                 var result = await _userManager.UpdateAsync(user);
                 if (result.Succeeded)
                     return RedirectToAction(nameof(Update));
-
             }
             return View(model);
         }
