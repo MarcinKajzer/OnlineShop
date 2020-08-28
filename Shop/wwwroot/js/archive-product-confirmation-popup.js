@@ -4,8 +4,12 @@
         text: "Czy jesteś pewien, że chcesz przenieść ten produkt do archiwum?",
         icon: 'warning',
         showCancelButton: true,
-        confirmButtonColor: '#1C551B',
-        cancelButtonColor: '#d33',
+        buttonsStyling: false,
+        customClass: {
+            confirmButton: 'popup-button',
+            cancelButton: 'popup-button popup-button-cancel',
+            popup: 'popup-custom'
+        },
         confirmButtonText: 'Tak, archiwizuj!',
         cancelButtonText: 'Nie'
     }).then((result) => {
@@ -15,6 +19,9 @@
                 text: 'Ten produkt został pomyślnie przeniesiony do archiwum',
                 icon: "success",
                 showConfirmButton: false,
+                customClass: {
+                    popup: 'popup-custom'
+                },
                 timer: 1000
             }).then(() => {
                 window.location.href = "/Product/Delete?productId=" + productId;

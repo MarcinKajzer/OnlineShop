@@ -25,6 +25,9 @@ function addToFavourites(productId, index) {
             title: 'Dodano do ulubionych!',
             icon: "success",
             showConfirmButton: false,
+            customClass: {
+                popup: 'popup-custom'
+            },
             timer: 500
         })
     }

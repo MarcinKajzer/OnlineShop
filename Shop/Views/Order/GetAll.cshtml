@@ -6,13 +6,21 @@
 
 <main>
 
-    <h2>Lista zamówień</h2>
+    @if (User.IsInRole("Administrator"))
+    {
+        <h2>Lista zamówień</h2>
 
-    <div class="links-container">
-        <a asp-action="GetAll" asp-controller="Order" asp-route-isSent="false" class="custom-link">Oczekujące</a>
-        <span>|</span>
-        <a asp-action="GetAll" asp-controller="Order" asp-route-isSent="true" class="custom-link">Wysłane</a>
-    </div>
+        <div class="links-container">
+            <a asp-action="GetAll" asp-controller="Order" asp-route-isSent="false" class="custom-link">Oczekujące</a>
+            <span>|</span>
+            <a asp-action="GetAll" asp-controller="Order" asp-route-isSent="true" class="custom-link">Wysłane</a>
+        </div>
+    }
+    else
+    {
+        <h2>Twoje zamówienia</h2>
+    }
+
 
     @if(listLength < 1)
     {
@@ -24,11 +32,14 @@
             <thead>
                 <tr>
                     <th>Data</th>
-                    <th>Uzytkownik</th>
+                    @if (User.IsInRole("Administrator"))
+                    {
+                        <th>Użytkownik</th>
+                    }
                     <th>Adres</th>
                     <th>Szczegóły zamówienia</th>
                     <th>Status</th>
-                    @if (listLength > 0 && !Model[0].IsSent)
+                    @if (!Model[0].IsSent && User.IsInRole("Administrator"))
                     {
                         <th>Opcje</th>
                     }
@@ -39,9 +50,10 @@
                 {
                     <tr>
                         <td>@Model[i].CreationDate.ToShortDateString() <br /> @Model[i].CreationDate.ToShortTimeString()</td>
-                        <td>
-                            @Model[i].UserEmail
-                        </td>
+                        @if (User.IsInRole("Administrator"))
+                        {
+                            <td>@Model[i].UserEmail</td>
+                        }
                         <td>
                             @Model[i].UserName <br />
                             @Model[i].Adress.Street @Model[i].Adress.BuildingNumber / @Model[i].Adress.FlatNumber <br>
@@ -63,7 +75,7 @@
                             <td>Wysłano</td>
                         }
 
-                        @if (!Model[i].IsSent)
+                        @if (!Model[i].IsSent && User.IsInRole("Administrator"))
                         {
                             <td>
                                 <span class="link-button" onclick="showConfirmationPopup(@Model[i].Id)">Wysłano</span>

@@ -4,8 +4,12 @@
         text: "Czy jesteś pewien, że zamówienie zostało wysłane?",
         icon: 'warning',
         showCancelButton: true,
-        confirmButtonColor: '#1C551B',
-        cancelButtonColor: '#d33',
+        buttonsStyling: false,
+        customClass: {
+            confirmButton: 'popup-button',
+            cancelButton: 'popup-button popup-button-cancel',
+            popup: 'popup-custom'
+        },
         confirmButtonText: 'Tak, zostało wysłane!',
         cancelButtonText: 'Nie'
     }).then((result) => {
@@ -15,6 +19,9 @@
                 text: 'Status zamówienie został zmieniony pomyślnie',
                 icon: "success",
                 showConfirmButton: false,
+                customClass: {
+                    popup: 'popup-custom'
+                },
                 timer: 1000
             }).then(() => {
                 window.location.href = "/Order/SendShipping?orderId=" + orderId;

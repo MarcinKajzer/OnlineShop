@@ -1,6 +1,5 @@
 ﻿using Entities;
 using Shop.DataAcces.Interfaces;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -49,6 +48,11 @@ namespace Shop.DataAcces
         public List<Order> FindAllSent()
         {
             return _context.Orders.Where(o => o.IsSent).OrderByDescending(o => o.CreationDate).ToList();
+        }
+
+        public List<Order> FindByUserId(string userId)
+        {
+            return _context.Orders.Where(o => o.UserId == userId).OrderByDescending(o => o.CreationDate).ToList();
         }
 
         public async Task<Order> FindOne(int orderId)

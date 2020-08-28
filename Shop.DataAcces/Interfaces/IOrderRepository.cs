@@ -13,6 +13,7 @@ namespace Shop.DataAcces.Interfaces
         List<Order> FindAllNotSent();
         List<Order> FindAllSent();
         Task<Order> FindOne(int orderId);
+        List<Order> FindByUserId(string userId);
         Task<Order> Update(Order order);
     }
 }

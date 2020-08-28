@@ -43,12 +43,14 @@ namespace Shop.Services
             await Send(subject, userEmail, emailTemplate);
         }
 
+
         private string ReadTemplate(string fileName)
         {
             string templatePath = Path.Combine(_environment.WebRootPath, "email-templates", fileName);
             string template = File.ReadAllText(templatePath);
             return template;
         }
+
         private async Task Send(string subject, string userEmail, string content)
         {
             var apiKey = Environment.GetEnvironmentVariable("SEND_GRID_API_KEY");

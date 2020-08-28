@@ -23,5 +23,4 @@
     }
 
     AjaxCall(method, url, data, dataType, callback)
-
 }
