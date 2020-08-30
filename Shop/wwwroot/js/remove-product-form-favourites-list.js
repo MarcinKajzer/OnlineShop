@@ -14,7 +14,7 @@
 
             let p = document.createElement("p");
             p.innerHTML = "Nie masz obecnie ulubionych produktów";
-            p.classList.add("no-products-info")
+            p.classList.add("additional-info")
             document.querySelector(".favourites-list").appendChild(p);
         }
         else {

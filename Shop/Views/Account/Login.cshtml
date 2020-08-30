@@ -28,6 +28,8 @@
             <label asp-for="RememberMe">Zapamiętaj mnie</label>
         </div>
 
+        <a asp-action="ForgotPassword" asp-controller="Account" class="custom-link">Nie pamiętam hasła</a>
+
         <div asp-validation-summary="ModelOnly"></div>
 
         <button type="submit">Zaloguj</button>

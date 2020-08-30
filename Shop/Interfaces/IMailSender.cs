@@ -6,7 +6,8 @@ namespace Shop.Interfaces
 {
     public interface IMailSender
     {
-        Task SendPasswordConfirmationAsync(string userEmail, string confirmationLink);
+        Task SendEmailConfirmationAsync(string userEmail, string confirmationLink);
+        Task SendPasswordResetAsync(string userEmail, string resetLink);
         Task SendOrderSummaryAsync(string userEmail, CreateOrderViewModel products);
     }
 }

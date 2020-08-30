@@ -17,12 +17,22 @@ namespace Shop.Services
         {
             _environment = environment;
         }
-        public async Task SendPasswordConfirmationAsync(string userEmail, string confirmationLink)
+        public async Task SendEmailConfirmationAsync(string userEmail, string confirmationLink)
         {
             string subject = "Potwierdzenie adresu email";
 
             string emailTemplate = ReadTemplate("email-confirmation.html");
             emailTemplate = string.Format(emailTemplate, confirmationLink);
+
+            await Send(subject, userEmail, emailTemplate);
+        }
+
+        public async Task SendPasswordResetAsync(string userEmail, string resetLink)
+        {
+            string subject = "Przywracanie hasła";
+
+            string emailTemplate = ReadTemplate("reset-password.html");
+            emailTemplate = string.Format(emailTemplate, resetLink);
 
             await Send(subject, userEmail, emailTemplate);
         }

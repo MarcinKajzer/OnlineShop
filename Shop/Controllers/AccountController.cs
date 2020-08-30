@@ -50,7 +50,7 @@ namespace Shop.Controllers
                 {
                     string confirmationToken = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     string confirmationLink = Url.Action(nameof(ConfirmEmail), "Account", new { userId = user.Id, token = confirmationToken }, "https");
-                    await _mailSender.SendPasswordConfirmationAsync(user.Email, confirmationLink);
+                    await _mailSender.SendEmailConfirmationAsync(user.Email, confirmationLink);
 
                     var addingToRoleResult = await _userManager.AddToRoleAsync(user, "User");
 
@@ -88,7 +88,7 @@ namespace Shop.Controllers
             }
             ViewBag.Error = "Uzytkownik o podanym identyfikatorze nie istnieje.";
 
-            return View();
+            return View("EmailConfirmationFailed");
         }
 
 
@@ -110,7 +110,7 @@ namespace Shop.Controllers
                     return RedirectToLocal(model.ReturnUrl);
                 else
                 {
-                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                    ModelState.AddModelError(string.Empty, "Nieprawidłowa nazwa użytkownika lub hasło.");
                     return View(model);
                 }
             }
@@ -166,6 +166,9 @@ namespace Shop.Controllers
                 var result =  await _userManager.UpdateAsync(user);
                 if (result.Succeeded)
                     return RedirectToAction("index", "home");
+
+                foreach (var error in result.Errors)
+                    ModelState.AddModelError(string.Empty, error.Description);
             }
             return View(model);
         }
@@ -196,9 +199,102 @@ namespace Shop.Controllers
                 var result = await _userManager.UpdateAsync(user);
                 if (result.Succeeded)
                     return RedirectToAction(nameof(Update));
+
+                foreach (var error in result.Errors)
+                    ModelState.AddModelError(string.Empty, error.Description);
             }
             return View(model);
         }
+
+
+        [HttpGet]
+        public IActionResult ForgotPassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> SendResetPasswordLink(string email)
+        {
+            User user = await _userManager.FindByEmailAsync(email);
+            if(user != null && user.EmailConfirmed)
+            {
+                string token = await _userManager.GeneratePasswordResetTokenAsync(user);
+                var resetLink = Url.Action(nameof(ResetPassword), "Account", new { token, email }, "https");
+
+                await _mailSender.SendPasswordResetAsync(email, resetLink);
+            }
+
+            return View("PasswordResetMailSentSuccesfully");
+        }
+
+        [HttpGet]
+        public IActionResult ResetPassword(string email, string token)
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ResetPassword(ResetPasswordViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                User user = await _userManager.FindByEmailAsync(model.Email);
+
+                var result = await _userManager.ResetPasswordAsync(user, model.Token, model.Password);
+                if (result.Succeeded)
+                    return RedirectToAction(nameof(PasswordResetSuccesfully));
+                else
+                    return RedirectToAction(nameof(PasswordResetFailed));
+            }
+            return View(model);
+        }
+
+        [HttpGet]
+        public IActionResult PasswordResetSuccesfully()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        public IActionResult PasswordResetFailed()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        public IActionResult ChangePassword()
+        {
+            return View();
+        }
+
+        [Authorize]
+        [HttpPost]
+        public async Task<IActionResult> ChangePassword(ChangePasswordViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                User user = await GetCurrentUser();
+
+                var result = await _userManager.ChangePasswordAsync(user, model.CurrentPassword, model.NewPassword);
+                if (result.Succeeded)
+                {
+                    return RedirectToAction(nameof(PasswordChangedSuccesfully));
+                }
+                foreach (var error in result.Errors)
+                    ModelState.AddModelError(string.Empty, error.Description);
+            }
+            return View(model);
+        }
+
+        [Authorize]
+        [HttpGet]
+        public IActionResult PasswordChangedSuccesfully()
+        {
+            return View();
+        }
+
+
 
 
         [NonAction]
