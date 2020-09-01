@@ -4,6 +4,7 @@
     ViewData["Title"] = "GetByCategory";
     string allowClass = "";
     int productListLength = Model.Count();
+    string archivedClass = "";
 }
 
 <p class="show-filters-button">Filtruj</p>
@@ -31,7 +32,17 @@ else
                 allowClass = "";
             }
 
-            <div class="single-product">
+            if (Model[i].IsArchived)
+            {
+                archivedClass = "archived-product";
+            }
+            else
+            {
+                archivedClass = "";
+            }
+
+
+            <div class="single-product @archivedClass">
                 <div class="favoutites-links-container">
                     @if (User.IsInRole("User"))
                     {
@@ -46,9 +57,16 @@ else
                     }
                     else if (User.IsInRole("Administrator"))
                     {
-                        <a asp-action="Update" asp-controller="Product" asp-route-productId="@Model[i].Id" class="custom-link">Edytuj</a>
-                        <span> | </span>
-                        <span onclick="showConfirmationPopup(@Model[i].Id)" class="custom-link">Usuń</span>
+                        if (!Model[i].IsArchived)
+                        {
+                            <a asp-action="Update" asp-controller="Product" asp-route-productId="@Model[i].Id" class="custom-link">Edytuj</a>
+                            <span> | </span>
+                            <span onclick="showConfirmationPopup(@Model[i].Id, true)" class="custom-link">Usuń</span>
+                        }
+                        else
+                        {
+                            <span onclick="showConfirmationPopup(@Model[i].Id, false)" class="custom-link">Przywróć</span>
+                        }
                     }
                     else
                     {
@@ -81,7 +99,8 @@ else
                     <span>@Model[i].Name</span>
                 </a>
 
-                @{ViewBag.Index = i;}
+                @{ViewBag.Index = i;
+                  ViewBag.IsArchived = Model[i].IsArchived;}
 
                 @await Html.PartialAsync("_AddToCartPartial", new Shop.ViewModels.AddProductToCartViewModel()
                 {

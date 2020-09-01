@@ -18,6 +18,7 @@ namespace Shop.ViewModels
 
         public bool IsFavourite { get; set; }
         public bool IsOverpriced { get; set; }
+        public bool IsArchived { get; set; }
 
         public Color Color { get; set; }
         public Gender Gender { get; set; }

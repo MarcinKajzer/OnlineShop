@@ -53,19 +53,6 @@ namespace Shop.Controllers
             }
         }
 
-        [NonAction]
-        private async Task<User> GetCurrentUser()
-        {
-            var currentUserName = HttpContext.User.Identity.Name;
-            if (currentUserName != null)
-            {
-                var currentUser = await _userManager.FindByNameAsync(currentUserName);
-                return currentUser;
-            }
-
-            return null;
-        }
-
         public async Task<IActionResult> GetAll()
         {
             var currentUser = await GetCurrentUser();
@@ -83,6 +70,20 @@ namespace Shop.Controllers
         {
             var currentUser = await GetCurrentUser();
             return currentUser.Favourites.Where(f => !f.IsArchived).Count();
+        }
+
+
+        [NonAction]
+        private async Task<User> GetCurrentUser()
+        {
+            var currentUserName = HttpContext.User.Identity.Name;
+            if (currentUserName != null)
+            {
+                var currentUser = await _userManager.FindByNameAsync(currentUserName);
+                return currentUser;
+            }
+
+            return null;
         }
     }
 }

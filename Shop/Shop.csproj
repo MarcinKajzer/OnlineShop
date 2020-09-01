@@ -23,8 +23,4 @@
     <ProjectReference Include="..\Shop.Entities\Shop.Entities.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="wwwroot\products-images\" />
-  </ItemGroup>
-
 </Project>

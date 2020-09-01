@@ -143,13 +143,14 @@ namespace Shop.Controllers
             return View(_productMapper.MapToProductDetailsViewModel(product, isFavourite));
         }
 
-        public async Task<IActionResult> Delete(int productId)
+        
+        public async Task<IActionResult> Archive(int productId, bool archive)
         {
             Product product = await _repository.FindOne(productId);
 
             if(product != null)
             {
-                product.IsArchived = true;
+                product.IsArchived = archive;
                 var result = await _repository.Update(product);
 
                 if (result == null)
@@ -159,7 +160,7 @@ namespace Shop.Controllers
             return RedirectToAction(nameof(GetAll), new { product.Gender, product.Category });
         }
 
-
+       
         [HttpGet]
         [AllowAnonymous]
         public JsonResult GetCategories(Gender gender)

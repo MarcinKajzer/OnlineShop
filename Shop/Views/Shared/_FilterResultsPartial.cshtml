@@ -56,6 +56,13 @@
             <div class="form-group">
                 <input type="checkbox" asp-for="IsOverpriced"> <label asp-for="IsOverpriced">Przeceniony</label>
             </div>
+            @if (User.IsInRole("Administrator"))
+            {
+                <div class="form-group">
+                    <input type="checkbox" asp-for="IsArchived"> <label asp-for="IsArchived">Archiwalny</label>
+                </div>
+            }
+
         </div>
 
         <button type="submit">Filtruj</button>

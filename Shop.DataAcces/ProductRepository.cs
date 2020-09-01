@@ -55,7 +55,7 @@ namespace Shop.DataAcces
         {
             IQueryable<Product> products = _dbContext.Products.
                 Where(x => x.Price >= filters.MinPrice && x.Price <= filters.MaxPrice).
-                Where(x => !x.IsArchived);
+                Where(x => x.IsArchived == filters.IsArchived);
 
             if (filters.Category != null && filters.Gender != null)
                 products = products.Where(x => x.Category == filters.Category && x.Gender == filters.Gender);

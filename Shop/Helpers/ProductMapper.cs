@@ -61,13 +61,10 @@ namespace Shop.Helpers
                     to.Sizes.FirstOrDefault(s => s.Id == from.Sizes[i].Id).Quantity = from.Sizes[i].Quantity;
                     to.Quantity += from.Sizes[i].Quantity;
                 }
-                else
+                else if (from.Sizes[i].Quantity > 0)
                 {
-                    if (from.Sizes[i].Quantity > 0)
-                    {
-                        SizeInfo s = new SizeInfo { Quantity = from.Sizes[i].Quantity, Size = from.Sizes[i].Size };
-                        to.Sizes.Add(s);
-                    }
+                    SizeInfo s = new SizeInfo { Quantity = from.Sizes[i].Quantity, Size = from.Sizes[i].Size };
+                    to.Sizes.Add(s);
                 }
             }
 
@@ -125,7 +122,8 @@ namespace Shop.Helpers
                 Image = from.Image,
                 NewPrice = from.NewPrice,
                 IsOverpriced = from.IsOverpriced,
-                IsFavourite = isFavourite
+                IsFavourite = isFavourite,
+                IsArchived = from.IsArchived
             };
 
             foreach (var size in from.Sizes.OrderBy(x => x.Size))

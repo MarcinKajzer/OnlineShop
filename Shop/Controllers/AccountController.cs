@@ -53,12 +53,10 @@ namespace Shop.Controllers
                     if(addingToRoleResult.Succeeded)
                         return RedirectToAction(nameof(RegistratedSuccessfully));
 
-                    foreach (var error in addingToRoleResult.Errors)
-                        ModelState.AddModelError(string.Empty, error.Description);
+                    AddErrors(addingToRoleResult);
                 }
-                    
-                foreach (var error in creationResult.Errors)
-                    ModelState.AddModelError(string.Empty, error.Description);
+
+                AddErrors(creationResult);
             }
             
             return View(model);
@@ -142,8 +140,7 @@ namespace Shop.Controllers
                 if (result.Succeeded)
                     return RedirectToAction("index", "home");
 
-                foreach (var error in result.Errors)
-                    ModelState.AddModelError(string.Empty, error.Description);
+                AddErrors(result);
             }
             return View(model);
         }
@@ -166,8 +163,7 @@ namespace Shop.Controllers
                 if (result.Succeeded)
                     return RedirectToAction(nameof(Update));
 
-                foreach (var error in result.Errors)
-                    ModelState.AddModelError(string.Empty, error.Description);
+                AddErrors(result);
             }
             return View(model);
         }
@@ -234,8 +230,7 @@ namespace Shop.Controllers
                 if (result.Succeeded)
                     return RedirectToAction(nameof(PasswordChangedSuccesfully));
 
-                foreach (var error in result.Errors)
-                    ModelState.AddModelError(string.Empty, error.Description);
+                AddErrors(result);
             }
             return View(model);
         }
@@ -268,5 +263,13 @@ namespace Shop.Controllers
 
             return null;
         }
+
+        [NonAction]
+        private void AddErrors(IdentityResult result)
+        {
+            foreach (var error in result.Errors)
+                ModelState.AddModelError(string.Empty, error.Description);
+        }
+
     }
 }

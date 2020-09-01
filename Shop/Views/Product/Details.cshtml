@@ -1,10 +1,16 @@
 ﻿@model Shop.ViewModels.ProductDetailsViewModel
 @{
     ViewData["Title"] = "Details";
+    string archivedClass = "";
+
+    if (Model.IsArchived)
+    {
+        archivedClass = "archived-product";
+    }
 }
 
 <main>
-    <div class="single-product-details">
+    <div class="single-product-details @archivedClass">
         <div class="product-image">
             <img src="@Model.ImagePath" />
         </div>
@@ -23,9 +29,16 @@
                 }
                 else if (User.IsInRole("Administrator"))
                 {
-                    <a asp-action="Update" asp-controller="Product" asp-route-productId="@Model.Id" class="custom-link">Edytuj</a>
-                    <span> | </span>
-                    <span onclick="showConfirmationPopup(@Model.Id)" class="custom-link">Usuń</span>
+                    if (!Model.IsArchived)
+                    {
+                        <a asp-action="Update" asp-controller="Product" asp-route-productId="@Model.Id" class="custom-link">Edytuj</a>
+                        <span> | </span>
+                        <span onclick="showConfirmationPopup(@Model.Id, true)" class="custom-link">Usuń</span>
+                    }
+                    else
+                    {
+                        <span onclick="showConfirmationPopup(@Model.Id, false)" class="custom-link">Przywróć</span>
+                    }
                 }
                 else
                 {
@@ -55,16 +68,18 @@
                     <span class="discount">- @Model.FormatedDiscount %</span>
                 }
             </div>
-            @{ViewBag.Index = 0;}
+            @{ViewBag.Index = 0;
+              ViewBag.IsArchived = Model.IsArchived;
+            }
             @await Html.PartialAsync("_AddToCartPartial", new Shop.ViewModels.AddProductToCartViewModel()
-           {
-               Id = Model.Id,
-               Sizes = Model.Sizes,
-               Quantity = Model.Quantity,
-               Image = Model.Image,
-               Name = Model.Name,
-               Price = Model.Price
-           })
+            {
+                Id = Model.Id,
+                Sizes = Model.Sizes,
+                Quantity = Model.Quantity,
+                Image = Model.Image,
+                Name = Model.Name,
+                Price = Model.Price
+            })
         </div>
     </div>
 </main>

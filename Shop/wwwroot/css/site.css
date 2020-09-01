@@ -767,6 +767,11 @@ main{
     opacity: .5;
 }
 
+.archived-product {
+    filter: saturate(10%);
+}
+
+
 .single-product {
     width: 90%;
     max-width: 400px;

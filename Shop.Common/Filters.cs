@@ -19,6 +19,7 @@ namespace Shop.Common
         public double MinPrice { get; set; } = 0;
         public double MaxPrice { get; set; } = 1000;
 
+        public bool IsArchived { get; set; }
         public bool IsOverpriced { get; set; }
 
         public string SearchBoxValue { get; set; }

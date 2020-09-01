@@ -1,5 +1,4 @@
 ﻿using Shop.ViewModels;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Shop.Interfaces
