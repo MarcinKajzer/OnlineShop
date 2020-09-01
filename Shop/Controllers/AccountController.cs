@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Shop.DTOs;
-using Shop.Entities;
+using Shop.Helpers;
 using Shop.Interfaces;
 using Shop.ViewModels;
 using System.Threading.Tasks;
@@ -15,6 +15,7 @@ namespace Shop.Controllers
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
         private readonly IMailSender _mailSender;
+        private readonly UserMapper _userMapper;
 
         public AccountController(UserManager<User> userManager, 
                                 SignInManager<User> signInManager,
@@ -23,6 +24,7 @@ namespace Shop.Controllers
             _userManager = userManager;
             _signInManager = signInManager;
             _mailSender = mailSender;
+            _userMapper = new UserMapper();
         }
 
         [HttpGet]
@@ -36,14 +38,8 @@ namespace Shop.Controllers
         {
             if (ModelState.IsValid)
             {
-                User user = new User
-                {
-                    Email = model.Email,
-                    UserName = model.Email,
-                    FirstName = model.FirstName,
-                    LastName = model.LastName
-                };
-
+                User user = _userMapper.MapToUserModel(model);
+                
                 var creationResult = await _userManager.CreateAsync(user, model.Password);
 
                 if (creationResult.Succeeded)
@@ -69,10 +65,8 @@ namespace Shop.Controllers
         }
 
         [HttpGet]
-        public IActionResult RegistratedSuccessfully()
-        {
-            return View();
-        }
+        public IActionResult RegistratedSuccessfully() => View();
+       
 
         [HttpGet]
         public async Task<IActionResult> ConfirmEmail(string userId, string token)
@@ -86,6 +80,7 @@ namespace Shop.Controllers
                 else
                     ViewBag.Error = "Nie udało się potwierdzić adresu email.";
             }
+
             ViewBag.Error = "Uzytkownik o podanym identyfikatorze nie istnieje.";
 
             return View("EmailConfirmationFailed");
@@ -130,25 +125,7 @@ namespace Shop.Controllers
         [HttpGet]
         public async Task<IActionResult> Update()
         {
-            User user = await GetCurrentUser();
-            UpdateUserViewModel viewModel = new UpdateUserViewModel
-            {
-                FirstName = user.FirstName,
-                LastName = user.LastName,
-                Id = user.Id
-            };
-
-            if(user.Adress != null)
-            {
-                viewModel.Adress = new AdressDTO
-                {
-                    City = user.Adress.City,
-                    Street = user.Adress.Street,
-                    PostCode = user.Adress.Street,
-                    BuildingNumber = user.Adress.BuildingNumber,
-                    FlatNumber = user.Adress.FlatNumber
-                };
-            }
+            UpdateUserViewModel viewModel = _userMapper.MapToUpdateUserViewModel(await GetCurrentUser());
             
             return View(viewModel);
         }
@@ -159,9 +136,7 @@ namespace Shop.Controllers
         {
             if (ModelState.IsValid)
             {
-                User user = await GetCurrentUser();
-                user.FirstName = model.FirstName;
-                user.LastName = model.LastName;
+                User user = _userMapper.UpdateExistingUser(model, await GetCurrentUser());
 
                 var result =  await _userManager.UpdateAsync(user);
                 if (result.Succeeded)
@@ -175,10 +150,8 @@ namespace Shop.Controllers
 
         [Authorize]
         [HttpGet]
-        public IActionResult AddAdress()
-        {
-            return View();
-        }
+        public IActionResult AddAdress() => View();
+      
 
         [Authorize]
         [HttpPost]
@@ -187,14 +160,7 @@ namespace Shop.Controllers
             if (ModelState.IsValid)
             {
                 User user = await GetCurrentUser();
-                user.Adress = new Adress
-                {
-                    City = model.City,
-                    PostCode = model.PostCode,
-                    BuildingNumber = model.BuildingNumber,
-                    FlatNumber = model.FlatNumber,
-                    Street = model.Street
-                };
+                user.Adress = _userMapper.MapAdress(model);
 
                 var result = await _userManager.UpdateAsync(user);
                 if (result.Succeeded)
@@ -208,10 +174,8 @@ namespace Shop.Controllers
 
 
         [HttpGet]
-        public IActionResult ForgotPassword()
-        {
-            return View();
-        }
+        public IActionResult ForgotPassword() => View();
+       
 
         [HttpPost]
         public async Task<IActionResult> SendResetPasswordLink(string email)
@@ -229,10 +193,8 @@ namespace Shop.Controllers
         }
 
         [HttpGet]
-        public IActionResult ResetPassword(string email, string token)
-        {
-            return View();
-        }
+        public IActionResult ResetPassword(string email, string token) => View();
+
 
         [HttpPost]
         public async Task<IActionResult> ResetPassword(ResetPasswordViewModel model)
@@ -251,22 +213,14 @@ namespace Shop.Controllers
         }
 
         [HttpGet]
-        public IActionResult PasswordResetSuccesfully()
-        {
-            return View();
-        }
+        public IActionResult PasswordResetSuccesfully() => View();
 
         [HttpGet]
-        public IActionResult PasswordResetFailed()
-        {
-            return View();
-        }
+        public IActionResult PasswordResetFailed() => View();
 
         [HttpGet]
-        public IActionResult ChangePassword()
-        {
-            return View();
-        }
+        public IActionResult ChangePassword() => View();
+        
 
         [Authorize]
         [HttpPost]
@@ -278,9 +232,8 @@ namespace Shop.Controllers
 
                 var result = await _userManager.ChangePasswordAsync(user, model.CurrentPassword, model.NewPassword);
                 if (result.Succeeded)
-                {
                     return RedirectToAction(nameof(PasswordChangedSuccesfully));
-                }
+
                 foreach (var error in result.Errors)
                     ModelState.AddModelError(string.Empty, error.Description);
             }
@@ -289,11 +242,8 @@ namespace Shop.Controllers
 
         [Authorize]
         [HttpGet]
-        public IActionResult PasswordChangedSuccesfully()
-        {
-            return View();
-        }
-
+        public IActionResult PasswordChangedSuccesfully() => View();
+      
 
 
 
