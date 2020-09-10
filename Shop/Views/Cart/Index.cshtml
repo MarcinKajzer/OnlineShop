@@ -6,7 +6,7 @@
 }
 
 <main>
-    <h2>Twój koszyk</h2>
+    <h2>Your cart</h2>
 
     @if (listLength == 0)
     {
@@ -36,15 +36,15 @@
                         <span><a asp-action="Details" asp-controller="Product" asp-route-productId="@Items[i].Id">@Items[i].Name</a></span>
                         <span>Size: @Items[i].Size</span>
                     </td>
-                    <td class="price">@Items[i].FormatedPrice zł</td>
+                    <td class="price">@Items[i].FormatedPrice $</td>
                     <td class="quantity-input-field">
                         <div class="decrease-quantity-button" onclick="decreaseQuantity(@i, @Items[i].Id, @numberSizeValue, @Items[i].Price)">-</div>
                         <input asp-for="@Items[i].Quantity" min="0" type="number" class="quantity-input" readonly>
                         <div class="increase-quantity-button" onclick="increaseQuantity(@i, @Items[i].Id, @numberSizeValue, @Items[i].Price)">+</div>
                     </td>
-                    <td class="amount">@Items[i].FormatedAmount zł</td>
+                    <td class="amount">@Items[i].FormatedAmount $</td>
                     <td>
-                        <a asp-action="RemoveProduct" asp-controller="Cart" asp-route-productId="@Items[i].Id" asp-route-productSize="@Items[i].Size" class="delete-item-link">Usuń</a>
+                        <a asp-action="RemoveProduct" asp-controller="Cart" asp-route-productId="@Items[i].Id" asp-route-productSize="@Items[i].Size" class="delete-item-link">Remove</a>
                     </td>
                 </tr>
             }
@@ -54,7 +54,7 @@
                 <td></td>
                 <td></td>
                 <td>Total:</td>
-                <td class="total-amount">@Model.FormatedTotalAmount zł</td>
+                <td class="total-amount">@Model.FormatedTotalAmount $</td>
                 <td></td>
             </tr>
             <tr>

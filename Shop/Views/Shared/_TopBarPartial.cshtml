@@ -23,13 +23,14 @@
             {
                 if (User.IsInRole("Administrator"))
                 {
+                    <span>Administrator</span>
                     <a asp-action="Create" asp-controller="Product" class="link-button">Add product</a>
                     <a asp-action="GetAll" asp-controller="Order" asp-route-isSent="false" class="link-button">Orders</a>
                 }
                 else
                 {
                     <span>@User.Identity.Name</span>
-                    <a asp-action="GetCurrentUserOrders" asp-controller="Order" class="link-button">Kupione</a>
+                    <a asp-action="GetCurrentUserOrders" asp-controller="Order" class="link-button">Orders</a>
                     <a asp-action="Update" asp-controller="Account" class="link-button">Settings</a>
                 }
                 <a asp-action="LogOut" asp-controller="Account" class="link-button">Logout</a>

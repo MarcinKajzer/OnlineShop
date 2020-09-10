@@ -12,51 +12,51 @@
 
             <div class="details">
                 <div class="form-group">
-                    <label asp-for="Name">Nazwa:</label>
+                    <label asp-for="Name">Name:</label>
                     <input asp-for="Name" />
                     <span asp-validation-for="Name"></span>
                 </div>
 
                 <div class="form-group">
-                    <label asp-for="Description">Opis:</label>
+                    <label asp-for="Description">Description:</label>
                     <textarea asp-for="Description"></textarea>
                     <span asp-validation-for="Description"></span>
                 </div>
 
                 <div class="form-group">
-                    <label asp-for="Price">Cena:</label>
+                    <label asp-for="Price">Price:</label>
                     <input asp-for="Price" />
                     <span asp-validation-for="Price"></span>
                 </div>
 
                 <div class="form-group">
-                    <label asp-for="Gender">Rodzaj:</label>
+                    <label asp-for="Gender">Gender:</label>
                     <select asp-for="Gender" asp-items="Html.GetEnumSelectList<Shop.Common.Gender>()" id="Gender"></select>
                     <span asp-validation-for="Gender"></span>
                 </div>
 
                 <div class="form-group">
-                    <label asp-for="Category">Kategoria:</label>
+                    <label asp-for="Category">Category:</label>
                     <select asp-for="Category" asp-items="Html.GetEnumSelectList<Shop.Enums.WomanCategory>()" id="Category"></select>
                     <span asp-validation-for="Category"></span>
                 </div>
 
                 <div class="form-group">
-                    <label asp-for="Color">Kolor:</label>
+                    <label asp-for="Color">Color:</label>
                     <select asp-for="Color" asp-items="Html.GetEnumSelectList<Shop.Common.Color>()"></select>
                     <span asp-validation-for="Color"></span>
                 </div>
                 <div class="checkbox-form-group form-group">
                     <input asp-for="IsOverpriced" type="checkbox" class="is-overpriced" />
-                    <label asp-for="IsOverpriced">Przeceń produkt</label>
+                    <label asp-for="IsOverpriced">Overprice</label>
                 </div>
                 <div class="form-group">
-                    <label asp-for="NewPrice">Nowa cena</label>
+                    <label asp-for="NewPrice">New price</label>
                     <input asp-for="NewPrice" class="new-price" />
                     <span asp-validation-for="NewPrice"></span>
                 </div>
                 <div class="form-group">
-                    <label asp-for="Image">Zdjęcie</label>
+                    <label asp-for="Image">Image</label>
                     <input asp-for="Image" />
                     <span asp-validation-for="Image"></span>
                 </div>
