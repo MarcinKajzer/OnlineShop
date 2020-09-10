@@ -19,7 +19,7 @@ namespace Shop.Services
         }
         public async Task SendEmailConfirmationAsync(string userEmail, string confirmationLink)
         {
-            string subject = "Potwierdzenie adresu email";
+            string subject = "Email confirmation.";
 
             string emailTemplate = ReadTemplate("email-confirmation.html");
             emailTemplate = string.Format(emailTemplate, confirmationLink);
@@ -29,7 +29,7 @@ namespace Shop.Services
 
         public async Task SendPasswordResetAsync(string userEmail, string resetLink)
         {
-            string subject = "Przywracanie hasła";
+            string subject = "Password restoring.";
 
             string emailTemplate = ReadTemplate("reset-password.html");
             emailTemplate = string.Format(emailTemplate, resetLink);
@@ -39,7 +39,7 @@ namespace Shop.Services
 
         public async Task SendOrderSummaryAsync(string userEmail, CreateOrderViewModel model)
         {
-            string subject = "Podsumowanie zamówienia";
+            string subject = "Order summary.";
 
             string singleProductTemplate = ReadTemplate("single-product.html");
             string allProducts = string.Empty;

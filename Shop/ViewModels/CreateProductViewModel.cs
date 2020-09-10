@@ -17,21 +17,21 @@ namespace Shop.ViewModels
             }
         }
 
-        [Required(ErrorMessage = "Nazwa produktu jest wymagana.")]
-        [MinLength(20, ErrorMessage = "Minimalna długość to 20 znaków.")]
-        [MaxLength(100, ErrorMessage = "Maksymalna długość to 100 znaków.")]
+        [Required(ErrorMessage = "Product name required.")]
+        [MinLength(20, ErrorMessage = "Minimum length is 20 characters.")]
+        [MaxLength(100, ErrorMessage = "Maximum length is 100 characters.")]
         public string Name { get; set; }
 
-        [Required(ErrorMessage = "Opis produktu jest wymagany.")]
-        [MinLength(50, ErrorMessage = "Minimalna długość to 50 znaków.")]
-        [MaxLength(1000, ErrorMessage = "Maksymalna długość to 1000 znaków.")]
+        [Required(ErrorMessage = "Description required")]
+        [MinLength(50, ErrorMessage = "Minimum length is 50 characters.")]
+        [MaxLength(1000, ErrorMessage = "Maximum length is 1000 characters.")]
         public string Description { get; set; }
 
         [MaxLength(50)]
         public string ImageName { get; set; }
 
-        [Required(ErrorMessage = "Cena jest wymagana")]
-        [Range(0, double.MaxValue, ErrorMessage = "Cena musi być wartością dodatnią.")]
+        [Required(ErrorMessage = "Price required")]
+        [Range(0, double.MaxValue, ErrorMessage = "Price must be positive.")]
         public double? Price { get; set; }
 
         
@@ -44,7 +44,7 @@ namespace Shop.ViewModels
         [Required]
         public Category Category { get; set; }
 
-        [Required(ErrorMessage = "Zdjęcie jest wymagane.")]
+        [Required(ErrorMessage = "Image required.")]
         public IFormFile Image { get; set; }
 
 

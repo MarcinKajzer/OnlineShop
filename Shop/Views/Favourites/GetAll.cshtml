@@ -7,7 +7,7 @@
 <main class="favourites-list">
     @if (Model.Count == 0)
     {
-        <p class="additional-info">Nie masz obecnie ulubionych produktów</p>
+        <p class="additional-info">You have no favourites products</p>
     }
     else
     {
@@ -39,11 +39,11 @@
                                 string newPrice = Model[i].NewPrice.HasValue ? ((double)(Model[i].NewPrice)).ToString("0.00") : "";
                                 <span class="current-price">@newPrice zł</span>
 
-                                <span class="before-price">@Model[i].Price.ToString("0.00") zł</span>
+                                <span class="before-price">@Model[i].Price.ToString("0.00") $</span>
                             }
                             else
                             {
-                                <span class="current-price">@Model[i].Price.ToString("0.00") zł</span>
+                                <span class="current-price">@Model[i].Price.ToString("0.00") $</span>
                             }
                         </div>
 

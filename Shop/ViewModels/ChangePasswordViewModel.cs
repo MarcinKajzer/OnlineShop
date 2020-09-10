@@ -5,16 +5,16 @@ namespace Shop.ViewModels
     public class ChangePasswordViewModel
     {
         [DataType(DataType.Password)]
-        [Required(ErrorMessage = "Podaj obecne hasło.")]
+        [Required(ErrorMessage = "Current password required.")]
         public string CurrentPassword { get; set; }
 
         [DataType(DataType.Password)]
-        [Required(ErrorMessage = "Podaj nowe hasło.")]
+        [Required(ErrorMessage = "New password required")]
         public string NewPassword { get; set; }
 
         [DataType(DataType.Password)]
-        [Required(ErrorMessage = "Potwierdź hasło.")]
-        [Compare(nameof(NewPassword), ErrorMessage = "Hasła muszą do siebie pasować")]
+        [Required(ErrorMessage = "Confirm password.")]
+        [Compare(nameof(NewPassword), ErrorMessage = "Password doesn't match.")]
         public string ConfirmPassword { get; set; }
     }
 }

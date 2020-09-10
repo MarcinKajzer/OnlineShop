@@ -36,22 +36,22 @@
             }
             else
             {
-                <span class="product-not-available">Brak w magazynie</span>
+                <span class="product-not-available">Out of stock</span>
             }
 
         </div>
 
         @if (User.IsInRole("Administrator") && ViewBag.IsArchived)
         {
-            <button type="button" class="disabled-button">Archiwalne</button>
+            <button type="button" class="disabled-button">Archival</button>
         }
         else if (User.IsInRole("Administrator") || Model.Quantity == 0)
         {
-            <a asp-action="Details" asp-controller="Product" asp-route-productId="@Model.Id" class="link-button">Pokaż szczegóły</a>
+            <a asp-action="Details" asp-controller="Product" asp-route-productId="@Model.Id" class="link-button">Show details</a>
         }
         else
         {
-            <button type="button" onclick="addToCart(@Model.Id, '@Model.Name', @ViewBag.Index)">Do koszyka</button>
+            <button type="button" onclick="addToCart(@Model.Id, '@Model.Name', @ViewBag.Index)">Add to cart</button>
         }
 
     </form>

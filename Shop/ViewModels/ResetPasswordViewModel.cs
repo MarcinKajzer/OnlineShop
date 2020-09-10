@@ -9,12 +9,12 @@ namespace Shop.ViewModels
         public string Email { get; set; }
 
         [DataType(DataType.Password)]
-        [Required(ErrorMessage = "Podaj nowe hasło.")]
+        [Required(ErrorMessage = "Enter a new password..")]
         public string Password { get; set; }
 
         [DataType(DataType.Password)]
-        [Required(ErrorMessage = "Potwierdź hasło.")]
-        [Compare(nameof(Password), ErrorMessage = "Hasła muszą do siebie pasować")]
+        [Required(ErrorMessage = "Confirm password.")]
+        [Compare(nameof(Password), ErrorMessage = "Password doesn't match.")]
         public string ConfirmPassword { get; set; }
         
         [Required]

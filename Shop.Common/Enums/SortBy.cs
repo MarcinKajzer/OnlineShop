@@ -4,10 +4,10 @@ namespace Shop.Common.Enums
 {
     public enum SortBy
     {
-        [Display(Name = "Cena rosnąco")]
+        [Display(Name = "Price ascending")]
         PriceAscending,
 
-        [Display(Name = "Cena malejąco")]
+        [Display(Name = "Price descending")]
         PriceDescending
     }
 }

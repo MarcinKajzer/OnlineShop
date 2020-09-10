@@ -13,19 +13,14 @@
 
         switch (parseInt(quantity)) {
             case 1:
-                itemWordVariation = "przedmiot";
-                break;
-            case 2:
-            case 3:
-            case 4:
-                itemWordVariation = "przedmioty";
+                itemWordVariation = "item";
                 break;
             default:
-                itemWordVariation = "przedmiotów";
+                itemWordVariation = "items";
         }
 
         Swal.fire({
-            title: "Dodałeś " + quantity + " " + itemWordVariation + " do koszyka",
+            title: "You have added " + quantity + " " + itemWordVariation + " to your cart",
             text: productName,
             icon: 'success',
             buttonsStyling: false,
@@ -35,8 +30,8 @@
                 popup: 'popup-custom'
             },
             showCancelButton: true,
-            confirmButtonText: 'Przejdź do koszyka',
-            cancelButtonText: 'Kontynuuj zakupy'
+            confirmButtonText: 'Go to cart',
+            cancelButtonText: 'Contitue shopping'
         }).then((result) => {
             if (result.value) {
                 window.location.href = "/Cart/Index";

@@ -76,10 +76,10 @@ namespace Shop.Controllers
                 if (result.Succeeded)
                     return View("EmailConfirmedSuccesfully");
                 else
-                    ViewBag.Error = "Nie udało się potwierdzić adresu email.";
+                    ViewBag.Error = "Email confirmation failed.";
             }
 
-            ViewBag.Error = "Uzytkownik o podanym identyfikatorze nie istnieje.";
+            ViewBag.Error = "the user with the given ID doesn't exist.";
 
             return View("EmailConfirmationFailed");
         }
@@ -103,7 +103,7 @@ namespace Shop.Controllers
                     return RedirectToLocal(model.ReturnUrl);
                 else
                 {
-                    ModelState.AddModelError(string.Empty, "Nieprawidłowa nazwa użytkownika lub hasło.");
+                    ModelState.AddModelError(string.Empty, "Invalid login atempt.");
                     return View(model);
                 }
             }

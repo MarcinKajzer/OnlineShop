@@ -23,21 +23,21 @@
             {
                 if (User.IsInRole("Administrator"))
                 {
-                    <a asp-action="Create" asp-controller="Product" class="link-button">Dodaj produkt</a>
-                    <a asp-action="GetAll" asp-controller="Order" asp-route-isSent="false" class="link-button">Zamówienia</a>
+                    <a asp-action="Create" asp-controller="Product" class="link-button">Add product</a>
+                    <a asp-action="GetAll" asp-controller="Order" asp-route-isSent="false" class="link-button">Orders</a>
                 }
                 else
                 {
                     <span>@User.Identity.Name</span>
                     <a asp-action="GetCurrentUserOrders" asp-controller="Order" class="link-button">Kupione</a>
-                    <a asp-action="Update" asp-controller="Account" class="link-button">Ustawienia</a>
+                    <a asp-action="Update" asp-controller="Account" class="link-button">Settings</a>
                 }
-                <a asp-action="LogOut" asp-controller="Account" class="link-button">Wyloguj</a>
+                <a asp-action="LogOut" asp-controller="Account" class="link-button">Logout</a>
             }
             else
             {
-                <a asp-action="Login" asp-controller="Account" class="link-button">Logowanie</a>
-                <a asp-action="Register" asp-controller="Account" class="link-button">Rejestracja</a>
+                <a asp-action="Login" asp-controller="Account" class="link-button">Login</a>
+                <a asp-action="Register" asp-controller="Account" class="link-button">Register</a>
             }
         </div>
     </div>
@@ -46,7 +46,7 @@
     </div>
     <div class="search-box">
         <form asp-action="GetAll" asp-controller="Product" method="get">
-            <input placeholder="Szukaj" name="SearchBoxValue">
+            <input placeholder="Search" name="SearchBoxValue">
             <button type="submit"></button>
         </form>
     </div>

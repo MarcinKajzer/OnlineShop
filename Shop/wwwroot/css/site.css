@@ -1288,22 +1288,22 @@ h2.product-name {
     }
 
     .order-table tr td:nth-child(1)::before {
-        content: "Data"
+        content: "Date"
     }
     .order-table tr td:nth-child(2)::before{
-        content: "Użytkownik"
+        content: "User"
     }
     .order-table tr td:nth-child(3)::before{
-        content: "Adres"
+        content: "Address"
     }
      .order-table tr td:nth-child(4)::before{
-        content: "Zamówienie"
+        content: "Order"
     }
      .order-table tr td:nth-child(5)::before{
         content: "Status"
     }
      .order-table tr td:nth-child(6)::before{
-        content: "Opcje"
+        content: "Options"
     }
 }
 

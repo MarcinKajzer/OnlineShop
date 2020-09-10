@@ -1,7 +1,7 @@
 ﻿function showConfirmationPopup(orderId) {
     Swal.fire({
-        title: 'Wysyłanie zamówienia',
-        text: "Czy jesteś pewien, że zamówienie zostało wysłane?",
+        title: 'Sending the order',
+        text: "Are you sure the order has been shipped?",
         icon: 'warning',
         showCancelButton: true,
         buttonsStyling: false,
@@ -10,13 +10,13 @@
             cancelButton: 'popup-button popup-button-cancel',
             popup: 'popup-custom'
         },
-        confirmButtonText: 'Tak, zostało wysłane!',
-        cancelButtonText: 'Nie'
+        confirmButtonText: 'Yes!',
+        cancelButtonText: 'No'
     }).then((result) => {
         if (result.value) {
             Swal.fire({
-                title: 'Wysłano!',
-                text: 'Status zamówienie został zmieniony pomyślnie',
+                title: 'The order has been shipped!',
+                text: 'Order status has been succesfully changed.',
                 icon: "success",
                 showConfirmButton: false,
                 customClass: {

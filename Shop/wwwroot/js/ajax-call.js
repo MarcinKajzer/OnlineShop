@@ -9,7 +9,7 @@
                 callback(result);
             },
             error: function (ex) {
-                alert('Coś poszło nie tak' + ex);
+                alert('Something went wrong.' + ex);
             }
         });
         return false;

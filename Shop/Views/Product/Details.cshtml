@@ -31,13 +31,13 @@
                 {
                     if (!Model.IsArchived)
                     {
-                        <a asp-action="Update" asp-controller="Product" asp-route-productId="@Model.Id" class="custom-link">Edytuj</a>
+                        <a asp-action="Update" asp-controller="Product" asp-route-productId="@Model.Id" class="custom-link">Edit</a>
                         <span> | </span>
-                        <span onclick="showConfirmationPopup(@Model.Id, true)" class="custom-link">Usuń</span>
+                        <span onclick="showConfirmationPopup(@Model.Id, true)" class="custom-link">Archive</span>
                     }
                     else
                     {
-                        <span onclick="showConfirmationPopup(@Model.Id, false)" class="custom-link">Przywróć</span>
+                        <span onclick="showConfirmationPopup(@Model.Id, false)" class="custom-link">Restore</span>
                     }
                 }
                 else
@@ -53,13 +53,13 @@
                 <div>
                     @if (Model.IsOverpriced)
                     {
-                        <span class="current-price">@Model.FormatedNewPrice zł</span>
+                        <span class="current-price">@Model.FormatedNewPrice $</span>
 
-                        <span class="before-price">@Model.FormatedPrice zł</span>
+                        <span class="before-price">@Model.FormatedPrice $</span>
                     }
                     else
                     {
-                        <span class="current-price">@Model.FormatedPrice zł</span>
+                        <span class="current-price">@Model.FormatedPrice $</span>
                     }
                 </div>
 

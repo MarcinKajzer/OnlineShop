@@ -60,7 +60,7 @@ namespace Shop.Controllers
                     return RedirectToAction(nameof(Details), new { productId = result.Id }); 
                 }
 
-                ModelState.AddModelError(string.Empty, "Nie udało się dodać nowego produktu. Spróbuj ponownie.");
+                ModelState.AddModelError(string.Empty, "Failed to add a new product. Try again.");
             }
 
             return View(model);
@@ -86,7 +86,7 @@ namespace Shop.Controllers
 
                 if (product == null)
                 {
-                    ModelState.AddModelError(string.Empty, "Nie można znaleźć tego produktu w bazie.");
+                    ModelState.AddModelError(string.Empty, "This product cannot be found in the database.");
                     return View(model);
                 }
                    
@@ -96,7 +96,7 @@ namespace Shop.Controllers
 
                 if (result == null)
                 {
-                    ModelState.AddModelError(string.Empty, "Nie udało się edytować produktu. Spróbuj ponownie");
+                    ModelState.AddModelError(string.Empty, "Product update failed. Try again.");
                     return View(model);
                 }
                     

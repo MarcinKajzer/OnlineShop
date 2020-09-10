@@ -6,17 +6,17 @@
 }
 
 <main>
-    <h2>Twoje zamówienie</h2>
+    <h2>Your order</h2>
 
     <form asp-action="Buy" asp-controller="Order" method="post">
 
         <table class="cart-table order-summary-table">
             <tr>
                 <th></th>
-                <th>Produkt</th>
-                <th>Cena</th>
-                <th>Ilość</th>
-                <th>Suma</th>
+                <th>Product</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Sum</th>
             </tr>
 
             @for (int i = 0; i < listLength; i++)
@@ -36,7 +36,7 @@
                     </td>
                     <td>
                         <span><a asp-action="Details" asp-controller="Product" asp-route-productId="@Items[i].Id">@Items[i].Name</a></span>
-                        <span>Rozmiar: @Items[i].Size</span>
+                        <span>Size: @Items[i].Size</span>
                     </td>
                     <td class="price">@Items[i].FormatedPrice zł</td>
                     <td class="quantity-input-field">
@@ -50,42 +50,42 @@
                 <td></td>
                 <td></td>
                 <td></td>
-                <td>Razem:</td>
+                <td>Total:</td>
                 <td class="total-amount">@Model.FormatedTotalAmount zł</td>
             </tr>
         </table>
 
         <input type="hidden" asp-for="TotalAmount" />
 
-        <h2 class="cart-title">Dane do wysyłki</h2>
+        <h2 class="cart-title">Shipping data</h2>
 
         <div class="addres-form">
             <div class="form-group">
-                <label asp-for="Adress.City">Miasto</label>
+                <label asp-for="Adress.City">City</label>
                 <input asp-for="Adress.City" />
                 <span asp-validation-for="Adress.City"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Adress.PostCode">Kod pocztowy</label>
+                <label asp-for="Adress.PostCode">Post code</label>
                 <input asp-for="Adress.PostCode" />
                 <span asp-validation-for="Adress.PostCode"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Adress.Street">Ulica</label>
+                <label asp-for="Adress.Street">Street</label>
                 <input asp-for="Adress.Street" />
                 <span asp-validation-for="Adress.Street"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Adress.BuildingNumber">Numer budynku</label>
+                <label asp-for="Adress.BuildingNumber">Building number</label>
                 <input asp-for="Adress.BuildingNumber" />
                 <span asp-validation-for="Adress.BuildingNumber"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Adress.FlatNumber">Numer mieszkania</label>
+                <label asp-for="Adress.FlatNumber">Apartment number </label>
                 <input asp-for="Adress.FlatNumber" />
                 <span asp-validation-for="Adress.FlatNumber"></span>
             </div>
-            <button class="cart-submit-button" type="submit">Kupuję</button>
+            <button class="cart-submit-button" type="submit">Buy</button>
         </div>
     </form>
     

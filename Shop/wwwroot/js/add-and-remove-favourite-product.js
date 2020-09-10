@@ -22,7 +22,7 @@ function addToFavourites(productId, index) {
         }
 
         Swal.fire({
-            title: 'Dodano do ulubionych!',
+            title: 'Added to favorites!',
             icon: "success",
             showConfirmButton: false,
             customClass: {

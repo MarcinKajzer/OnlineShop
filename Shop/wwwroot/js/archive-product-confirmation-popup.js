@@ -5,17 +5,17 @@
     let succededText = "";
     let buttonMessage = "";
     if (archive) {
-        title = "Usuwanie produktu";
-        text = "Czy jesteś pewien, że chcesz przenieść ten produkt do archiwum?";
-        succededTitle = "Usunięto!";
-        succededText = "Ten produkt został pomyślnie przeniesiony do archiwum"
-        buttonMessage = "Tak, archiwizuj!"
+        title = "Archiving the product";
+        text = "Are you sure you want to archive this product?";
+        succededTitle = "Archived succesfully!";
+        succededText = "This product this product has been successfully moved to the archive."
+        buttonMessage = "Yes, archive!"
     } else {
-        title = "Przywracanie produktu";
-        text = "Czy jesteś pewien, że chcesz przywrócić ten produkt z archiwum?"
-        succededTitle = "Przywrócono!";
-        succededText = "Ten produkt został pomyślnie przywrócony z archiwum"
-        buttonMessage = "Tak, przywróć!"
+        title = "Restoring the product";
+        text = "Are you sure you want to restore this product?"
+        succededTitle = "Restored succesfully!";
+        succededText = "This product has been succesfully restored."
+        buttonMessage = "Yes, restore!"
     }
 
     Swal.fire({

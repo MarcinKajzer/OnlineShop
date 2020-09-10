@@ -8,11 +8,11 @@ namespace Shop.ViewModels
         [Required]
         public string Id { get; set; }
 
-        [Required(ErrorMessage = "Pole imię jest wymagane.")]
+        [Required(ErrorMessage = "First name required.")]
         [MaxLength(50)]
         public string FirstName { get; set; }
 
-        [Required(ErrorMessage = "Pole nazwisko jest wymagane.")]
+        [Required(ErrorMessage = "Last name required.")]
         [MaxLength(50)]
         public string LastName { get; set; }
 

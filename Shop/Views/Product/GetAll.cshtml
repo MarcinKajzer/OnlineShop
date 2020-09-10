@@ -14,7 +14,7 @@
 @if (Model.Count == 0)
 {
     <main>
-        <p class="additional-info">Nie mamy obecnie żadnego produktu w wybranej kategorii</p>
+        <p class="additional-info">We don't have any product in the selected category</p>
     </main>
 }
 else
@@ -59,13 +59,13 @@ else
                     {
                         if (!Model[i].IsArchived)
                         {
-                            <a asp-action="Update" asp-controller="Product" asp-route-productId="@Model[i].Id" class="custom-link">Edytuj</a>
+                            <a asp-action="Update" asp-controller="Product" asp-route-productId="@Model[i].Id" class="custom-link">Edit</a>
                             <span> | </span>
-                            <span onclick="showConfirmationPopup(@Model[i].Id, true)" class="custom-link">Usuń</span>
+                            <span onclick="showConfirmationPopup(@Model[i].Id, true)" class="custom-link">Archive</span>
                         }
                         else
                         {
-                            <span onclick="showConfirmationPopup(@Model[i].Id, false)" class="custom-link">Przywróć</span>
+                            <span onclick="showConfirmationPopup(@Model[i].Id, false)" class="custom-link">Restore</span>
                         }
                     }
                     else
@@ -80,15 +80,15 @@ else
                         <div>
                             @if (Model[i].IsOverpriced)
                             {
-                                <span class="current-price">@Model[i].FormatedNewPrice zł</span>
+                                <span class="current-price">@Model[i].FormatedNewPrice $</span>
 
-                                <span class="before-price">@Model[i].FormatedPrice zł</span>
+                                <span class="before-price">@Model[i].FormatedPrice $</span>
                             }
                             else
                             {
-                                <span class="current-price">@Model[i].FormatedPrice zł</span>
+                                <span class="current-price">@Model[i].FormatedPrice $</span>
                             }
-                        </div>
+                         </div>
 
                         @if (Model[i].IsOverpriced)
                         {

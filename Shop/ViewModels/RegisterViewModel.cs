@@ -4,25 +4,25 @@ namespace Shop.ViewModels
 {
     public class RegisterViewModel
     {
-        [Required(ErrorMessage ="Pole imię jest wymagane.")]
+        [Required(ErrorMessage ="First name required.")]
         [MaxLength(50)]
         public string FirstName { get; set; }
 
-        [Required(ErrorMessage = "Pole nazwisko jest wymagane.")]
+        [Required(ErrorMessage = "Last name required.")]
         [MaxLength(50)]
         public string LastName { get; set; }
 
         [DataType(DataType.EmailAddress)]
-        [Required(ErrorMessage ="Adres email jest wymagany.")]
+        [Required(ErrorMessage ="Email address required.")]
         public string Email { get; set; }
 
         [DataType(DataType.Password)]
-        [Required(ErrorMessage = "Hasło jest wymagane.")]
+        [Required(ErrorMessage = "Password required.")]
         public string Password { get; set; }
 
         [DataType(DataType.Password)]
-        [Required(ErrorMessage = "Powtórz hasło.")]
-        [Compare(nameof(Password), ErrorMessage ="Hasła muszą do siebie pasować.")]
+        [Required(ErrorMessage = "Confirm password.")]
+        [Compare(nameof(Password), ErrorMessage ="Password doesn't match.")]
         public string ConfirmPassword { get; set; }
     }
 }

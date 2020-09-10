@@ -13,7 +13,7 @@
             document.querySelector(".number-of-favourites").style.display = "none";
 
             let p = document.createElement("p");
-            p.innerHTML = "Nie masz obecnie ulubionych produktów";
+            p.innerHTML = "You have no favourites products.";
             p.classList.add("additional-info")
             document.querySelector(".favourites-list").appendChild(p);
         }

@@ -13,12 +13,12 @@
         <div class="close-menu-button"></div>
 
         <div>
-            <p>Sortowanie</p>
+            <p>Sorting</p>
             <select asp-for="SortBy" asp-items="Html.GetEnumSelectList<Shop.Common.Enums.SortBy>()" id="SortBy"></select>
             <span asp-validation-for="SortBy"></span>
         </div>
         <div class="price">
-            <p>Cena</p>
+            <p>Price</p>
 
             <div>
                 <label asp-for="MinPrice">Min</label>
@@ -30,7 +30,7 @@
             </div>
         </div>
         <div>
-            <p>Rozmiar</p>
+            <p>Size</p>
             @for (int i = 0; i < Model.SizeCheckboxes.Count(); i++)
             {
                 <div class="form-group">
@@ -41,7 +41,7 @@
             }
         </div>
         <div>
-            <p>Kolor</p>
+            <p>Color</p>
             @for (int i = 0; i < Model.ColorCheckboxes.Count(); i++)
             {
                 <div class="form-group">
@@ -52,20 +52,20 @@
             }
         </div>
         <div>
-            <p>Inne</p>
+            <p>Other</p>
             <div class="form-group">
-                <input type="checkbox" asp-for="IsOverpriced"> <label asp-for="IsOverpriced">Przeceniony</label>
+                <input type="checkbox" asp-for="IsOverpriced"> <label asp-for="IsOverpriced">Overpriced</label>
             </div>
             @if (User.IsInRole("Administrator"))
             {
                 <div class="form-group">
-                    <input type="checkbox" asp-for="IsArchived"> <label asp-for="IsArchived">Archiwalny</label>
+                    <input type="checkbox" asp-for="IsArchived"> <label asp-for="IsArchived">Archival</label>
                 </div>
             }
 
         </div>
 
-        <button type="submit">Filtruj</button>
+        <button type="submit">Filter</button>
 
     </form>
 
