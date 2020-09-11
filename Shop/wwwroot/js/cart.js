@@ -44,7 +44,7 @@ function updateSingleItemInfo(productId, size, index) {
         let decreaseButton = document.getElementsByClassName("decrease-quantity-button")[index];
 
         quantityInput.value = result.quantity;
-        productAmount.innerHTML = result.amount.toFixed(2) + ' zł';
+        productAmount.innerHTML = result.amount.toFixed(2) + ' $';
 
         if (quantityInput.value == 1) {
             decreaseButton.classList.add("disabled-button");
@@ -65,7 +65,7 @@ function updateTotalCartInfo() {
     let callback = function (result) {
 
         let totalAmount = document.querySelector(".total-amount");
-        totalAmount.innerHTML = result.amount.toFixed(2) + ' zł';
+        totalAmount.innerHTML = result.amount.toFixed(2) + ' $';
 
         if (result.quantity == 0) {
             document.querySelector(".number-of-cart-items").style.display = "none";

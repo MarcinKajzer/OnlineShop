@@ -79,7 +79,7 @@ namespace Shop.DataAcces.Migrations
                     b.Property<bool>("IsArchived")
                         .HasColumnType("bit");
 
-                    b.Property<bool>("IsOverpriced")
+                    b.Property<bool>("IsDiscounted")
                         .HasColumnType("bit");
 
                     b.Property<string>("Name")
@@ -213,7 +213,7 @@ namespace Shop.DataAcces.Migrations
                         {
                             Id = "e17cbb1b-adea-43b0-af7f-33c85a5cb976",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "566cb5ce-2d14-4897-8989-ba27181ab115",
+                            ConcurrencyStamp = "cd0c97df-4520-460a-8b3a-c5ee4a06890d",
                             Email = "admin@shop.com",
                             EmailConfirmed = true,
                             FirstName = "Admin",
@@ -221,9 +221,9 @@ namespace Shop.DataAcces.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@SHOP.COM",
                             NormalizedUserName = "ADMIN@SHOP.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEE4hk8LpYz1RTExg24r2M/SH5729xx+gVb6i1NTpBf58i+fpoZEDP9HuYrzZprF8iQ==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEM//n2eVnoalR7v/XwLPgTzmeeokbQuLRri5pu0FO2UsoAh3/M62dtpxDWtyGj52kA==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "810d0733-83f3-4c3b-b54c-ef3c4c562af3",
+                            SecurityStamp = "56b0cb51-708d-45c3-91ad-6137fb8c03e1",
                             TwoFactorEnabled = false,
                             UserName = "admin@shop.com"
                         });
@@ -259,14 +259,14 @@ namespace Shop.DataAcces.Migrations
                         new
                         {
                             Id = "2c5e174e-3b0e-446f-86af-483d56fd7210",
-                            ConcurrencyStamp = "c37c34d7-922f-479b-bf22-803684a38439",
+                            ConcurrencyStamp = "ad9377c5-4629-4fb2-8cff-a4f7d639fd74",
                             Name = "Administrator",
                             NormalizedName = "ADMINISTRATOR"
                         },
                         new
                         {
                             Id = "ace800ca-6df1-415a-9cf4-2c48f3f125ba",
-                            ConcurrencyStamp = "6b659650-22fe-48d1-b112-df91223dd914",
+                            ConcurrencyStamp = "e9b81d54-f6a2-46be-8d91-f31d632098a3",
                             Name = "User",
                             NormalizedName = "USER"
                         });

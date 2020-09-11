@@ -42,7 +42,7 @@ namespace Entities
 
 
         public bool IsArchived { get; set; }
-        public bool IsOverpriced { get; set; }
+        public bool IsDiscounted { get; set; }
 
 
         [Required]

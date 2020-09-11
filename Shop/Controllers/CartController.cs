@@ -34,8 +34,11 @@ namespace Shop.Controllers
                 return;
 
             model.Name = prod.Name;
-            model.Price = prod.Price;
             model.Image = prod.Image;
+            if (prod.IsDiscounted)
+                model.Price = (double)prod.NewPrice;
+            else
+                model.Price = prod.Price;
 
             Cart cart = GetCartFromSession();
 

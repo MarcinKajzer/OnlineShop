@@ -48,9 +48,9 @@ namespace Shop.Helpers
             to.Name = from.Name;
             to.Quantity = 0;
             to.Price = (double)from.Price;
-            to.IsOverpriced = from.IsOverpriced;
+            to.IsDiscounted = from.IsDiscounted;
 
-            if (from.IsOverpriced)
+            if (from.IsDiscounted)
                 to.NewPrice = from.NewPrice;
             
             
@@ -83,7 +83,7 @@ namespace Shop.Helpers
                 Name = from.Name,
                 Price = from.Price,
                 NewPrice = from.NewPrice,
-                IsOverpriced = from.IsOverpriced,
+                IsDiscounted = from.IsDiscounted,
                 Sizes = new List<SizeInfoDTO>()
             };
 
@@ -121,7 +121,7 @@ namespace Shop.Helpers
                 Quantity = from.Quantity,
                 Image = from.Image,
                 NewPrice = from.NewPrice,
-                IsOverpriced = from.IsOverpriced,
+                IsOverpriced = from.IsDiscounted,
                 IsFavourite = isFavourite,
                 IsArchived = from.IsArchived
             };

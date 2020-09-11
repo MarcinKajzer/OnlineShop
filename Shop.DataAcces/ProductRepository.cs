@@ -54,8 +54,12 @@ namespace Shop.DataAcces
         private List<Product> DoFiltering(Filters filters)
         {
             IQueryable<Product> products = _dbContext.Products.
-                Where(x => x.Price >= filters.MinPrice && x.Price <= filters.MaxPrice).
                 Where(x => x.IsArchived == filters.IsArchived);
+
+            if (filters.IsDiscounted)
+                products = products.Where(x => x.NewPrice >= filters.MinPrice && x.NewPrice <= filters.MaxPrice);
+            else
+                products = products.Where(x => x.Price >= filters.MinPrice && x.Price <= filters.MaxPrice);
 
             if (filters.Category != null && filters.Gender != null)
                 products = products.Where(x => x.Category == filters.Category && x.Gender == filters.Gender);
@@ -63,8 +67,8 @@ namespace Shop.DataAcces
             if (!string.IsNullOrEmpty(filters.SearchBoxValue))
                 products = products.Where(p => p.Name.Contains(filters.SearchBoxValue));
 
-            if (filters.IsOverpriced)
-                products = products.Where(p => p.IsOverpriced);
+            if (filters.IsDiscounted)
+                products = products.Where(p => p.IsDiscounted);
 
             if (filters.SelectedColors.Count() > 0)
                 products = products.Where(p => filters.SelectedColors.Contains(p.Color));

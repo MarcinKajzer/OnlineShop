@@ -10,8 +10,8 @@ using Shop.DataAcces;
 namespace Shop.DataAcces.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20200816104741_ADD user role")]
-    partial class ADDuserrole
+    [Migration("20200911131559_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -21,15 +21,43 @@ namespace Shop.DataAcces.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("Entities.Product", b =>
+            modelBuilder.Entity("Entities.Order", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<double>("BeforePrice")
+                    b.Property<int?>("AdressId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreationDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsSent")
+                        .HasColumnType("bit");
+
+                    b.Property<double>("TotalAmount")
                         .HasColumnType("float");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AdressId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Orders");
+                });
+
+            modelBuilder.Entity("Entities.Product", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("Category")
                         .HasColumnType("int");
@@ -38,6 +66,7 @@ namespace Shop.DataAcces.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Description")
+                        .IsRequired()
                         .HasColumnType("varchar(1000)")
                         .HasMaxLength(1000);
 
@@ -45,18 +74,23 @@ namespace Shop.DataAcces.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Image")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasColumnType("varchar(50)")
+                        .HasMaxLength(50);
 
                     b.Property<bool>("IsArchived")
                         .HasColumnType("bit");
 
-                    b.Property<bool>("IsOverpriced")
+                    b.Property<bool>("IsDiscounted")
                         .HasColumnType("bit");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("varchar(100)")
                         .HasMaxLength(100);
+
+                    b.Property<double?>("NewPrice")
+                        .HasColumnType("float");
 
                     b.Property<double>("Price")
                         .HasColumnType("float");
@@ -105,6 +139,9 @@ namespace Shop.DataAcces.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
 
+                    b.Property<int?>("AdressId")
+                        .HasColumnType("int");
+
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
@@ -118,11 +155,13 @@ namespace Shop.DataAcces.Migrations
 
                     b.Property<string>("FirstName")
                         .IsRequired()
-                        .HasColumnType("Varchar(50)");
+                        .HasColumnType("Varchar(50)")
+                        .HasMaxLength(20);
 
                     b.Property<string>("LastName")
                         .IsRequired()
-                        .HasColumnType("Varchar(50)");
+                        .HasColumnType("Varchar(50)")
+                        .HasMaxLength(20);
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
@@ -159,6 +198,8 @@ namespace Shop.DataAcces.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("AdressId");
+
                     b.HasIndex("NormalizedEmail")
                         .HasName("EmailIndex");
 
@@ -174,17 +215,17 @@ namespace Shop.DataAcces.Migrations
                         {
                             Id = "e17cbb1b-adea-43b0-af7f-33c85a5cb976",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "be0b203b-8483-4649-9376-93a49cc6bb57",
+                            ConcurrencyStamp = "cd0c97df-4520-460a-8b3a-c5ee4a06890d",
                             Email = "admin@shop.com",
-                            EmailConfirmed = false,
+                            EmailConfirmed = true,
                             FirstName = "Admin",
                             LastName = "Admin",
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@SHOP.COM",
                             NormalizedUserName = "ADMIN@SHOP.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEHRV9KNBzMO31EyPcIeNVanvttmbfTXQQGpzEnDcZwsPTKNEZeA3G/Ci6lCYFzd5kg==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEM//n2eVnoalR7v/XwLPgTzmeeokbQuLRri5pu0FO2UsoAh3/M62dtpxDWtyGj52kA==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "adc0142e-ed1c-47e5-aad4-1a0a46ab3ebb",
+                            SecurityStamp = "56b0cb51-708d-45c3-91ad-6137fb8c03e1",
                             TwoFactorEnabled = false,
                             UserName = "admin@shop.com"
                         });
@@ -220,14 +261,14 @@ namespace Shop.DataAcces.Migrations
                         new
                         {
                             Id = "2c5e174e-3b0e-446f-86af-483d56fd7210",
-                            ConcurrencyStamp = "8c2e314c-cbdc-4afe-842f-f178729565d4",
+                            ConcurrencyStamp = "ad9377c5-4629-4fb2-8cff-a4f7d639fd74",
                             Name = "Administrator",
                             NormalizedName = "ADMINISTRATOR"
                         },
                         new
                         {
                             Id = "ace800ca-6df1-415a-9cf4-2c48f3f125ba",
-                            ConcurrencyStamp = "65ccc249-55da-489d-8a30-2c8f321326e8",
+                            ConcurrencyStamp = "e9b81d54-f6a2-46be-8d91-f31d632098a3",
                             Name = "User",
                             NormalizedName = "USER"
                         });
@@ -344,6 +385,74 @@ namespace Shop.DataAcces.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("Shop.Entities.Adress", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("BuildingNumber")
+                        .HasColumnType("int");
+
+                    b.Property<string>("City")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("FlatNumber")
+                        .HasColumnType("int");
+
+                    b.Property<string>("PostCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Street")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Adress");
+                });
+
+            modelBuilder.Entity("Shop.Entities.ProductInfo", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int?>("OrderId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SelectedSize")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrderId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("ProductInfo");
+                });
+
+            modelBuilder.Entity("Entities.Order", b =>
+                {
+                    b.HasOne("Shop.Entities.Adress", "Adress")
+                        .WithMany()
+                        .HasForeignKey("AdressId");
+
+                    b.HasOne("Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+                });
+
             modelBuilder.Entity("Entities.Product", b =>
                 {
                     b.HasOne("Entities.User", null)
@@ -356,6 +465,13 @@ namespace Shop.DataAcces.Migrations
                     b.HasOne("Entities.Product", "Product")
                         .WithMany("Sizes")
                         .HasForeignKey("ProductId");
+                });
+
+            modelBuilder.Entity("Entities.User", b =>
+                {
+                    b.HasOne("Shop.Entities.Adress", "Adress")
+                        .WithMany()
+                        .HasForeignKey("AdressId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -405,6 +521,19 @@ namespace Shop.DataAcces.Migrations
                     b.HasOne("Entities.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Shop.Entities.ProductInfo", b =>
+                {
+                    b.HasOne("Entities.Order", null)
+                        .WithMany("Products")
+                        .HasForeignKey("OrderId");
+
+                    b.HasOne("Entities.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

@@ -3,10 +3,27 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Shop.DataAcces.Migrations
 {
-    public partial class RENAMEitemstoproducts : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "Adress",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    PostCode = table.Column<string>(nullable: false),
+                    City = table.Column<string>(nullable: false),
+                    Street = table.Column<string>(nullable: true),
+                    BuildingNumber = table.Column<int>(nullable: false),
+                    FlatNumber = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Adress", x => x.Id);
+                });
+
             migrationBuilder.CreateTable(
                 name: "AspNetRoles",
                 columns: table => new
@@ -40,35 +57,19 @@ namespace Shop.DataAcces.Migrations
                     LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
                     LockoutEnabled = table.Column<bool>(nullable: false),
                     AccessFailedCount = table.Column<int>(nullable: false),
-                    FirstName = table.Column<string>(type: "Varchar(50)", nullable: false),
-                    LastName = table.Column<string>(type: "Varchar(50)", nullable: false)
+                    FirstName = table.Column<string>(type: "Varchar(50)", maxLength: 20, nullable: false),
+                    LastName = table.Column<string>(type: "Varchar(50)", maxLength: 20, nullable: false),
+                    AdressId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Products",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false),
-                    Price = table.Column<double>(nullable: false),
-                    Description = table.Column<string>(type: "varchar(1000)", maxLength: 1000, nullable: true),
-                    Color = table.Column<int>(nullable: false),
-                    Gender = table.Column<int>(nullable: false),
-                    Category = table.Column<int>(nullable: false),
-                    IsArchived = table.Column<bool>(nullable: false),
-                    IsOverpriced = table.Column<bool>(nullable: false),
-                    BeforePrice = table.Column<double>(nullable: false),
-                    Quantity = table.Column<int>(nullable: false),
-                    Image = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Products", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_AspNetUsers_Adress_AdressId",
+                        column: x => x.AdressId,
+                        principalTable: "Adress",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -178,13 +179,100 @@ namespace Shop.DataAcces.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Orders",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    TotalAmount = table.Column<double>(nullable: false),
+                    IsSent = table.Column<bool>(nullable: false),
+                    CreationDate = table.Column<DateTime>(nullable: false),
+                    UserId = table.Column<string>(nullable: true),
+                    AdressId = table.Column<int>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Orders", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Orders_Adress_AdressId",
+                        column: x => x.AdressId,
+                        principalTable: "Adress",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Orders_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Products",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Quantity = table.Column<int>(nullable: false),
+                    Price = table.Column<double>(nullable: false),
+                    NewPrice = table.Column<double>(nullable: true),
+                    Name = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false),
+                    Description = table.Column<string>(type: "varchar(1000)", maxLength: 1000, nullable: false),
+                    Image = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false),
+                    IsArchived = table.Column<bool>(nullable: false),
+                    IsDiscounted = table.Column<bool>(nullable: false),
+                    Color = table.Column<int>(nullable: false),
+                    Gender = table.Column<int>(nullable: false),
+                    Category = table.Column<int>(nullable: false),
+                    UserId = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Products", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Products_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ProductInfo",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Quantity = table.Column<int>(nullable: false),
+                    ProductId = table.Column<int>(nullable: false),
+                    SelectedSize = table.Column<int>(nullable: false),
+                    OrderId = table.Column<int>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ProductInfo", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ProductInfo_Orders_OrderId",
+                        column: x => x.OrderId,
+                        principalTable: "Orders",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_ProductInfo_Products_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "Products",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "SizeInfo",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Size = table.Column<int>(nullable: false),
                     Quantity = table.Column<int>(nullable: false),
+                    Size = table.Column<int>(nullable: false),
                     ProductId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
@@ -197,6 +285,26 @@ namespace Shop.DataAcces.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
+
+            migrationBuilder.InsertData(
+                table: "AspNetRoles",
+                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
+                values: new object[] { "2c5e174e-3b0e-446f-86af-483d56fd7210", "ad9377c5-4629-4fb2-8cff-a4f7d639fd74", "Administrator", "ADMINISTRATOR" });
+
+            migrationBuilder.InsertData(
+                table: "AspNetRoles",
+                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
+                values: new object[] { "ace800ca-6df1-415a-9cf4-2c48f3f125ba", "e9b81d54-f6a2-46be-8d91-f31d632098a3", "User", "USER" });
+
+            migrationBuilder.InsertData(
+                table: "AspNetUsers",
+                columns: new[] { "Id", "AccessFailedCount", "AdressId", "ConcurrencyStamp", "Email", "EmailConfirmed", "FirstName", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
+                values: new object[] { "e17cbb1b-adea-43b0-af7f-33c85a5cb976", 0, null, "cd0c97df-4520-460a-8b3a-c5ee4a06890d", "admin@shop.com", true, "Admin", "Admin", false, null, "ADMIN@SHOP.COM", "ADMIN@SHOP.COM", "AQAAAAEAACcQAAAAEM//n2eVnoalR7v/XwLPgTzmeeokbQuLRri5pu0FO2UsoAh3/M62dtpxDWtyGj52kA==", null, false, "56b0cb51-708d-45c3-91ad-6137fb8c03e1", false, "admin@shop.com" });
+
+            migrationBuilder.InsertData(
+                table: "AspNetUserRoles",
+                columns: new[] { "UserId", "RoleId" },
+                values: new object[] { "e17cbb1b-adea-43b0-af7f-33c85a5cb976", "2c5e174e-3b0e-446f-86af-483d56fd7210" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -226,6 +334,11 @@ namespace Shop.DataAcces.Migrations
                 column: "RoleId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_AspNetUsers_AdressId",
+                table: "AspNetUsers",
+                column: "AdressId");
+
+            migrationBuilder.CreateIndex(
                 name: "EmailIndex",
                 table: "AspNetUsers",
                 column: "NormalizedEmail");
@@ -236,6 +349,31 @@ namespace Shop.DataAcces.Migrations
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Orders_AdressId",
+                table: "Orders",
+                column: "AdressId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Orders_UserId",
+                table: "Orders",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ProductInfo_OrderId",
+                table: "ProductInfo",
+                column: "OrderId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ProductInfo_ProductId",
+                table: "ProductInfo",
+                column: "ProductId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Products_UserId",
+                table: "Products",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_SizeInfo_ProductId",
@@ -261,16 +399,25 @@ namespace Shop.DataAcces.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "ProductInfo");
+
+            migrationBuilder.DropTable(
                 name: "SizeInfo");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "AspNetUsers");
+                name: "Orders");
 
             migrationBuilder.DropTable(
                 name: "Products");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Adress");
         }
     }
 }

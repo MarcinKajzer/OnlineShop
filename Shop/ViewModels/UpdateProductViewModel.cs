@@ -33,7 +33,7 @@ namespace Shop.ViewModels
         public string ImageName { get; set; }
 
         public bool IsArchived { get; set; }
-        public bool IsOverpriced { get; set; }
+        public bool IsDiscounted { get; set; }
 
         [Required]
         public Color Color { get; set; }
