@@ -57,7 +57,7 @@
                             <input type="hidden" asp-for="@Model.Sizes[i].Size" />
 
                             <label asp-for="@Model.Sizes[i].Quantity">@Model.Sizes[i].Size</label>
-                            <input asp-for="@Model.Sizes[i].Quantity" />
+                            <input asp-for="@Model.Sizes[i].Quantity" min="0"/>
                             <span asp-validation-for="@Model.Sizes[i].Quantity"></span>
                         </div>
                     }

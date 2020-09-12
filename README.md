@@ -21,11 +21,13 @@
 
 ## Technologies
 
+- C#
 - ASP.NET Core 3.1 MVC
 - Entity Framework
 - Identity
 - SendGrid
 - SweetAlert 2
+- Java Script
 - AJAX
 
 ## Configuration
@@ -49,11 +51,11 @@ As you can see on the gif below edit form allows to change data like name, descr
 
 ![](Images/edit-product.gif) 
 
-#### 1. Archiving and restoring products.
+#### 3. Archiving and restoring products.
 
 ![](Images/archive.gif)
 
-
+***
 
 ### Other users:
 
@@ -69,7 +71,7 @@ As you can see on the gif below edit form allows to change data like name, descr
 
 ![](Images/login.gif)
 
-#### 3. Reset password when forgot.
+#### 4. Reset password when forgot.
 
 ![](Images/reset-password.gif)
 
@@ -81,7 +83,7 @@ As you can see on the gif below edit form allows to change data like name, descr
 
 ![](Images/add-remove-favourites.gif) 
 
-
+***
 
 ### Common features: 
 
@@ -89,7 +91,7 @@ As you can see on the gif below edit form allows to change data like name, descr
 
 ![](Images/searching-filtering-sorting.gif)
 
-
+***
 
 ### Buying process:
 
@@ -97,7 +99,7 @@ As you can see on the gif below edit form allows to change data like name, descr
 
 ![](Images/add-remove-cart.gif) 
 
-### 2. Finalization of purchases.
+#### 2. Finalization of purchases.
 
 ![](Images/purchase-finalization.gif) 
 
@@ -105,7 +107,7 @@ After making a purchase, the user receives an email with a summary
 
 ![](Images/order-summary-email.jpg)
 
-### 3. Change of order status by admin when it is ready to send.
+#### 3. Change of order status by admin when it is ready to send.
 
 ![](Images/change-of-order-status.gif)
 

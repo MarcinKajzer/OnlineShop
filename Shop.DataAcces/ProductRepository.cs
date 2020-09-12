@@ -87,10 +87,10 @@ namespace Shop.DataAcces
             switch (sortBy)
             {
                 case SortBy.PriceAscending:
-                    products = products.OrderBy(p => p.Price).ToList();
+                    products = products.OrderBy(p => p.IsDiscounted ? p.NewPrice : p.Price).ToList();
                     break;
                 case SortBy.PriceDescending:
-                    products = products.OrderByDescending(p => p.Price).ToList();
+                    products = products.OrderByDescending(p => p.IsDiscounted ? p.NewPrice : p.Price).ToList();
                     break;
             }
             return products;

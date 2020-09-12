@@ -48,7 +48,7 @@
                 </div>
                 <div class="checkbox-form-group form-group">
                     <input asp-for="IsDiscounted" type="checkbox" class="is-overpriced" />
-                    <label asp-for="IsDiscounted">Overprice</label>
+                    <label asp-for="IsDiscounted">Discount</label>
                 </div>
                 <div class="form-group">
                     <label asp-for="NewPrice">New price</label>
@@ -71,7 +71,7 @@
                         <input type="hidden" asp-for="@Model.Sizes[i].Id" />
 
                         <label asp-for="@Model.Sizes[i].Quantity">@Model.Sizes[i].Size</label>
-                        <input asp-for="@Model.Sizes[i].Quantity" />
+                        <input asp-for="@Model.Sizes[i].Quantity" min="0"/>
                         <span asp-validation-for="@Model.Sizes[i].Quantity"></span>
                     </div>
                 }
