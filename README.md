@@ -30,9 +30,12 @@
 - Java Script
 - AJAX
 
-## Configuration
-...
-...
+## First run
+
+1. Before first run go to package manager console and call update-database function in order to create DB on your PC.
+2. In order to login as administrator use the following data:
+ - Login : admin@shop.com
+ - Password: 1234
 
 
 ## Demonstration of functionality
