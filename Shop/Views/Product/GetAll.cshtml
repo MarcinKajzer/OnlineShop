@@ -1,0 +1,131 @@
+﻿@model List<Shop.ViewModels.ProductDetailsViewModel>
+
+@{
+    ViewData["Title"] = "GetByCategory";
+    string allowClass = "";
+    int productListLength = Model.Count();
+    string archivedClass = "";
+}
+
+<p class="show-filters-button">Filtruj</p>
+
+@await Html.PartialAsync("_FilterResultsPartial", (Shop.Common.Filters)ViewBag.Filter)
+
+@if (Model.Count == 0)
+{
+    <main>
+        <p class="additional-info">We don't have any product in the selected category</p>
+    </main>
+}
+else
+{
+    <main class="products-list">
+
+        @for (int i = 0; i < productListLength; i++)
+        {
+            if (Model[i].Quantity < 1)
+            {
+                allowClass = "not-allow-product";
+            }
+            else
+            {
+                allowClass = "";
+            }
+
+            if (Model[i].IsArchived)
+            {
+                archivedClass = "archived-product";
+            }
+            else
+            {
+                archivedClass = "";
+            }
+
+
+            <div class="single-product @archivedClass">
+                <div class="favoutites-links-container">
+                    @if (User.IsInRole("User"))
+                    {
+                        @if (Model[i].IsFavourite)
+                        {
+                            <a class="remove-from-favourites" onclick="removeFromFavourites(@Model[i].Id, @i)"></a>
+                        }
+                        else
+                        {
+                            <a class="add-to-favourites" onclick="addToFavourites(@Model[i].Id, @i)"></a>
+                        }
+                    }
+                    else if (User.IsInRole("Administrator"))
+                    {
+                        if (!Model[i].IsArchived)
+                        {
+                            <a asp-action="Update" asp-controller="Product" asp-route-productId="@Model[i].Id" class="custom-link">Edit</a>
+                            <span> | </span>
+                            <span onclick="showConfirmationPopup(@Model[i].Id, true)" class="custom-link">Archive</span>
+                        }
+                        else
+                        {
+                            <span onclick="showConfirmationPopup(@Model[i].Id, false)" class="custom-link">Restore</span>
+                        }
+                    }
+                    else
+                    {
+                        <a class="add-to-favourites" asp-action="Login" asp-controller="Account" asp-route-ReturnUrl="/Product/GetAll?gender=@Model[i].Gender&category=@Model[i].Category"></a>
+                    }
+
+                </div>
+                <a asp-action="Details" asp-controller="Product" asp-route-productId="@Model[i].Id">
+                    <img src="@Model[i].ImagePath" class="@allowClass" />
+                    <div class="price-container">
+                        <div>
+                            @if (Model[i].IsOverpriced)
+                            {
+                                <span class="current-price">@Model[i].FormatedNewPrice $</span>
+
+                                <span class="before-price">@Model[i].FormatedPrice $</span>
+                            }
+                            else
+                            {
+                                <span class="current-price">@Model[i].FormatedPrice $</span>
+                            }
+                         </div>
+
+                        @if (Model[i].IsOverpriced)
+                        {
+                            <span class="discount">- @Model[i].FormatedDiscount %</span>
+                        }
+
+                    </div>
+                    <span>@Model[i].Name</span>
+                </a>
+
+                @{ViewBag.Index = i;
+                  ViewBag.IsArchived = Model[i].IsArchived;}
+
+                @await Html.PartialAsync("_AddToCartPartial", new Shop.ViewModels.AddProductToCartViewModel()
+                {
+                    Id = Model[i].Id,
+                    Sizes = Model[i].Sizes,
+                    Quantity = Model[i].Quantity,
+                    Image = Model[i].Image,
+                    Name = Model[i].Name,
+                    Price = Model[i].Price
+                })
+
+            </div>
+
+        }
+
+    </main>
+}
+
+
+
+
+<script src="~/js/filters.js"></script>
+<script src="~/js/add-and-remove-favourite-product.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+<script src="~/js/archive-product-confirmation-popup.js"></script>
+
+<script src="~/js/add-product-to-cart-popup.js"></script>

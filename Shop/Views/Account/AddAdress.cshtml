@@ -1,0 +1,37 @@
+﻿@model Shop.DTOs.AdressDTO
+@{
+    ViewData["Title"] = "AddAdress";
+}
+
+    <main>
+        <form asp-action="AddAdress" asp-controller="Account" method="post" class="account-form">
+
+            <div class="header">
+                <span>Add address</span>
+            </div>
+
+            <div class="form-group">
+                <input asp-for="City" placeholder="City" />
+                <span asp-validation-for="City"></span>
+            </div>
+            <div class="form-group">
+                <input asp-for="Street" placeholder="Street" />
+                <span asp-validation-for="Street"></span>
+            </div>
+            <div class="form-group">
+                <input asp-for="PostCode" placeholder="Post code" />
+                <span asp-validation-for="PostCode"></span>
+            </div>
+            <div class="form-group">
+                <input asp-for="BuildingNumber" placeholder="Building number" />
+                <span asp-validation-for="BuildingNumber"></span>
+            </div>
+            <div class="form-group">
+                <input asp-for="FlatNumber" placeholder="Apartment number" />
+                <span asp-validation-for="FlatNumber"></span>
+            </div>
+          
+            <button type="submit">Add</button>
+        </form>
+    </main>
+

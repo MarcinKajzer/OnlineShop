@@ -1,0 +1,92 @@
+﻿@model Shop.ViewModels.ProductDetailsViewModel
+@{
+    ViewData["Title"] = "Details";
+    string archivedClass = "";
+
+    if (Model.IsArchived)
+    {
+        archivedClass = "archived-product";
+    }
+}
+
+<main>
+    <div class="single-product-details @archivedClass">
+        <div class="product-image">
+            <img src="@Model.ImagePath" />
+        </div>
+        <div class="details">
+            <div class="favoutites-links-container">
+                @if (User.IsInRole("User"))
+                {
+                    @if (Model.IsFavourite)
+                    {
+                        <a class="remove-from-favourites" onclick="removeFromFavourites(@Model.Id, 0)"></a>
+                    }
+                    else
+                    {
+                        <a class="add-to-favourites" onclick="addToFavourites(@Model.Id, 0)"></a>
+                    }
+                }
+                else if (User.IsInRole("Administrator"))
+                {
+                    if (!Model.IsArchived)
+                    {
+                        <a asp-action="Update" asp-controller="Product" asp-route-productId="@Model.Id" class="custom-link">Edit</a>
+                        <span> | </span>
+                        <span onclick="showConfirmationPopup(@Model.Id, true)" class="custom-link">Archive</span>
+                    }
+                    else
+                    {
+                        <span onclick="showConfirmationPopup(@Model.Id, false)" class="custom-link">Restore</span>
+                    }
+                }
+                else
+                {
+                    <a class="add-to-favourites" asp-action="Login" asp-controller="Account" asp-route-ReturnUrl="/Product/Details?productId=@Model.Id"></a>
+                }
+            </div>
+
+            <h2 class="product-name">@Model.Name</h2>
+            <p>@Model.Description</p>
+            <span class="color">Kolor: @Model.Color</span>
+            <div class="price-container">
+                <div>
+                    @if (Model.IsOverpriced)
+                    {
+                        <span class="current-price">@Model.FormatedNewPrice $</span>
+
+                        <span class="before-price">@Model.FormatedPrice $</span>
+                    }
+                    else
+                    {
+                        <span class="current-price">@Model.FormatedPrice $</span>
+                    }
+                </div>
+
+                @if (Model.IsOverpriced)
+                {
+                    <span class="discount">- @Model.FormatedDiscount %</span>
+                }
+            </div>
+            @{ViewBag.Index = 0;
+              ViewBag.IsArchived = Model.IsArchived;
+            }
+            @await Html.PartialAsync("_AddToCartPartial", new Shop.ViewModels.AddProductToCartViewModel()
+            {
+                Id = Model.Id,
+                Sizes = Model.Sizes,
+                Quantity = Model.Quantity,
+                Image = Model.Image,
+                Name = Model.Name,
+                Price = Model.Price
+            })
+        </div>
+    </div>
+</main>
+
+<script src="~/js/add-and-remove-favourite-product.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+<script src="~/js/archive-product-confirmation-popup.js"></script>
+
+<script src="~/js/add-product-to-cart-popup.js"></script>

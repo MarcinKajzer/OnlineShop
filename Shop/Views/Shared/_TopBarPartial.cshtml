@@ -1,0 +1,69 @@
+﻿<div class="top-bar">
+    <div class="options">
+        <ul>
+            @if (!User.IsInRole("Administrator"))
+            {
+                <li>
+                    <a asp-action="GetAll" asp-controller="Favourites" class="favourites-icon"></a>
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <div class="number-of-favourites"></div>
+                    }
+                </li>
+                <li>
+                    <a asp-action="Index" asp-controller="Cart" class="cart-icon"></a>
+                    <div class="number-of-cart-items"></div>
+                </li>
+            }
+
+            <li class="account-icon"></li>
+        </ul>
+        <div class="account-options-popup">
+            @if (User.Identity.IsAuthenticated)
+            {
+                if (User.IsInRole("Administrator"))
+                {
+                    <span>Administrator</span>
+                    <a asp-action="Create" asp-controller="Product" class="link-button">Add product</a>
+                    <a asp-action="GetAll" asp-controller="Order" asp-route-isSent="false" class="link-button">Orders</a>
+                }
+                else
+                {
+                    <span>@User.Identity.Name</span>
+                    <a asp-action="GetCurrentUserOrders" asp-controller="Order" class="link-button">Orders</a>
+                    <a asp-action="Update" asp-controller="Account" class="link-button">Settings</a>
+                }
+                <a asp-action="LogOut" asp-controller="Account" class="link-button">Logout</a>
+            }
+            else
+            {
+                <a asp-action="Login" asp-controller="Account" class="link-button">Login</a>
+                <a asp-action="Register" asp-controller="Account" class="link-button">Register</a>
+            }
+        </div>
+    </div>
+    <div class="logo">
+        <h1><a asp-action="Index" asp-controller="Home">Online Shop</a> </h1>
+    </div>
+    <div class="search-box">
+        <form asp-action="GetAll" asp-controller="Product" method="get">
+            <input placeholder="Search" name="SearchBoxValue">
+            <button type="submit"></button>
+        </form>
+    </div>
+</div>
+
+<script src="~/js/top-bar.js"></script>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+
+<script src="~/js/ajax-call.js"></script>
+
+@if (!User.IsInRole("Administrator"))
+{
+    <script src="~/js/get-cart-items-number.js"></script>
+}
+
+@if (User.IsInRole("User"))
+{
+    <script src="~/js/get-favourites-number.js"></script>
+}

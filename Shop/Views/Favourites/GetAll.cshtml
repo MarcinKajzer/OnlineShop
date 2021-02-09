@@ -1,0 +1,81 @@
+﻿@model List<Shop.ViewModels.ProductDetailsViewModel>
+@{
+    ViewData["Title"] = "GetAll";
+    string allowClass = "";
+}
+
+<main class="favourites-list">
+    @if (Model.Count == 0)
+    {
+        <p class="additional-info">You have no favourites products</p>
+    }
+    else
+    {
+        int productListLength = Model.Count();
+        for (int i = 0; i < productListLength; i++)
+        {
+            if (Model[i].Quantity < 1)
+            {
+                allowClass = "not-allow-product";
+            }
+            else
+            {
+                allowClass = "";
+            }
+            <div class="single-product">
+                <div class="favoutites-links-container">
+                    <a class="remove-from-favourites" onclick="removeFromFavourites(@Model[i].Id, @i)"></a>
+                </div>
+                <a asp-action="Details" asp-controller="Product" asp-route-productId="@Model[i].Id">
+
+                    @{
+                        string imageSrc = "/products-images/" + Model[i].Image + ".jpg";
+                    }
+                    <img src="@imageSrc" class="@allowClass"/>
+                    <div class="price-container">
+                        <div>
+                            @if (Model[i].IsOverpriced)
+                            {
+                                string newPrice = Model[i].NewPrice.HasValue ? ((double)(Model[i].NewPrice)).ToString("0.00") : "";
+                                <span class="current-price">@newPrice zł</span>
+
+                                <span class="before-price">@Model[i].Price.ToString("0.00") $</span>
+                            }
+                            else
+                            {
+                                <span class="current-price">@Model[i].Price.ToString("0.00") $</span>
+                            }
+                        </div>
+
+                        @if (Model[i].IsOverpriced)
+                        {
+                            double discount = Model[i].NewPrice.HasValue ? (double)(100 - Model[i].NewPrice / Model[i].Price * 100) : 5;
+                            <span class="discount">- @discount.ToString("0") %</span>
+                        }
+
+                    </div>
+                    <span>@Model[i].Name</span>
+                </a>
+
+                @{ViewBag.Index = i;}
+                @await Html.PartialAsync("_AddToCartPartial", new Shop.ViewModels.AddProductToCartViewModel()
+               {
+                   Id = Model[i].Id,
+                   Sizes = Model[i].Sizes,
+                   Quantity = Model[i].Quantity,
+                   Image = Model[i].Image,
+                   Name = Model[i].Name,
+                   Price = Model[i].Price
+               })
+
+            </div>
+
+        }
+    }
+
+</main>
+
+<script src="~/js/remove-product-form-favourites-list.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+
+<script src="~/js/add-product-to-cart-popup.js"></script>

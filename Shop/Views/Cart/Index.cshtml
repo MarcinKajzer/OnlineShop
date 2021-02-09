@@ -1,0 +1,72 @@
+﻿@model Cart
+@{
+    ViewData["Title"] = "Index";
+    List<CartItem> Items = Model.Items;
+    int listLength = Items.Count();
+}
+
+<main>
+    <h2>Your cart</h2>
+
+    @if (listLength == 0)
+    {
+        <p class="additional-info">Your cart is currently empty</p>
+    }
+    else
+    {
+        <table class="cart-table">
+            <tr>
+                <th></th>
+                <th>Product</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Sum</th>
+                <th></th>
+            </tr>
+
+            @for (int i = 0; i < listLength; i++)
+            {
+                int numberSizeValue = (int)Model.Items[i].Size;
+
+                <tr>
+                    <td>
+                        <img src="@Items[i].ImagePath" />
+                    </td>
+                    <td>
+                        <span><a asp-action="Details" asp-controller="Product" asp-route-productId="@Items[i].Id">@Items[i].Name</a></span>
+                        <span>Size: @Items[i].Size</span>
+                    </td>
+                    <td class="price">@Items[i].FormatedPrice $</td>
+                    <td class="quantity-input-field">
+                        <div class="decrease-quantity-button" onclick="decreaseQuantity(@i, @Items[i].Id, @numberSizeValue, @Items[i].Price)">-</div>
+                        <input asp-for="@Items[i].Quantity" min="0" type="number" class="quantity-input" readonly>
+                        <div class="increase-quantity-button" onclick="increaseQuantity(@i, @Items[i].Id, @numberSizeValue, @Items[i].Price)">+</div>
+                    </td>
+                    <td class="amount">@Items[i].FormatedAmount $</td>
+                    <td>
+                        <a asp-action="RemoveProduct" asp-controller="Cart" asp-route-productId="@Items[i].Id" asp-route-productSize="@Items[i].Size" class="delete-item-link">Remove</a>
+                    </td>
+                </tr>
+            }
+
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>Total:</td>
+                <td class="total-amount">@Model.FormatedTotalAmount $</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td colspan="2"> <a asp-action="Buy" asp-controller="Order" class="cart-submit-link link-button">Buy</a></td>
+            </tr>
+        </table>
+    }
+
+</main>
+
+<script src="~/js/cart.js"></script>

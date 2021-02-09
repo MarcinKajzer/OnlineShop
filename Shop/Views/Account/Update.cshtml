@@ -1,0 +1,69 @@
+﻿@model Shop.ViewModels.UpdateUserViewModel
+@{
+    ViewData["Title"] = "Update";
+}
+<main>
+    <form asp-action="Update" asp-controller="Account" method="post" class="account-form">
+
+        <div class="header">
+            <span>Edit your accout</span>
+        </div>
+
+        <input asp-for="Id" type="hidden" />
+
+        <span class="section-name">Basics information</span>
+
+        <div class="form-group">
+            <label asp-for="FirstName">First name</label>
+            <input asp-for="FirstName" />
+            <span asp-validation-for="FirstName"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="FirstName">Last name</label>
+            <input asp-for="LastName"/>
+            <span asp-validation-for="LastName"></span>
+        </div>
+
+        <a href="" class="custom-link">Change email</a>
+
+        <a asp-action="ChangePassword" asp-controller="Account" class="custom-link">Change password</a>
+
+        @if (Model.Adress != null)
+        {
+            <span class="section-name">Shipping data</span>
+
+            <div class="form-group">
+                <label asp-for="Adress.City">City</label>
+                <input asp-for="Adress.City" />
+                <span asp-validation-for="Adress.City"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Adress.Street">Street</label>
+                <input asp-for="Adress.Street" />
+                <span asp-validation-for="Adress.Street"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Adress.PostCode">Post code</label>
+                <input asp-for="Adress.PostCode" />
+                <span asp-validation-for="Adress.PostCode"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Adress.BuildingNumber">Building number</label>
+                <input asp-for="Adress.BuildingNumber" />
+                <span asp-validation-for="Adress.BuildingNumber"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Adress.FlatNumber">Apartment number</label>
+                <input asp-for="Adress.FlatNumber" />
+                <span asp-validation-for="Adress.FlatNumber"></span>
+            </div>
+        }
+        else
+        {
+            <a asp-action="AddAdress" asp-controller="Account" class="custom-link">Add address</a>
+        }
+
+
+        <button type="submit">Save</button>
+    </form>
+</main>

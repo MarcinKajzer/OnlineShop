@@ -1,0 +1,60 @@
+﻿@model Shop.ViewModels.AddProductToCartViewModel
+
+    <form>
+
+        <input type="hidden" asp-for="@Model.Id" />
+
+        <div class="size-and-quantity">
+
+            @if (Model.Quantity > 1)
+            {
+                Guid id = Guid.NewGuid();
+
+                <div>
+                    @{ int numberOfSizes = Model.Sizes.Count();
+                        bool isChecked = true;
+                    }
+                    @for (int i = 0; i < numberOfSizes; i++)
+                    {
+                        if (Model.Sizes[i].Quantity >= 1)
+                        {
+                            if (isChecked)
+                            {
+                                <input type="radio" asp-for="SelectedSize" value="@Model.Sizes[i].Size" id="@id@i" checked />
+                                isChecked = false;
+                            }
+                            else
+                            {
+                                <input type="radio" asp-for="SelectedSize" value="@Model.Sizes[i].Size" id="@id@i" />
+                            }
+                            <label for="@id@i">@Model.Sizes[i].Size</label>
+                        }
+                    }
+                </div>
+
+                <input class="quantity" name="quantity" type="number" value="1" min="1" />
+            }
+            else
+            {
+                <span class="product-not-available">Out of stock</span>
+            }
+
+        </div>
+
+        @if (User.IsInRole("Administrator") && ViewBag.IsArchived)
+        {
+            <button type="button" class="disabled-button">Archival</button>
+        }
+        else if (User.IsInRole("Administrator") || Model.Quantity == 0)
+        {
+            <a asp-action="Details" asp-controller="Product" asp-route-productId="@Model.Id" class="link-button">Show details</a>
+        }
+        else
+        {
+            <button type="button" onclick="addToCart(@Model.Id, '@Model.Name', @ViewBag.Index)">Add to cart</button>
+        }
+
+    </form>
+
+
+
